@@ -80,7 +80,7 @@ img{max-width:100%;display:block}
 .hamburger span{display:block;width:26px;height:2px;background:var(--txt);margin:6px 0;transition:.3s}
 
 /* ---------- hero ---------- */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-start;overflow:hidden}
 #bg3d{position:absolute;inset:0;z-index:0}
 .hero::after{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -358,18 +358,18 @@ footer ul a:hover{color:var(--gold)}
 /* ---------- hero figure（宣材写真） ---------- */
 .hero-figure{
   position:absolute;bottom:0;right:clamp(0px,calc(50vw - 780px),100px);z-index:1;
-  height:min(102vh,940px);pointer-events:none;
-  filter:drop-shadow(0 24px 60px rgba(0,0,0,.55)) brightness(1.08) contrast(1.04);
-  -webkit-mask-image:linear-gradient(to bottom,#000 94%,transparent 100%);
-  mask-image:linear-gradient(to bottom,#000 94%,transparent 100%);
+  height:104vh;pointer-events:none;
+  filter:drop-shadow(0 24px 60px rgba(0,0,0,.55));
+  -webkit-mask-image:linear-gradient(to bottom,#000 90%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 90%,transparent 100%);
 }
 .hero-figure::before{
-  content:"";position:absolute;z-index:-1;right:0;bottom:0;width:92%;height:100%;
-  background:radial-gradient(ellipse 60% 55% at 52% 40%,rgba(150,178,235,.5),rgba(90,135,205,.24) 42%,rgba(40,70,130,.08) 62%,transparent 74%);
-  filter:blur(36px);pointer-events:none;
+  content:"";position:absolute;z-index:-1;right:6%;bottom:4%;width:70%;height:78%;
+  background:radial-gradient(ellipse 55% 55% at 50% 55%,rgba(120,150,210,.16),rgba(80,115,180,.06) 50%,transparent 72%);
+  filter:blur(28px);pointer-events:none;
 }
 .hero-figure img{height:100%;width:auto;display:block}
-@media(max-width:900px){.hero-figure{height:60vh;right:-10vw;opacity:.62}.hero-figure::before{opacity:.7}}
+@media(max-width:900px){.hero-figure{height:60vh;right:-10vw;opacity:.62}.hero-figure::before{opacity:.6}}
 
 /* ---------- 実写真 ---------- */
 .portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -405,7 +405,7 @@ footer ul a:hover{color:var(--gold)}
 <!-- ======= HERO ======= -->
 <section class="hero" id="top">
   <div id="bg3d"></div>
-  <div class="hero-figure" aria-hidden="true"><img src="assets/maekawa-cutout-bright.webp" alt="" fetchpriority="high"></div>
+  <div class="hero-figure" aria-hidden="true"><img src="assets/maekawa-cutout.webp" alt="" fetchpriority="high"></div>
   <div class="hero-inner">
     <p class="hero-en en">29歳の挑戦 ｜ KOKI MAEKAWA</p>
     <h1>交渉力で、<br><span class="grad">香川の未来を切り拓く。</span></h1>
