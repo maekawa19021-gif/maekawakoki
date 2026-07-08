@@ -91,7 +91,7 @@ img{max-width:100%;display:block}
 .hero-en{color:var(--gold);font-size:13px;margin-bottom:18px;display:flex;align-items:center;gap:14px}
 .hero-en::before{content:"";width:46px;height:1px;background:var(--gold)}
 .hero h1{
-  font-size:clamp(38px,6.4vw,76px);font-weight:900;letter-spacing:.02em;
+  font-size:clamp(36px,4.8vw,60px);font-weight:900;letter-spacing:.02em;
   text-shadow:0 6px 40px rgba(0,0,0,.45);
 }
 .hero h1 .grad{
@@ -101,9 +101,10 @@ img{max-width:100%;display:block}
 .hero-sub{margin-top:22px;font-size:clamp(14px,1.6vw,17px);color:var(--muted);font-weight:500}
 .hero-sub b{color:var(--txt)}
 .hero-name{
-  margin-top:10px;font-size:clamp(22px,3vw,30px);font-weight:900;letter-spacing:.12em;
+  margin-top:14px;font-size:clamp(46px,6vw,78px);font-weight:900;letter-spacing:.1em;
+  color:var(--gold);text-shadow:0 6px 40px rgba(0,0,0,.45);
 }
-.hero-name small{font-size:.55em;color:var(--gold);margin-left:14px;letter-spacing:.2em}
+.hero-name small{font-size:.4em;color:var(--txt);margin-left:14px;letter-spacing:.2em;font-weight:700}
 .hero-cta{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap}
 .btn{
   display:inline-flex;align-items:center;gap:10px;
@@ -311,7 +312,7 @@ footer ul a:hover{color:var(--gold)}
 .greet-card h3{color:var(--gold);font-size:18px;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .greet-card h3::before{content:"";width:22px;height:2px;background:var(--gold)}
 .greet-card p{font-size:14px;color:var(--muted)}
-.greet-photo{width:100%;max-height:340px;object-fit:cover;object-position:center 18%;border-radius:12px;margin:2px 0 18px;background:linear-gradient(160deg,#12244d,#0a1732);border:1px solid var(--line)}
+.greet-photo{width:100%;max-height:360px;object-fit:cover;object-position:center 18%;border-radius:12px;margin:2px 0 18px;border:1px solid var(--line)}
 .endorse{border:1px solid rgba(255,212,0,.5);background:linear-gradient(160deg,rgba(255,212,0,.09),rgba(255,255,255,.02))}
 .endorse .who{margin-top:16px;font-weight:700;color:var(--txt);font-size:14px}
 .endorse .who small{display:block;color:var(--gold);font-size:11px;letter-spacing:.1em;margin-top:2px}
@@ -348,7 +349,6 @@ footer ul a:hover{color:var(--gold)}
   section{padding:80px 20px}
 }
 /* ---------- hero figure（宣材写真） ---------- */
-.hero h1{font-size:clamp(38px,5vw,64px)}
 .hero-figure{
   position:absolute;bottom:0;right:clamp(0px,calc(50vw - 760px),120px);z-index:1;
   height:min(94vh,860px);pointer-events:none;
@@ -357,8 +357,7 @@ footer ul a:hover{color:var(--gold)}
   mask-image:linear-gradient(to bottom,#000 88%,transparent 100%);
 }
 .hero-figure img{height:100%;width:auto;display:block}
-@media(max-width:1439px){.hero-figure{opacity:.9;right:-2vw;height:88vh}}
-@media(max-width:900px){.hero-figure{height:52vh;right:-12vw;opacity:.34}}
+@media(max-width:900px){.hero-figure{height:54vh;right:-10vw;opacity:.6}}
 
 /* ---------- 実写真 ---------- */
 .portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -441,7 +440,7 @@ footer ul a:hover{color:var(--gold)}
     <div class="greet stagger">
       <div class="greet-card">
         <h3>ごあいさつ</h3>
-        <img class="greet-photo" src="assets/maekawa-cutout.webp" alt="前川こうき（前川幸輝）" loading="lazy" decoding="async">
+        <img class="greet-photo" src="assets/portrait.webp" alt="前川こうき（前川幸輝）" loading="lazy" decoding="async">
         <p>前川こうきは、地域の声を一つひとつ丁寧に受け止め、暮らしに根ざした政策提案と行動で、まちづくりに取り組んでまいりました。市民の皆さまからいただく声の中には、すぐに解決できるものばかりではありません。しかし、だからこそ、現場を確認し、関係者と協議し、行政に粘り強く働きかけることが重要です。<br><br>これからも、声を聴くだけで終わらせず、必要な制度や予算につなげ、地域の課題を一歩ずつ前に進めてまいります。香川の未来を、皆さまとともに。前川こうきは、交渉力と行動力で挑戦を続けます。</p>
       </div>
       <div class="greet-card endorse">
