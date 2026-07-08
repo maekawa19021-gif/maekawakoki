@@ -12,7 +12,7 @@
    ============================================================ */
 window.SITE_CONFIG = {
   // ★ここだけ、Apps Scriptをデプロイした後に必ず貼り付けてください。
-  APPS_SCRIPT_URL: "",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwXd0xI1xbuZyMgixC3XwNNxfcGKRuZ9DoGxTJvdYP_eoOqj72Sr5y8ZOsFobE3GONfJg/exec",
 
   FORM_URLS: {
     join:   "https://docs.google.com/forms/d/e/1FAIpQLSeNnKNgI4qroVGcVkSkW5tWOzl1apavfZZl_tQ3hisZEm9PGw/viewform",
