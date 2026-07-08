@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寄付 ＋ 党員・サポーター｜前川こうき後援会</title>
+<meta name="description" content="ご寄付と国民民主党 党員・サポーター登録をまとめて申し込めるページです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta name="theme-color" content="#060d1f">
+<script src="config.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}
+.en{font-family:'Oswald','Zen Kaku Gothic New',sans-serif;letter-spacing:.14em}
+.topbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 22px;background:rgba(6,13,31,.88);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08);z-index:10}
+.topbar .back{text-decoration:none;font-weight:700;font-size:14px;color:#9fb0d0}
+.topbar .back:hover{color:#ffd400}
+.topbar .brand{font-weight:900;font-size:14px;white-space:nowrap}
+.topbar .brand b{color:#ffd400}
+.wrap{max-width:860px;margin:0 auto;padding:54px 20px 80px}
+.label{color:#ffd400;font-size:13px;letter-spacing:.3em;margin-bottom:10px}
+h1{font-size:clamp(26px,5vw,40px);font-weight:900;line-height:1.35;margin-bottom:14px}
+.lead{color:#9fb0d0;margin-bottom:26px}
+.points{list-style:none;display:grid;gap:10px;margin-bottom:26px}
+.points li{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:12px 16px;font-size:14.5px}
+.points li::before{content:"✓ ";color:#ffd400;font-weight:900}
+.law{background:rgba(255,212,0,.06);border:1px solid rgba(255,212,0,.35);border-radius:12px;padding:16px 18px;font-size:13.5px;color:#cdd7ee;margin-bottom:26px}
+.law b{color:#ffd400}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:30px;font-size:13.5px;color:#cdd7ee}
+.flow span{background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.3);padding:7px 13px;border-radius:999px}
+.flow em{color:#ffd400;font-style:normal;font-weight:900}
+.form-area iframe{width:100%;border:0;border-radius:14px;background:#fff;display:block}
+.pending{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:48px 20px;text-align:center;color:#9fb0d0;font-size:14.5px}
+.fallback{margin-top:12px;font-size:13px;color:#9fb0d0;text-align:center}
+.fallback a{color:#4da3ff}
+.note{margin-top:26px;font-size:13px;color:#8b9bc0}
+footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 20px;text-align:center;font-size:12.5px;color:#8b9bc0}
+footer a{color:#9fb0d0}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="back" href="index.html#support">← トップに戻る</a>
+  <div class="brand en">MAEKAWA <b>KOKI</b></div>
+</header>
+<main class="wrap">
+  <p class="label en">FULL SUPPORT</p>
+  <h1>寄付 ＋ 党員・サポーター</h1>
+  <p class="lead">寄付と党員・サポーター登録を、1つのフォームでまとめてお申し込みいただける、フル応援パッケージです。</p>
+  <ul class="points">
+    <li>1回の入力で、ご寄付と党員・サポーター登録の両方を申し込めます</li>\n    <li>自動返信メールで「寄付用」「会費用」2つのお支払いURLが届きます</li>\n    <li>お申し込みには、前川こうき後援会への入会（無料）が含まれます</li>
+  </ul>
+  <div class="law"><b>ご寄付にあたってのお願い（政治資金規正法）：</b>ご寄付は日本国籍を有する「個人」の方から、ご本人名義に限りお受けできます。企業・団体・外国籍の方・匿名・他人名義によるご寄付はお受けできません。同一の方からのご寄付は年間150万円が上限です。一定額以上のご寄付は、氏名・住所・職業・金額等が政治資金収支報告書に記載・公開される場合があります。</div>
+
+  <div class="flow"><em>お申し込みの流れ：</em><span>① フォームを送信</span><span>② メールで2つの決済URLが届く</span><span>③ それぞれStripeでお支払い</span></div>
+  <div id="form-mount" class="form-area" aria-live="polite"></div>
+  <p class="note">自動返信メールが届かない場合は、迷惑メールフォルダをご確認ください。フォームがうまく動作しない場合は、お手数ですが事務所（maekawa19021+mton.club@gmail.com）までご連絡ください。</p>
+</main>
+<footer>© 前川こうき後援会 ｜ <a href="privacy.html">プライバシーポリシー</a></footer>
+<script>
+(function(){
+  var KEY="full", H=5400;
+  var m=document.getElementById("form-mount");
+  var url=((window.SITE_CONFIG&&SITE_CONFIG.FORM_URLS&&SITE_CONFIG.FORM_URLS[KEY])||"").trim();
+  if(!url){
+    m.innerHTML='<div class="pending">フォームは現在準備中です。<br>お急ぎの場合は事務所（maekawa19021+mton.club@gmail.com）までご連絡ください。</div>';
+    return;
+  }
+  var embed=url+(url.indexOf("?")>-1?"&":"?")+"embedded=true";
+  m.innerHTML='<iframe src="'+embed+'" style="height:'+H+'px" loading="lazy" title="申込フォーム"></iframe>'
+   +'<p class="fallback">フォームが表示されない場合は <a href="'+url+'" target="_blank" rel="noopener">こちら（別画面で開く）</a> からお手続きください。</p>';
+})();
+</script>
+</body>
+</html>
