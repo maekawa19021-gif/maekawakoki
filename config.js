@@ -1,20 +1,25 @@
 /* ============================================================
-   サイト設定ファイル（書き換えるのは基本ここだけ）
+   前川こうき後援会サイト 設定ファイル
    ------------------------------------------------------------
-   FORM_URLS : Apps Script（create_forms_v2.gs）実行後のログに出る
-               各フォームの「回答用URL」
-               （https://docs.google.com/forms/d/e/～/viewform）を
-               "" の中に貼り付けてください。
-               ※「?embedded=true」は付けないでください（自動で付きます）
-   LINE_URL  : 公式LINEの友だち追加URL（https://lin.ee/～）。
-               未設定のあいだ、LINEカードは自動的に非表示になります。
+   APPS_SCRIPT_URL : Apps Script を「ウェブアプリ」としてデプロイした後に
+                     発行されるURLを貼り付けてください。
+
+   FORM_URLS.join  : 後援会入会のみ、従来のGoogleフォームを使用します。
+                     寄付・党員サポ・寄付＋党サポは独自フォームから
+                     スプレッドシート記録後、Stripe決済へ進みます。
+
+   LINE_URL        : 公式LINE URL。未設定ならLINEカードは非表示です。
    ============================================================ */
 window.SITE_CONFIG = {
+  // ★ここだけ、Apps Scriptをデプロイした後に必ず貼り付けてください。
+  APPS_SCRIPT_URL: "",
+
   FORM_URLS: {
-    join:   "https://docs.google.com/forms/d/e/1FAIpQLSeNnKNgI4qroVGcVkSkW5tWOzl1apavfZZl_tQ3hisZEm9PGw/viewform",  // ①後援会入会
-    donate: "https://docs.google.com/forms/d/e/1FAIpQLSdyDJyTaezU7b_PqQR0XcVhfqKxeFmZRfVica63v79JmROGQg/viewform",  // ②寄付
-    party:  "https://docs.google.com/forms/d/e/1FAIpQLSfzzAo9KygE25iVTE4yMJdlQ1Pb_zcCGZyrTuJq28AGYSih3w/viewform",  // ③党員・サポーター
-    full:   "https://docs.google.com/forms/d/e/1FAIpQLSeQaoYPuZS6UmKGlCgZ-AdvGf4NwdEdawXYFYTCGvx8PQrblg/viewform"   // ④寄付＋党員・サポーター
+    join:   "https://docs.google.com/forms/d/e/1FAIpQLSeNnKNgI4qroVGcVkSkW5tWOzl1apavfZZl_tQ3hisZEm9PGw/viewform",
+    donate: "",
+    party:  "",
+    full:   ""
   },
+
   LINE_URL: ""
 };

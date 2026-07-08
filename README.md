@@ -1,52 +1,93 @@
-# 前川こうき後援会 公式サイト（運用手順書）
+# 前川こうき後援会 公式サイト（直接決済方式・更新版）
 
-3D背景（Three.js）付きの静的サイト一式です。**このフォルダの中身をそのままGitHub Pagesに置けば公開できます。**
+この一式は、寄付・党員サポ・寄付＋党サポについて、Googleフォームの自動返信メールを使わず、サイト内フォームからスプレッドシートへ記録し、そのままStripe決済へ進む方式です。
 
-## フォルダ構成
+## 1. GitHubに上書きするファイル
 
-| ファイル | 役割 |
-|---|---|
-| index.html | トップページ（3D背景・全セクション） |
-| join.html / donate.html / party.html / full.html | ①入会 ②寄付 ③党員・サポーター ④まとめて申込 の各フォームページ |
-| **config.js** | ★フォームURL・LINE URLの設定ファイル（通常の更新はここだけ） |
-| privacy.html | プライバシーポリシー（公開前に内容をご確認ください） |
-| assets/ | 写真（webp）・favicon・OGP画像・three.min.js |
-| .nojekyll | GitHub Pages用のおまじない（削除しない） |
+ZIP内の次のファイルを、現在のサイトに同名で上書きしてください。
 
-## 1. 公開手順（GitHub Pages・約10分）
+- index.html
+- config.js
+- join.html
+- donate.html
+- party.html
+- full.html
+- privacy.html
+- README.md
 
-1. https://github.com にログイン
-2. 右上の「＋」→「New repository」→ Repository name に `maekawa-kouki-site` → **Public** のまま →「Create repository」
-3. 「uploading an existing file」（または Add file → Upload files）→ **このフォルダの中身を全部**ドラッグ＆ドロップ →「Commit changes」
-4. リポジトリの Settings → 左メニュー Pages → Build and deployment の Source を「**Deploy from a branch**」、Branch を「**main / (root)**」にして Save
-5. 1〜3分待つと同じ画面の上部に公開URLが表示されます  
-   例：`https://ユーザー名.github.io/maekawa-kouki-site/`
+画像や assets フォルダは、今のものをそのまま使います。
 
-※ Publicリポジトリ＝HTMLのソースは誰でも閲覧できますが、サイト自体が公開物なので問題ありません。メールアドレス等の秘密情報は含まれていません。
+## 2. Apps Scriptに貼るファイル
 
-## 2. フォームURLの設定（config.js）
+- payment_redirect_webapp.gs
 
-1. Apps Script（create_forms_v2.gs）の `createAllForms` 実行後、ログに出る各フォームの「**回答用URL**」（`https://docs.google.com/forms/d/e/～/viewform`）をコピー
-2. `config.js` を開き、①→join、②→donate、③→party、④→full の `""` の中に貼り付け
-3. GitHub上で編集する場合：リポジトリで config.js を開く → 鉛筆アイコン → 編集 → Commit changes（数分で反映）
+このファイルを、Googleスプレッドシートの「拡張機能 → Apps Script」に貼り付けてください。
 
-URLが空のあいだ、各ページには「フォームは現在準備中です」と表示されます（サイト自体は先に公開してOK）。
+スプレッドシートIDは設定済みです。
 
-## 3. 公式LINEの設定
+```js
+const SPREADSHEET_ID = '1DgdHACsadw9GUZlxY3F183xlaFtyDoCY0DFZzsZbxiA';
+```
 
-`config.js` の `LINE_URL` に友だち追加URL（https://lin.ee/～）を貼ると、トップのLINEカードが有効になります。未設定のあいだは自動で非表示です。
+## 3. あなたが変更する必要があるもの
 
-## 4. 更新方法
+### A. payment_redirect_webapp.gs 内のStripe URL 4つ
 
-- 文章・写真の変更：該当ファイルを編集して再アップロード（同名で上書き）
-- 活動報告（NEWS）：index.html 内の news-card 3件のテキストと assets/news1〜3.webp を差し替え
-- 反映まで数分かかります。変わらない場合はスーパーリロード（Ctrl+Shift+R）
+下の4つだけ、Stripeで作ったPayment Linkに差し替えてください。
 
-## 5. よくある調整
+```js
+donate_once: 'ここにStripe寄付_今回のみ_URL',
+donate_monthly500: 'ここにStripe寄付_毎月500円_URL',
+party_member_yearly: 'ここにStripe党員_年額4000円_URL',
+party_supporter_yearly: 'ここにStripeサポーター_年額2000円_URL'
+```
 
-- **フォームの下に余白が出る／途中で切れる**：各フォームページ末尾のスクリプト内 `H=3000` などの数値（iframeの高さpx）を調整
-- **OGP画像**：公開URL確定後、index.html の `og:image` を `https://～/assets/ogp.jpg` のフルURLに書き換えるとSNSシェア時に画像が確実に出ます
+### B. config.js 内の APPS_SCRIPT_URL
 
-## 6. 独自ドメイン（任意・後日）
+Apps Scriptをウェブアプリとしてデプロイした後、発行されたURLを貼ります。
 
-お名前.com等で取得 → DNSでCNAMEを `ユーザー名.github.io` に向ける → リポジトリの Settings → Pages → Custom domain に入力。詳細は必要になったタイミングでご相談ください。
+```js
+APPS_SCRIPT_URL: "ここにApps ScriptのウェブアプリURL"
+```
+
+## 4. Apps Scriptのデプロイ方法
+
+1. Apps Script画面右上の「デプロイ」
+2. 「新しいデプロイ」
+3. 種類を「ウェブアプリ」
+4. 実行ユーザー：自分
+5. アクセスできるユーザー：全員
+6. デプロイ
+7. 発行されたURLを config.js の APPS_SCRIPT_URL に貼る
+
+## 5. スプレッドシートへの記録先
+
+既存のGoogleフォーム回答タブを壊さないため、列形式が違う場合は自動的に次のタブへ記録します。
+
+- ②寄付_直接決済
+- ③党員・サポーター_直接決済
+- ④寄付＋党サポ_直接決済
+
+既存タブが直接決済用のヘッダー形式なら、そのまま ②寄付 / ③党員・サポーター / ④寄付＋党サポ に記録します。
+
+## 6. 後援会入会だけは従来通り
+
+後援会入会だけは無料で決済がないため、従来のGoogleフォームを使います。
+
+
+
+## Stripe支払いURL（設定済み）
+
+`payment_redirect_webapp.gs` には、以下のStripe支払いURLを設定済みです。
+
+- サポーター: https://buy.stripe.com/7sYbJ33QwakD2HW400bAs03
+- 党員: https://donate.stripe.com/aFa3cxgDi9gz5U8fIIbAs00
+- 寄付金 サブスク: https://donate.stripe.com/8x214pcn20K34Q4fIIbAs02
+- 寄付金 単発: https://buy.stripe.com/5kQ00lfze8cv4Q48ggbAs01
+
+## まだ必要な作業
+
+1. `payment_redirect_webapp.gs` をGoogle Apps Scriptに貼り付ける
+2. Apps Scriptをウェブアプリとしてデプロイする
+3. 発行されたウェブアプリURLを `config.js` の `APPS_SCRIPT_URL` に貼り付ける
+4. GitHubに `config.js` を上書きする
