@@ -106,6 +106,13 @@ img{max-width:100%;display:block}
 }
 .hero-name small{font-size:.4em;color:var(--txt);margin-left:14px;letter-spacing:.2em;font-weight:700}
 .hero-cta{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap}
+.hero-social{margin-top:22px;display:flex;gap:14px;align-items:center}
+.hero-social-ic{
+  width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);
+  transition:.25s;backdrop-filter:blur(4px);
+}
+.hero-social-ic:hover{background:var(--gold);color:#0a1732;border-color:var(--gold);transform:translateY(-3px)}
 .btn{
   display:inline-flex;align-items:center;gap:10px;
   padding:15px 34px;border-radius:999px;font-weight:700;font-size:15px;
@@ -312,7 +319,7 @@ footer ul a:hover{color:var(--gold)}
 .greet-card h3{color:var(--gold);font-size:18px;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .greet-card h3::before{content:"";width:22px;height:2px;background:var(--gold)}
 .greet-card p{font-size:14px;color:var(--muted)}
-.greet-photo{width:100%;max-height:360px;object-fit:cover;object-position:center 18%;border-radius:12px;margin:2px 0 18px;border:1px solid var(--line)}
+.greet-photo{width:100%;aspect-ratio:4/5;max-height:520px;object-fit:cover;object-position:center 20%;border-radius:12px;margin:2px 0 18px;border:1px solid var(--line)}
 .endorse{border:1px solid rgba(255,212,0,.5);background:linear-gradient(160deg,rgba(255,212,0,.09),rgba(255,255,255,.02))}
 .endorse .who{margin-top:16px;font-weight:700;color:var(--txt);font-size:14px}
 .endorse .who small{display:block;color:var(--gold);font-size:11px;letter-spacing:.1em;margin-top:2px}
@@ -350,14 +357,19 @@ footer ul a:hover{color:var(--gold)}
 }
 /* ---------- hero figure（宣材写真） ---------- */
 .hero-figure{
-  position:absolute;bottom:0;right:clamp(0px,calc(50vw - 760px),120px);z-index:1;
-  height:min(94vh,860px);pointer-events:none;
-  filter:drop-shadow(0 24px 60px rgba(0,0,0,.55));
-  -webkit-mask-image:linear-gradient(to bottom,#000 88%,transparent 100%);
-  mask-image:linear-gradient(to bottom,#000 88%,transparent 100%);
+  position:absolute;bottom:0;right:clamp(0px,calc(50vw - 780px),100px);z-index:1;
+  height:min(102vh,940px);pointer-events:none;
+  filter:drop-shadow(0 24px 60px rgba(0,0,0,.55)) brightness(1.08) contrast(1.04);
+  -webkit-mask-image:linear-gradient(to bottom,#000 94%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 94%,transparent 100%);
+}
+.hero-figure::before{
+  content:"";position:absolute;z-index:-1;right:0;bottom:0;width:92%;height:100%;
+  background:radial-gradient(ellipse 60% 55% at 52% 40%,rgba(150,178,235,.5),rgba(90,135,205,.24) 42%,rgba(40,70,130,.08) 62%,transparent 74%);
+  filter:blur(36px);pointer-events:none;
 }
 .hero-figure img{height:100%;width:auto;display:block}
-@media(max-width:900px){.hero-figure{height:54vh;right:-10vw;opacity:.6}}
+@media(max-width:900px){.hero-figure{height:60vh;right:-10vw;opacity:.62}.hero-figure::before{opacity:.7}}
 
 /* ---------- 実写真 ---------- */
 .portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -393,7 +405,7 @@ footer ul a:hover{color:var(--gold)}
 <!-- ======= HERO ======= -->
 <section class="hero" id="top">
   <div id="bg3d"></div>
-  <div class="hero-figure" aria-hidden="true"><img src="assets/maekawa-cutout.webp" alt="" fetchpriority="high"></div>
+  <div class="hero-figure" aria-hidden="true"><img src="assets/maekawa-cutout-bright.webp" alt="" fetchpriority="high"></div>
   <div class="hero-inner">
     <p class="hero-en en">29歳の挑戦 ｜ KOKI MAEKAWA</p>
     <h1>交渉力で、<br><span class="grad">香川の未来を切り拓く。</span></h1>
@@ -402,6 +414,14 @@ footer ul a:hover{color:var(--gold)}
     <div class="hero-cta">
       <a class="btn btn-gold" href="#support">後援会に入会する →</a>
       <a class="btn btn-ghost" href="#policy">政策を見る</a>
+    </div>
+    <div class="hero-social">
+      <a class="hero-social-ic" href="https://x.com/maekawa190" target="_blank" rel="noopener" aria-label="X（旧Twitter）">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817-5.966 6.817H1.68l7.73-8.835L1.254 2.25h6.83l4.713 6.231 5.447-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
+      </a>
+      <a class="hero-social-ic" href="https://www.instagram.com/maekawa_koki_takamatsu/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069ZM12 0C8.741 0 8.332.014 7.052.072 2.695.272.273 2.69.073 7.052.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.69.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.668-.072-4.948-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z"/></svg>
+      </a>
     </div>
   </div>
   <div class="scroll-hint en">SCROLL</div>
@@ -440,7 +460,7 @@ footer ul a:hover{color:var(--gold)}
     <div class="greet stagger">
       <div class="greet-card">
         <h3>ごあいさつ</h3>
-        <img class="greet-photo" src="assets/portrait.webp" alt="前川こうき（前川幸輝）" loading="lazy" decoding="async">
+        <img class="greet-photo" src="assets/maekawa-photo.webp" alt="前川こうき（前川幸輝）" loading="lazy" decoding="async">
         <p>前川こうきは、地域の声を一つひとつ丁寧に受け止め、暮らしに根ざした政策提案と行動で、まちづくりに取り組んでまいりました。市民の皆さまからいただく声の中には、すぐに解決できるものばかりではありません。しかし、だからこそ、現場を確認し、関係者と協議し、行政に粘り強く働きかけることが重要です。<br><br>これからも、声を聴くだけで終わらせず、必要な制度や予算につなげ、地域の課題を一歩ずつ前に進めてまいります。香川の未来を、皆さまとともに。前川こうきは、交渉力と行動力で挑戦を続けます。</p>
       </div>
       <div class="greet-card endorse">
