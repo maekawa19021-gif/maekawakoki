@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>寄付で応援する｜前川こうき後援会</title><meta name="description" content="個人献金のお申し込み内容を記録し、メールを待たずにStripe決済ページへ進みます。"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><meta name="theme-color" content="#060d1f"><script src="config.js"></script><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}
+.en{font-family:'Oswald','Zen Kaku Gothic New',sans-serif;letter-spacing:.14em}
+.topbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 22px;background:rgba(6,13,31,.88);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08);z-index:10}
+.topbar .back{text-decoration:none;font-weight:700;font-size:14px;color:#9fb0d0}.topbar .back:hover{color:#ffd400}.topbar .brand{font-weight:900;font-size:14px;white-space:nowrap}.topbar .brand b{color:#ffd400}
+.wrap{max-width:860px;margin:0 auto;padding:54px 20px 80px}.label{color:#ffd400;font-size:13px;letter-spacing:.3em;margin-bottom:10px}h1{font-size:clamp(26px,5vw,40px);font-weight:900;line-height:1.35;margin-bottom:14px}.lead{color:#9fb0d0;margin-bottom:26px}
+.points{list-style:none;display:grid;gap:10px;margin-bottom:26px}.points li{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:12px 16px;font-size:14.5px}.points li::before{content:"✓ ";color:#ffd400;font-weight:900}
+.law{background:rgba(255,212,0,.06);border:1px solid rgba(255,212,0,.35);border-radius:12px;padding:16px 18px;font-size:13.5px;color:#cdd7ee;margin-bottom:26px}.law b{color:#ffd400}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:30px;font-size:13.5px;color:#cdd7ee}.flow span{background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.3);padding:7px 13px;border-radius:999px}.flow em{color:#ffd400;font-style:normal;font-weight:900}
+.form-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:13px;color:#cdd7ee;font-weight:700}.req{color:#ffd400;margin-left:4px}input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:12px 13px;font:inherit;font-size:14px;outline:none}textarea{min-height:92px;resize:vertical}select option{color:#0a1732}.help{font-size:12.5px;color:#8b9bc0;line-height:1.6}.checks{display:grid;gap:10px;margin-top:8px}.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#cdd7ee}.check input{width:auto;margin-top:6px}.submit-row{margin-top:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.btn{border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 34px;border-radius:999px;font-weight:900;font-size:15px;background:linear-gradient(135deg,#ffd400,#ffaa00);color:#0a1732;box-shadow:0 6px 26px rgba(255,212,0,.35)}.btn:disabled{opacity:.55;cursor:not-allowed}.pending{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:28px 20px;text-align:center;color:#9fb0d0;font-size:14.5px;margin-bottom:20px}.note{margin-top:22px;font-size:13px;color:#8b9bc0}footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 20px;text-align:center;font-size:12.5px;color:#8b9bc0}footer a{color:#9fb0d0}@media(max-width:720px){.form-grid{grid-template-columns:1fr}.form-card{padding:20px}}
+</style></head>
+<body><header class="topbar"><a class="back" href="index.html#support">← トップに戻る</a><div class="brand en">MAEKAWA <b>KOKI</b></div></header><main class="wrap"><p class="label en">DONATE</p><h1>寄付で応援する</h1><p class="lead">個人献金のお申し込み内容を記録し、メールを待たずにStripe決済ページへ進みます。</p><ul class="points"><li>今回のみ・毎月継続から選べます</li><li>申込内容はスプレッドシートに自動記録されます</li><li>フォーム送信後、そのままStripe決済ページへ移動します</li><li>ご寄付のお申し込みには、前川こうき後援会への入会（無料）が含まれます</li></ul><div class="law"><b>ご確認ください：</b>フォーム送信後、メールを待たずにStripeの決済ページへ移動します。申込内容はスプレッドシートに自動記録されます。決済が完了したかは、Stripe管理画面またはWebhook連携後のスプレッドシートで確認します。</div><div class="flow"><em>お申し込みの流れ：</em><span>① このページで入力</span><span>② スプレッドシートに記録</span><span>③ Stripe決済ページへ移動</span></div><div id="setup-warning" class="pending" style="display:none"></div><form id="direct-form" class="form-card" method="POST"><input type="hidden" name="page" value="donate">
+<input type="hidden" name="form_type" value="donate">
+<div class="form-grid">
+  <div class="field"><label>寄付方法<span class="req">必須</span></label><select name="payment_kind" required><option value="donate_once">今回のみ（金額自由）</option><option value="donate_monthly500">毎月継続（500円×口数）</option></select><p class="help">金額や口数は、移動後のStripe画面で入力・確認します。</p></div>
+  <div class="field"><label>国籍確認<span class="req">必須</span></label><select name="nationality_confirm" required><option value="日本国籍を有する個人です">日本国籍を有する個人です</option></select></div>
+</div>
+
+<div class="form-grid">
+  <div class="field"><label>氏名<span class="req">必須</span></label><input name="name" autocomplete="name" required></div>
+  <div class="field"><label>ふりがな<span class="req">必須</span></label><input name="kana" required></div>
+  <div class="field"><label>メールアドレス<span class="req">必須</span></label><input type="email" name="email" autocomplete="email" required></div>
+  <div class="field"><label>電話番号<span class="req">必須</span></label><input name="phone" inputmode="tel" autocomplete="tel" required></div>
+  <div class="field full"><label>住所<span class="req">必須</span></label><input name="address" autocomplete="street-address" required></div>
+  <div class="field"><label>生年月日</label><input type="date" name="birthdate"></div>
+  <div class="field"><label>職業</label><input name="occupation"></div>
+</div>
+
+<div class="field full" style="margin-top:16px"><label>備考</label><textarea name="memo" placeholder="連絡事項があればご入力ください"></textarea></div>
+<div class="checks"><label class="check"><input type="checkbox" required><span>入力内容に誤りがないことを確認しました。</span></label><label class="check"><input type="checkbox" required><span>申込内容に応じ、後援会への入会を含むことに同意します。</span></label></div><div class="submit-row"><button class="btn" type="submit">入力内容を記録して決済へ進む →</button><span class="help">送信後、自動でStripeの安全な決済画面へ移動します。</span></div></form><p class="note">決済画面に移動しない場合は、通信環境をご確認のうえ再度お試しください。カード情報はStripeが直接取り扱い、後援会サイト・スプレッドシートには保存されません。</p></main><footer>© 前川こうき後援会 ｜ <a href="privacy.html">プライバシーポリシー</a></footer><script>
+(function(){
+  var form=document.getElementById('direct-form');
+  var warn=document.getElementById('setup-warning');
+  var cfg=window.SITE_CONFIG||{};
+  var url=(cfg.APPS_SCRIPT_URL||'').trim();
+  if(!url){
+    warn.style.display='block';
+    warn.innerHTML='管理者設定が未完了です。<br><code>config.js</code> の <b>APPS_SCRIPT_URL</b> にApps Script WebアプリURLを設定してください。';
+    form.querySelector('button[type="submit"]').disabled=true;
+    return;
+  }
+  form.action=url;
+})();
+</script></body></html>
