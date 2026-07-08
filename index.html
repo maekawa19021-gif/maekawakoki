@@ -193,6 +193,11 @@ section{position:relative;padding:110px 28px}
 .card-no{
   font-family:'Oswald',sans-serif;font-size:15px;color:var(--gold);letter-spacing:.2em;
 }
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-head .card-no{margin:0}
+.card-head .dialect-group{display:flex;gap:8px;flex-wrap:wrap}
+.card-head .dialect{margin:0}
+@media(max-width:640px){.card-head{gap:8px}}
 .card h3{font-size:21px;font-weight:900;margin:10px 0 12px}
 .card p{color:var(--muted);font-size:14px}
 .card .glow{
@@ -216,6 +221,24 @@ section{position:relative;padding:110px 28px}
 .news-date{font-family:'Oswald',sans-serif;color:var(--gold);font-size:12px;letter-spacing:.15em}
 .news-body h3{font-size:16px;font-weight:700;margin:8px 0 8px}
 .news-body p{color:var(--muted);font-size:13px}
+
+/* X（旧Twitter）埋め込み */
+.x-embed{max-width:600px;margin:0 auto;position:relative;min-height:200px}
+.x-embed .twitter-timeline{position:relative;z-index:2}
+.x-fallback{
+  position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:20px;text-align:center;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:40px 28px;
+}
+.x-fallback p{color:var(--muted);font-size:14px;line-height:1.9}
+.x-fallback-note{font-size:12px;color:#6b7a94}
+.x-follow-btn{
+  display:inline-block;padding:12px 26px;border-radius:999px;
+  background:#fff;color:#0a1732;font-weight:800;font-size:14px;text-decoration:none;transition:.25s;
+}
+.x-follow-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(255,255,255,.18)}
+/* タイムライン読み込み成功時はフォールバックを隠す */
+.x-embed.loaded .x-fallback{display:none}
 
 /* marquee */
 .marquee{overflow:hidden;border-block:1px solid var(--line);padding:18px 0;background:rgba(255,255,255,.02)}
@@ -288,6 +311,7 @@ footer ul a:hover{color:var(--gold)}
 .greet-card h3{color:var(--gold);font-size:18px;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .greet-card h3::before{content:"";width:22px;height:2px;background:var(--gold)}
 .greet-card p{font-size:14px;color:var(--muted)}
+.greet-photo{width:100%;max-height:340px;object-fit:cover;object-position:center 18%;border-radius:12px;margin:2px 0 18px;background:linear-gradient(160deg,#12244d,#0a1732);border:1px solid var(--line)}
 .endorse{border:1px solid rgba(255,212,0,.5);background:linear-gradient(160deg,rgba(255,212,0,.09),rgba(255,255,255,.02))}
 .endorse .who{margin-top:16px;font-weight:700;color:var(--txt);font-size:14px}
 .endorse .who small{display:block;color:var(--gold);font-size:11px;letter-spacing:.1em;margin-top:2px}
@@ -326,21 +350,21 @@ footer ul a:hover{color:var(--gold)}
 /* ---------- hero figure（宣材写真） ---------- */
 .hero h1{font-size:clamp(38px,5vw,64px)}
 .hero-figure{
-  position:absolute;bottom:0;right:clamp(16px,calc(50vw - 700px),160px);z-index:1;
-  height:min(80vh,700px);pointer-events:none;
+  position:absolute;bottom:0;right:clamp(0px,calc(50vw - 760px),120px);z-index:1;
+  height:min(94vh,860px);pointer-events:none;
   filter:drop-shadow(0 24px 60px rgba(0,0,0,.55));
-  -webkit-mask-image:linear-gradient(to bottom,#000 82%,transparent 100%);
-  mask-image:linear-gradient(to bottom,#000 82%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom,#000 88%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 88%,transparent 100%);
 }
 .hero-figure img{height:100%;width:auto;display:block}
-@media(max-width:1439px){.hero-figure{opacity:.34;right:-4vw}}
-@media(max-width:900px){.hero-figure{height:46vh;right:-14vw;opacity:.22}}
+@media(max-width:1439px){.hero-figure{opacity:.9;right:-2vw;height:88vh}}
+@media(max-width:900px){.hero-figure{height:52vh;right:-12vw;opacity:.34}}
 
 /* ---------- 実写真 ---------- */
 .portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .portrait::before{content:"";position:absolute;inset:auto 0 0 0;height:34%;z-index:1;background:linear-gradient(transparent,rgba(6,13,31,.6))}
 .portrait::after{z-index:2}
-.endorse-photo{width:100%;border-radius:12px;margin:2px 0 16px;border:1px solid rgba(255,212,0,.35)}
+.endorse-photo{width:100%;max-height:420px;object-fit:cover;object-position:center 22%;border-radius:12px;margin:2px 0 16px;border:1px solid rgba(255,212,0,.35)}
 .news-thumb{position:relative}
 .news-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 
@@ -417,11 +441,12 @@ footer ul a:hover{color:var(--gold)}
     <div class="greet stagger">
       <div class="greet-card">
         <h3>ごあいさつ</h3>
+        <img class="greet-photo" src="assets/maekawa-cutout.webp" alt="前川こうき（前川幸輝）" loading="lazy" decoding="async">
         <p>前川こうきは、地域の声を一つひとつ丁寧に受け止め、暮らしに根ざした政策提案と行動で、まちづくりに取り組んでまいりました。市民の皆さまからいただく声の中には、すぐに解決できるものばかりではありません。しかし、だからこそ、現場を確認し、関係者と協議し、行政に粘り強く働きかけることが重要です。<br><br>これからも、声を聴くだけで終わらせず、必要な制度や予算につなげ、地域の課題を一歩ずつ前に進めてまいります。香川の未来を、皆さまとともに。前川こうきは、交渉力と行動力で挑戦を続けます。</p>
       </div>
       <div class="greet-card endorse">
         <h3>私も応援しています</h3>
-        <img class="endorse-photo" src="assets/tamaki-maekawa.webp" alt="玉木雄一郎 国民民主党代表と前川こうき" loading="lazy" decoding="async">
+        <img class="endorse-photo" src="assets/tamaki.webp" alt="玉木雄一郎 国民民主党代表" loading="lazy" decoding="async">
         <p>前川こうきさんは、地域の声を大切にし、現場で課題を見つけ、粘り強く行政に届ける行動力のある若い政治家です。香川の未来を前に進めるためには、世代を超えて地域をつなぎ、課題解決に向けて交渉できる力が必要です。「前川こうきさん」の挑戦を、私も応援しています。</p>
         <p class="who">玉木 雄一郎<small>国民民主党代表・衆議院議員</small></p>
       </div>
@@ -436,41 +461,45 @@ footer ul a:hover{color:var(--gold)}
     <h2 class="sec-title reveal">未来の香川に向けた「4つの方向性」</h2>
     <p class="sec-lead reveal">前川こうきの、まちづくり羅針盤。「対決より解決」の姿勢で、暮らしに直結する課題を一歩ずつ前へ。</p>
     <div class="policy-grid stagger">
-      <div class="card tilt"><div class="glow"></div><p class="card-no en">POLICY 01 ─ 子育て・教育</p><h3>子どもたちの可能性を広げる香川へ</h3>
+      <div class="card tilt"><div class="glow"></div>
+        <div class="card-head"><p class="card-no en">POLICY 01 ─ 子育て・教育</p><span class="dialect-group"><span class="dialect">ずーっと暮らしてみまい！</span><span class="dialect">帰ってきまい！</span></span></div>
+        <h3>子どもたちの可能性を広げる香川へ</h3>
         <ul class="card-list">
           <li>子育てしやすい環境づくり</li>
           <li>学校施設・教育環境の改善</li>
           <li>地域クラブ活動など、活動機会の充実</li>
           <li>若者が地元に残り、戻ってこられる地域づくり</li>
         </ul>
-        <span class="dialect">ずーっと暮らしてみまい！</span><span class="dialect">帰ってきまい！</span>
       </div>
-      <div class="card tilt"><div class="glow"></div><p class="card-no en">POLICY 02 ─ 交通・まちづくり</p><h3>移動しやすく、暮らしやすい香川へ</h3>
+      <div class="card tilt"><div class="glow"></div>
+        <div class="card-head"><p class="card-no en">POLICY 02 ─ 交通・まちづくり</p><span class="dialect-group"><span class="dialect">楽しく暮らしまい！</span></span></div>
+        <h3>移動しやすく、暮らしやすい香川へ</h3>
         <ul class="card-list">
           <li>JR端岡駅・JR国分寺駅の整備（バリアフリー化・トイレ整備）</li>
           <li>公共交通の利便性向上、駅周辺や地域拠点の整備促進</li>
           <li>学生や高齢者が移動しやすい交通環境づくり</li>
           <li>高松空港を生かした交流・観光・経済の活性化</li>
         </ul>
-        <span class="dialect">楽しく暮らしまい！</span>
       </div>
-      <div class="card tilt"><div class="glow"></div><p class="card-no en">POLICY 03 ─ 防災・安心</p><h3>もしもに備え、日々に安心を</h3>
+      <div class="card tilt"><div class="glow"></div>
+        <div class="card-head"><p class="card-no en">POLICY 03 ─ 防災・安心</p><span class="dialect-group"><span class="dialect">安心しーまい！</span></span></div>
+        <h3>もしもに備え、日々に安心を</h3>
         <ul class="card-list">
           <li>避難所環境の改善</li>
           <li>地域防災体制の強化</li>
           <li>災害時の電源確保・停電対策</li>
           <li>消防団や地域を支える仕組みづくり</li>
         </ul>
-        <span class="dialect">安心しーまい！</span>
       </div>
-      <div class="card tilt"><div class="glow"></div><p class="card-no en">POLICY 04 ─ 地域活性化</p><h3>挑戦とにぎわいが広がる香川へ</h3>
+      <div class="card tilt"><div class="glow"></div>
+        <div class="card-head"><p class="card-no en">POLICY 04 ─ 地域活性化</p><span class="dialect-group"><span class="dialect">つながりまい！</span></span></div>
+        <h3>挑戦とにぎわいが広がる香川へ</h3>
         <ul class="card-list">
           <li>祭りを活かした地域活性化、地域産業と商店街の活性化</li>
           <li>観光・交流人口の拡大</li>
           <li>農業・地域資源を生かしたまちづくり、農道・農業用水路の維持管理</li>
           <li>若者や子育て世代が定着できる環境づくり</li>
         </ul>
-        <span class="dialect">つながりまい！</span>
       </div>
     </div>
   </div>
@@ -481,11 +510,14 @@ footer ul a:hover{color:var(--gold)}
   <div class="wrap">
     <p class="sec-label en">NEWS &amp; ACTIVITY</p>
     <h2 class="sec-title reveal">活動報告</h2>
-    <p class="sec-lead reveal">日々の活動は SNS でも発信中。最新情報はXをチェックしてください。</p>
-    <div class="news-grid stagger">
-      <a class="news-card" href="#"><div class="news-thumb"><img src="assets/news1.webp" alt="市議会での活動" loading="lazy" decoding="async"></div><div class="news-body"><span class="news-date en">2026.06.15</span><h3>市議会 一般質問に登壇しました</h3><p>公共交通と子育て支援について質問。（サンプル記事：公開前に実際の内容へ差し替え）</p></div></a>
-      <a class="news-card" href="#"><div class="news-thumb"><img src="assets/news2.webp" alt="地域行事での活動" loading="lazy" decoding="async"></div><div class="news-body"><span class="news-date en">2026.05.30</span><h3>地域のお祭りに参加しました</h3><p>国分寺町の皆さまと意見交換。（サンプル記事：公開前に実際の内容へ差し替え）</p></div></a>
-      <a class="news-card" href="#"><div class="news-thumb"><img src="assets/news3.webp" alt="視察・調査活動" loading="lazy" decoding="async"></div><div class="news-body"><span class="news-date en">2026.05.10</span><h3>県外視察：先進市の交通政策</h3><p>先進事例を高松の政策に活かします。（サンプル記事：公開前に実際の内容へ差し替え）</p></div></a>
+    <p class="sec-lead reveal">日々の活動は X（旧Twitter）で発信中。最新の投稿を自動で表示しています。</p>
+    <div class="x-embed reveal">
+      <a class="twitter-timeline" data-height="640" data-theme="dark" data-chrome="noheader nofooter transparent"
+         href="https://twitter.com/maekawa190?ref_src=twsrc%5Etfw">前川こうき（@maekawa190）の投稿</a>
+      <div class="x-fallback" id="xFallback">
+        <p>タイムラインを読み込んでいます…<br><span class="x-fallback-note">表示されない場合は、下のボタンからXでご覧ください。</span></p>
+        <a class="x-follow-btn" href="https://x.com/maekawa190" target="_blank" rel="noopener">𝕏 &nbsp;@maekawa190 をXで見る</a>
+      </div>
     </div>
   </div>
 </section>
@@ -586,6 +618,7 @@ footer ul a:hover{color:var(--gold)}
   </div>
 </footer>
 
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script src="assets/three.min.js"></script>
 <script>
 /* サイト設定（フォームURL・LINE URL）は config.js で一元管理しています */
@@ -594,6 +627,18 @@ footer ul a:hover{color:var(--gold)}
   if(!lc) return;
   const url = window.SITE_CONFIG && SITE_CONFIG.LINE_URL;
   if(url){ lc.href = url; } else { lc.style.display = "none"; }
+})();
+
+/* ---------- X（旧Twitter）タイムライン：読み込めたらフォールバックを隠す ---------- */
+(function(){
+  const box = document.querySelector(".x-embed");
+  if(!box) return;
+  // Twitterが生成する iframe が挿入されたら成功とみなす
+  const check = ()=>{ if(box.querySelector("iframe")){ box.classList.add("loaded"); return true; } return false; };
+  const mo = new MutationObserver(()=>{ if(check()) mo.disconnect(); });
+  mo.observe(box, {childList:true, subtree:true});
+  // 予備：一定時間ごとにも確認
+  let n=0; const t=setInterval(()=>{ if(check() || ++n>20){ clearInterval(t); } }, 500);
 })();
 
 /* ---------- nav ---------- */
