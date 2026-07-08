@@ -49,6 +49,11 @@ function doPost(e) {
   const paymentKind = decidePaymentKind_(p);
   const stripeBaseUrl = STRIPE_LINKS[paymentKind] || '';
 
+  const validationError = validateInput_(p, formType);
+  if (validationError) {
+    return HtmlService.createHtmlOutput(errorHtml_(validationError));
+  }
+
   const record = {
     rowId,
     timestamp: now,
@@ -99,6 +104,22 @@ function decidePaymentKind_(p) {
   if (p.form_type === 'party') return p.payment_kind || 'party_supporter_yearly';
   if (p.form_type === 'full') return (p.donate_kind || 'donate_once') + ' + ' + (p.party_kind || 'party_supporter_yearly');
   return p.payment_kind || p.donate_kind || p.party_kind || 'donate_once';
+}
+
+function validateInput_(p, formType) {
+  if (formType === 'donate') {
+    if (p.nationality_confirm !== '日本国籍を有する個人です') {
+      return '寄付のお申し込みには、日本国籍を有する個人であることの確認が必要です。';
+    }
+    if (!p.birthdate) {
+      return '生年月日は必須です。';
+    }
+    const phone = String(p.phone || '').trim();
+    if (!/^[0-9]{10,11}$/.test(phone)) {
+      return '電話番号はハイフンなしの半角数字10〜11桁で入力してください。';
+    }
+  }
+  return '';
 }
 
 function sheetNameFor_(formType) {
