@@ -12,7 +12,7 @@
 const SPREADSHEET_ID = '1DgdHACsadw9GUZlxY3F183xlaFtyDoCY0DFZzsZbxiA';
 
 // 議会・市政レポートを置くGoogleドライブのフォルダID
-const REPORTS_FOLDER_ID = '1qbjNrZAWsahY55UfFuyR3Rm5oIrKzfQ-';
+const REPORTS_FOLDER_ID = '1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb';
 
 const STRIPE_LINKS = {
   // 寄付金 単発

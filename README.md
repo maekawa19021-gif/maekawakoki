@@ -1,5 +1,20 @@
 # 前川こうき後援会サイト 修正版一式
 
+## 今回の変更
+
+議会・市政レポートのGoogleドライブ取得先フォルダを、以下に変更済みです。
+
+```text
+https://drive.google.com/drive/folders/1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb?usp=sharing
+```
+
+Apps Script側では、次の設定に変更しています。
+
+```javascript
+const REPORTS_FOLDER_ID = '1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb';
+```
+
+
 ## 今回の主な変更
 
 - トップページの「プロフィール」より上に「議会・市政レポート」セクションを追加
@@ -18,13 +33,13 @@
 Apps Script内に、次のフォルダIDを設定済みです。
 
 ```js
-const REPORTS_FOLDER_ID = '1qbjNrZAWsahY55UfFuyR3Rm5oIrKzfQ-';
+const REPORTS_FOLDER_ID = '1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb';
 ```
 
 元の共有URL：
 
 ```text
-https://drive.google.com/drive/folders/1qbjNrZAWsahY55UfFuyR3Rm5oIrKzfQ-?usp=drive_link
+https://drive.google.com/drive/folders/1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb?usp=drive_link
 ```
 
 ## レポートの追加方法
