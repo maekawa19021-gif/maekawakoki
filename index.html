@@ -809,31 +809,9 @@ footer ul a:hover{color:var(--gold)}
     return;
   }
 
-  // PCではApps Scriptを iframe として表示する。JSONPよりPCブラウザで安定しやすい。
-  const isDesktop = window.matchMedia && window.matchMedia('(min-width: 641px)').matches;
-  if(isDesktop){
-    grid.style.display = 'block';
-    const iframeUrl = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports_iframe&t=' + Date.now();
-    grid.innerHTML = '<iframe id="reportsFrame" title="議会・市政レポート一覧" src="' + iframeUrl + '" loading="lazy" style="width:100%;height:760px;border:0;display:block;background:transparent;overflow:hidden"></iframe>' +
-      '<div id="reportsFrameFallback" class="report-status" style="display:none;margin-top:16px">市政レポートを読み込めませんでした。Apps ScriptのデプロイURLが /exec になっているか、公開範囲が「全員」になっているか確認してください。<p style="margin-top:16px"><a class="btn btn-gold" href="' + driveFolderUrl + '" target="_blank" rel="noopener">Googleドライブで開く →</a></p></div>';
-    const frame = document.getElementById('reportsFrame');
-    const fallback = document.getElementById('reportsFrameFallback');
-    let iframeLoaded = false;
-    frame.addEventListener('load', ()=>{ iframeLoaded = true; });
-    window.addEventListener('message', function(ev){
-      const d = ev.data || {};
-      if(d && d.type === 'maekawaReportsHeight' && d.height){
-        iframeLoaded = true;
-        frame.style.height = Math.max(320, Math.min(Number(d.height) + 8, 2400)) + 'px';
-      }
-    });
-    setTimeout(()=>{
-      if(!iframeLoaded && fallback){ fallback.style.display = 'block'; }
-    }, 12000);
-    return;
-  }
-
-  // スマホでは従来どおりJSONPで取得し、サイト内カードとして表示する。
+  // PC・スマホとも同じJSONP方式で取得し、サイト内カードとして表示する。
+  // Googleドライブのページを iframe で直接開く方式は、PCブラウザで
+  // 「現在、ファイルを開くことができません」と表示される場合があるため使わない。
   const cb = 'renderReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
   let loaded = false;
 
@@ -845,7 +823,7 @@ footer ul a:hover{color:var(--gold)}
 
   const failTimer = setTimeout(()=>{
     if(!loaded){
-      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps Scriptの再デプロイ、公開範囲、Googleドライブの共有設定を確認してください。', true);
+      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps ScriptのURL（/exec）、公開範囲「全員」、Googleドライブの共有設定を確認してください。', true);
       cleanup();
     }
   }, 60000);
