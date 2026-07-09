@@ -145,3 +145,8 @@ https://donate.stripe.com/aFa3cxgDi9gz5U8fIIbAs00
 // サポーター
 https://buy.stripe.com/7sYbJ33QwakD2HW400bAs03
 ```
+
+## 追加修正（スマホ表示）
+
+- iPhone Chromeなどのスマホ表示で、トップページの顔写真が文字の裏に入りすぎないように、スマホ時のみ写真を小さく・下側に配置しました。
+- X（旧Twitter）埋め込みが読み込めない場合、空白にならず「Xで見る」ボタンが出るようにしました。

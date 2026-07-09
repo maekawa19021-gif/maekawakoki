@@ -400,6 +400,65 @@ footer ul a:hover{color:var(--gold)}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+
+/* ---------- スマホ表示調整：顔写真が文字に重ならないようにする ---------- */
+@media(max-width:640px){
+  .hero{min-height:100svh;}
+  .hero-inner{padding:132px 22px 300px;}
+  .hero-en{font-size:12px;gap:12px;white-space:nowrap;}
+  .hero-en::before{width:56px;}
+  .hero h1{font-size:clamp(34px,10.4vw,46px);line-height:1.38;letter-spacing:.01em;}
+  .hero-sub{margin-top:20px;font-size:15px;line-height:1.75;max-width:96%;}
+  .hero-name{margin-top:18px;font-size:clamp(42px,13vw,56px);letter-spacing:.08em;}
+  .hero-name small{display:block;margin:8px 0 0 4px;font-size:.34em;letter-spacing:.18em;}
+  .hero-cta{margin-top:24px;gap:12px;}
+  .hero-cta .btn{padding:14px 23px;font-size:14px;}
+  .hero-social{margin-top:22px;}
+  .hero-figure{height:42svh;right:-12vw;bottom:-22px;z-index:2;}
+}
+@media(max-width:390px){
+  .hero-inner{padding-bottom:280px;}
+  .hero-figure{height:39svh;right:-14vw;bottom:-18px;}
+}
+
+/* ---------- X埋め込み調整：iPhone Chrome等で読み込めない時も空白にしない ---------- */
+.x-embed{min-height:0;}
+.x-embed .twitter-timeline{
+  display:block;
+  height:0;
+  overflow:hidden;
+  color:transparent;
+  font-size:0;
+}
+.x-embed iframe{
+  position:relative;
+  z-index:2;
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  border-radius:18px;
+}
+.x-fallback{
+  position:relative;
+  inset:auto;
+  z-index:3;
+  min-height:220px;
+}
+.x-embed.loaded{min-height:640px;}
+.x-embed.loaded .twitter-timeline{
+  height:auto;
+  overflow:visible;
+  color:inherit;
+  font-size:inherit;
+}
+.x-embed.loaded .x-fallback{display:none;}
+@media(max-width:640px){
+  .x-embed.loaded{min-height:520px;}
+  .x-embed iframe{height:520px!important;}
+  .x-fallback{padding:28px 20px;min-height:190px;}
+}
+
 </style>
 </head>
 <body>
