@@ -429,25 +429,28 @@ footer ul a:hover{color:var(--gold)}
   .hero > .hero-figure{display:none!important;}
   .hero-mobile-figure{
     display:flex;
-    justify-content:flex-end;
+    justify-content:center;
+    align-items:flex-end;
     width:100%;
-    margin:12px 0 -2px;
-    padding-right:4vw;
+    margin:24px auto 6px;
+    padding-right:0;
     pointer-events:none;
+    overflow:visible;
   }
   .hero-mobile-figure img{
-    height:clamp(210px,30svh,300px);
+    height:clamp(365px,48svh,500px);
     width:auto;
-    max-width:58vw;
+    max-width:96vw;
     object-fit:contain;
     display:block;
+    transform:translateX(-4vw);
   }
   .scroll-hint{display:none;}
 }
 @media(max-width:390px){
   .hero-inner{padding-top:124px;}
-  .hero-mobile-figure{margin-top:10px;padding-right:2vw;}
-  .hero-mobile-figure img{height:clamp(195px,28svh,270px);max-width:60vw;}
+  .hero-mobile-figure{margin-top:20px;padding-right:0;}
+  .hero-mobile-figure img{height:clamp(330px,45svh,430px);max-width:98vw;transform:translateX(-5vw);}
 }
 
 /* ---------- X表示調整：PCは埋め込み、スマホは確実に見えるリンクカードを表示 ---------- */
@@ -791,34 +794,82 @@ footer ul a:hover{color:var(--gold)}
   const grid = document.getElementById("reportsGrid");
   if(!grid) return;
   const gasUrl = window.SITE_CONFIG && SITE_CONFIG.APPS_SCRIPT_URL;
-  const statusHtml = msg => '<div class="report-status">' + msg + '</div>';
+  const driveFolderUrl = "https://drive.google.com/drive/folders/1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb?usp=sharing";
+  const statusHtml = (msg, withButton=false) =>
+    '<div class="report-status">' + msg +
+    (withButton ? '<p style="margin-top:16px"><a class="btn btn-gold" href="' + driveFolderUrl + '" target="_blank" rel="noopener">Googleドライブで開く →</a></p>' : '') +
+    '</div>';
   if(!gasUrl){
-    grid.innerHTML = statusHtml('Apps Script URLが未設定です。config.js の APPS_SCRIPT_URL を設定すると、市政レポートが表示されます。');
+    grid.innerHTML = statusHtml('Apps Script URLが未設定です。config.js の APPS_SCRIPT_URL を設定すると、市政レポートが表示されます。', true);
     return;
   }
+
+  if(/\/dev(\?|$)/.test(gasUrl)){
+    grid.innerHTML = statusHtml('Apps Script URLがテスト用（/dev）になっています。PCでも表示するには、デプロイ済みの本番URL（/exec）を config.js に設定してください。', true);
+    return;
+  }
+
+  // PCではApps Scriptを iframe として表示する。JSONPよりPCブラウザで安定しやすい。
+  const isDesktop = window.matchMedia && window.matchMedia('(min-width: 641px)').matches;
+  if(isDesktop){
+    grid.style.display = 'block';
+    const iframeUrl = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports_iframe&t=' + Date.now();
+    grid.innerHTML = '<iframe id="reportsFrame" title="議会・市政レポート一覧" src="' + iframeUrl + '" loading="lazy" style="width:100%;height:760px;border:0;display:block;background:transparent;overflow:hidden"></iframe>' +
+      '<div id="reportsFrameFallback" class="report-status" style="display:none;margin-top:16px">市政レポートを読み込めませんでした。Apps ScriptのデプロイURLが /exec になっているか、公開範囲が「全員」になっているか確認してください。<p style="margin-top:16px"><a class="btn btn-gold" href="' + driveFolderUrl + '" target="_blank" rel="noopener">Googleドライブで開く →</a></p></div>';
+    const frame = document.getElementById('reportsFrame');
+    const fallback = document.getElementById('reportsFrameFallback');
+    let iframeLoaded = false;
+    frame.addEventListener('load', ()=>{ iframeLoaded = true; });
+    window.addEventListener('message', function(ev){
+      const d = ev.data || {};
+      if(d && d.type === 'maekawaReportsHeight' && d.height){
+        iframeLoaded = true;
+        frame.style.height = Math.max(320, Math.min(Number(d.height) + 8, 2400)) + 'px';
+      }
+    });
+    setTimeout(()=>{
+      if(!iframeLoaded && fallback){ fallback.style.display = 'block'; }
+    }, 12000);
+    return;
+  }
+
+  // スマホでは従来どおりJSONPで取得し、サイト内カードとして表示する。
   const cb = 'renderReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-  const timer = setTimeout(()=>{
-    grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Googleドライブの共有設定とApps Scriptのデプロイを確認してください。');
-    cleanup();
+  let loaded = false;
+
+  const slowTimer = setTimeout(()=>{
+    if(!loaded){
+      grid.innerHTML = statusHtml('市政レポートを読み込み中です。時間がかかる場合は、下のボタンからGoogleドライブでも確認できます。', true);
+    }
   }, 12000);
+
+  const failTimer = setTimeout(()=>{
+    if(!loaded){
+      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps Scriptの再デプロイ、公開範囲、Googleドライブの共有設定を確認してください。', true);
+      cleanup();
+    }
+  }, 60000);
+
   function cleanup(){
-    clearTimeout(timer);
+    clearTimeout(slowTimer);
+    clearTimeout(failTimer);
     try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
     const old = document.getElementById(cb);
     if(old) old.remove();
   }
   function esc(v){
-    return String(v || '').replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+    return String(v || '').replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
   }
   window[cb] = function(data){
+    loaded = true;
     cleanup();
     if(!data || !data.ok){
-      grid.innerHTML = statusHtml(esc((data && data.message) || '市政レポートを取得できませんでした。'));
+      grid.innerHTML = statusHtml(esc((data && data.message) || '市政レポートを取得できませんでした。'), true);
       return;
     }
     const reports = data.reports || [];
     if(!reports.length){
-      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。Googleドライブの指定フォルダにPDFを追加してください。');
+      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。Googleドライブの指定フォルダにPDFを追加してください。', true);
       return;
     }
     grid.innerHTML = reports.map(r=>{
@@ -844,8 +895,15 @@ footer ul a:hover{color:var(--gold)}
   };
   const script = document.createElement('script');
   script.id = cb;
+  script.async = true;
+  script.referrerPolicy = 'no-referrer-when-downgrade';
   script.src = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports&callback=' + encodeURIComponent(cb) + '&t=' + Date.now();
-  script.onerror = function(){ grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。'); cleanup(); };
+  script.onerror = function(){
+    if(!loaded){
+      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps Scriptの公開範囲を「全員」にして、新バージョンで再デプロイしてください。', true);
+    }
+    cleanup();
+  };
   document.head.appendChild(script);
 })();
 
