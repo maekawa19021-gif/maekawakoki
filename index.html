@@ -429,16 +429,17 @@ footer ul a:hover{color:var(--gold)}
   .hero > .hero-figure{display:none!important;}
   .hero-mobile-figure{
     display:flex;
-    justify-content:flex-end;
+    justify-content:center;
+    align-items:flex-end;
     width:100%;
-    margin:12px 0 -2px;
-    padding-right:4vw;
+    margin:22px auto 4px;
+    padding-right:0;
     pointer-events:none;
   }
   .hero-mobile-figure img{
-    height:clamp(210px,30svh,300px);
+    height:clamp(285px,39svh,395px);
     width:auto;
-    max-width:58vw;
+    max-width:84vw;
     object-fit:contain;
     display:block;
   }
@@ -446,8 +447,8 @@ footer ul a:hover{color:var(--gold)}
 }
 @media(max-width:390px){
   .hero-inner{padding-top:124px;}
-  .hero-mobile-figure{margin-top:10px;padding-right:2vw;}
-  .hero-mobile-figure img{height:clamp(195px,28svh,270px);max-width:60vw;}
+  .hero-mobile-figure{margin-top:18px;padding-right:0;}
+  .hero-mobile-figure img{height:clamp(260px,36svh,350px);max-width:88vw;}
 }
 
 /* ---------- X表示調整：PCは埋め込み、スマホは確実に見えるリンクカードを表示 ---------- */
@@ -791,34 +792,52 @@ footer ul a:hover{color:var(--gold)}
   const grid = document.getElementById("reportsGrid");
   if(!grid) return;
   const gasUrl = window.SITE_CONFIG && SITE_CONFIG.APPS_SCRIPT_URL;
-  const statusHtml = msg => '<div class="report-status">' + msg + '</div>';
+  const driveFolderUrl = "https://drive.google.com/drive/folders/1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb?usp=sharing";
+  const statusHtml = (msg, withButton=false) =>
+    '<div class="report-status">' + msg +
+    (withButton ? '<p style="margin-top:16px"><a class="btn btn-gold" href="' + driveFolderUrl + '" target="_blank" rel="noopener">Googleドライブで開く →</a></p>' : '') +
+    '</div>';
   if(!gasUrl){
-    grid.innerHTML = statusHtml('Apps Script URLが未設定です。config.js の APPS_SCRIPT_URL を設定すると、市政レポートが表示されます。');
+    grid.innerHTML = statusHtml('Apps Script URLが未設定です。config.js の APPS_SCRIPT_URL を設定すると、市政レポートが表示されます。', true);
     return;
   }
   const cb = 'renderReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-  const timer = setTimeout(()=>{
-    grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Googleドライブの共有設定とApps Scriptのデプロイを確認してください。');
-    cleanup();
+  let loaded = false;
+
+  // PC環境ではApps Script / Google Driveの初回応答が遅いことがあるため、待ち時間を長めにする。
+  const slowTimer = setTimeout(()=>{
+    if(!loaded){
+      grid.innerHTML = statusHtml('市政レポートを読み込み中です。時間がかかる場合は、下のボタンからGoogleドライブでも確認できます。', true);
+    }
   }, 12000);
+
+  const failTimer = setTimeout(()=>{
+    if(!loaded){
+      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps Scriptの再デプロイ、公開範囲、Googleドライブの共有設定を確認してください。', true);
+      cleanup();
+    }
+  }, 60000);
+
   function cleanup(){
-    clearTimeout(timer);
+    clearTimeout(slowTimer);
+    clearTimeout(failTimer);
     try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
     const old = document.getElementById(cb);
     if(old) old.remove();
   }
   function esc(v){
-    return String(v || '').replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+    return String(v || '').replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
   }
   window[cb] = function(data){
+    loaded = true;
     cleanup();
     if(!data || !data.ok){
-      grid.innerHTML = statusHtml(esc((data && data.message) || '市政レポートを取得できませんでした。'));
+      grid.innerHTML = statusHtml(esc((data && data.message) || '市政レポートを取得できませんでした。'), true);
       return;
     }
     const reports = data.reports || [];
     if(!reports.length){
-      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。Googleドライブの指定フォルダにPDFを追加してください。');
+      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。Googleドライブの指定フォルダにPDFを追加してください。', true);
       return;
     }
     grid.innerHTML = reports.map(r=>{
@@ -844,8 +863,15 @@ footer ul a:hover{color:var(--gold)}
   };
   const script = document.createElement('script');
   script.id = cb;
+  script.async = true;
+  script.referrerPolicy = 'no-referrer-when-downgrade';
   script.src = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports&callback=' + encodeURIComponent(cb) + '&t=' + Date.now();
-  script.onerror = function(){ grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。'); cleanup(); };
+  script.onerror = function(){
+    if(!loaded){
+      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps Scriptの公開範囲を「全員」にして、新バージョンで再デプロイしてください。', true);
+    }
+    cleanup();
+  };
   document.head.appendChild(script);
 })();
 

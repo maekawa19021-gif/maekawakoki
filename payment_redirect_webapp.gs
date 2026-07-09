@@ -143,7 +143,8 @@ function doGet(e) {
 
 function handleReportsRequest_(params) {
   const callback = String(params.callback || '').trim();
-  const payload = getReportsPayload_();
+  const refresh = String(params.refresh || '') === '1';
+  const payload = getReportsPayload_(refresh);
 
   // GitHub Pagesから安定して読み込むためJSONPで返す
   if (callback) {
@@ -158,8 +159,15 @@ function handleReportsRequest_(params) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-function getReportsPayload_() {
+function getReportsPayload_(refresh) {
   try {
+    const cache = CacheService.getScriptCache();
+    const cacheKey = 'city_reports_v2_' + REPORTS_FOLDER_ID;
+    if (!refresh) {
+      const cached = cache.get(cacheKey);
+      if (cached) return JSON.parse(cached);
+    }
+
     const folder = DriveApp.getFolderById(REPORTS_FOLDER_ID);
     const files = folder.getFiles();
     const reports = [];
@@ -204,16 +212,24 @@ function getReportsPayload_() {
       return String(b.sortKey || b.updated || b.created || '').localeCompare(String(a.sortKey || a.updated || a.created || ''));
     });
 
-    return {
+    const payload = {
       ok: true,
       folderId: REPORTS_FOLDER_ID,
+      folderUrl: 'https://drive.google.com/drive/folders/' + REPORTS_FOLDER_ID + '?usp=sharing',
       count: reports.length,
+      generatedAt: new Date().toISOString(),
       reports: reports
     };
+
+    // PCで初回読み込みが遅くならないよう、一覧データを短時間キャッシュする。
+    cache.put(cacheKey, JSON.stringify(payload), 600);
+    return payload;
   } catch (err) {
     return {
       ok: false,
       message: 'Googleドライブの市政レポートフォルダを読み込めませんでした。フォルダ共有設定、Apps Scriptの実行アカウント、Drive権限を確認してください。詳細：' + err.message,
+      folderId: REPORTS_FOLDER_ID,
+      folderUrl: 'https://drive.google.com/drive/folders/' + REPORTS_FOLDER_ID + '?usp=sharing',
       reports: []
     };
   }
