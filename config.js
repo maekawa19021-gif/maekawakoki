@@ -15,7 +15,7 @@ window.SITE_CONFIG = {
   APPS_SCRIPT_URL: "",
 
   FORM_URLS: {
-    join:   "https://docs.google.com/forms/d/e/1FAIpQLSeNnKNgI4qroVGcVkSkW5tWOzl1apavfZZl_tQ3hisZEm9PGw/viewform",
+    join:   "https://script.google.com/macros/s/AKfycbwchzlQJe4SoLjkMiw0q6u_UF1zYGfH5mAX7GtAyeJJnInvGQHnjFlT_0cWHVe46R3OiA/exec",
     donate: "",
     party:  "",
     full:   ""
