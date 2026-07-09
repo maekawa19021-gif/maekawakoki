@@ -1,10 +1,19 @@
-# 前川こうき後援会 公式サイト（直接決済方式・更新版）
+# 前川こうき後援会サイト 修正版一式
 
-この一式は、寄付・党員サポ・寄付＋党サポについて、Googleフォームの自動返信メールを使わず、サイト内フォームからスプレッドシートへ記録し、そのままStripe決済へ進む方式です。
+## 今回の主な変更
 
-## 1. GitHubに上書きするファイル
+- 寄付ページの「寄付方法」を、国籍確認と同じく初期値なしの選択式に変更
+  - 初期表示：選択してください
+  - 選択肢：今回のみ（金額自由）／毎月継続（500円×口数）
+- 寄付方法が未選択の場合、送信できないように変更
+- Apps Script側でも、寄付方法未選択を拒否するチェックを追加
+- Stripeへ自動遷移せず、申込記録後に「決済ページへ進む」ボタンを表示する方式を維持
+- トップページの顔写真補正は自然な状態に戻した版を使用
+- 「お申し込みの流れ」は各申込ページから削除済み
 
-ZIP内の次のファイルを、現在のサイトに同名で上書きしてください。
+## GitHubに上書きするファイル
+
+以下のファイルを、GitHub上の同名ファイルに上書きしてください。
 
 - index.html
 - config.js
@@ -15,79 +24,73 @@ ZIP内の次のファイルを、現在のサイトに同名で上書きして�
 - privacy.html
 - README.md
 
-画像や assets フォルダは、今のものをそのまま使います。
-
-## 2. Apps Scriptに貼るファイル
+## Apps Scriptに上書きするファイル
 
 - payment_redirect_webapp.gs
 
-このファイルを、Googleスプレッドシートの「拡張機能 → Apps Script」に貼り付けてください。
+上書き後、Apps Scriptで必ず再デプロイしてください。
 
-スプレッドシートIDは設定済みです。
+手順：
+
+1. Apps Scriptを開く
+2. `payment_redirect_webapp.gs` の内容を全上書き
+3. デプロイ
+4. デプロイを管理
+5. 鉛筆マーク
+6. バージョン：新バージョン
+7. デプロイ
+
+## 前川さん側で変更が必要なもの
+
+### 1. config.js の APPS_SCRIPT_URL
+
+このZIPでは、Apps ScriptのURLは空欄です。
+既に発行済みのウェブアプリURLを、以下に貼ってください。
+
+```js
+APPS_SCRIPT_URL: "ここにApps ScriptのウェブアプリURL",
+```
+
+ここが空欄のままだと、寄付・党員サポ・寄付＋党サポの送信ボタンは動きません。
+
+### 2. payment_redirect_webapp.gs の再デプロイ
+
+今回、Apps Script側に「寄付方法が未選択の場合は拒否する」チェックを追加しています。
+そのため、`payment_redirect_webapp.gs` を更新した場合は再デプロイが必要です。
+
+## 設定済みの内容
+
+### スプレッドシートID
 
 ```js
 const SPREADSHEET_ID = '1DgdHACsadw9GUZlxY3F183xlaFtyDoCY0DFZzsZbxiA';
 ```
 
-## 3. あなたが変更する必要があるもの
-
-### A. payment_redirect_webapp.gs 内のStripe URL 4つ
-
-下の4つだけ、Stripeで作ったPayment Linkに差し替えてください。
+### Stripe URL
 
 ```js
-donate_once: 'ここにStripe寄付_今回のみ_URL',
-donate_monthly500: 'ここにStripe寄付_毎月500円_URL',
-party_member_yearly: 'ここにStripe党員_年額4000円_URL',
-party_supporter_yearly: 'ここにStripeサポーター_年額2000円_URL'
+// 寄付金 単発
+https://buy.stripe.com/5kQ00lfze8cv4Q48ggbAs01
+
+// 寄付金 サブスク
+https://donate.stripe.com/8x214pcn20K34Q4fIIbAs02
+
+// 党員
+https://donate.stripe.com/aFa3cxgDi9gz5U8fIIbAs00
+
+// サポーター
+https://buy.stripe.com/7sYbJ33QwakD2HW400bAs03
 ```
 
-### B. config.js 内の APPS_SCRIPT_URL
+## 動作確認
 
-Apps Scriptをウェブアプリとしてデプロイした後、発行されたURLを貼ります。
+公開後、寄付ページで以下を確認してください。
 
-```js
-APPS_SCRIPT_URL: "ここにApps ScriptのウェブアプリURL"
-```
-
-## 4. Apps Scriptのデプロイ方法
-
-1. Apps Script画面右上の「デプロイ」
-2. 「新しいデプロイ」
-3. 種類を「ウェブアプリ」
-4. 実行ユーザー：自分
-5. アクセスできるユーザー：全員
-6. デプロイ
-7. 発行されたURLを config.js の APPS_SCRIPT_URL に貼る
-
-## 5. スプレッドシートへの記録先
-
-既存のGoogleフォーム回答タブを壊さないため、列形式が違う場合は自動的に次のタブへ記録します。
-
-- ②寄付_直接決済
-- ③党員・サポーター_直接決済
-- ④寄付＋党サポ_直接決済
-
-既存タブが直接決済用のヘッダー形式なら、そのまま ②寄付 / ③党員・サポーター / ④寄付＋党サポ に記録します。
-
-## 6. 後援会入会だけは従来通り
-
-後援会入会だけは無料で決済がないため、従来のGoogleフォームを使います。
-
-
-
-## Stripe支払いURL（設定済み）
-
-`payment_redirect_webapp.gs` には、以下のStripe支払いURLを設定済みです。
-
-- サポーター: https://buy.stripe.com/7sYbJ33QwakD2HW400bAs03
-- 党員: https://donate.stripe.com/aFa3cxgDi9gz5U8fIIbAs00
-- 寄付金 サブスク: https://donate.stripe.com/8x214pcn20K34Q4fIIbAs02
-- 寄付金 単発: https://buy.stripe.com/5kQ00lfze8cv4Q48ggbAs01
-
-## まだ必要な作業
-
-1. `payment_redirect_webapp.gs` をGoogle Apps Scriptに貼り付ける
-2. Apps Scriptをウェブアプリとしてデプロイする
-3. 発行されたウェブアプリURLを `config.js` の `APPS_SCRIPT_URL` に貼り付ける
-4. GitHubに `config.js` を上書きする
+1. 寄付方法が初期状態で「選択してください」になっている
+2. 寄付方法を選ばず送信するとエラーになる
+3. 国籍確認も初期状態で「選択してください」になっている
+4. 生年月日が必須になっている
+5. 電話番号がハイフンなし10〜11桁でチェックされる
+6. 送信後、スプレッドシートに記録される
+7. 「決済ページへ進む」ボタンが表示される
+8. ボタンからStripe決済ページへ進める
