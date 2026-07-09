@@ -11,6 +11,9 @@
 
 const SPREADSHEET_ID = '1DgdHACsadw9GUZlxY3F183xlaFtyDoCY0DFZzsZbxiA';
 
+// 議会・市政レポートを置くGoogleドライブのフォルダID
+const REPORTS_FOLDER_ID = '1qbjNrZAWsahY55UfFuyR3Rm5oIrKzfQ-';
+
 const STRIPE_LINKS = {
   // 寄付金 単発
   donate_once: 'https://buy.stripe.com/5kQ00lfze8cv4Q48ggbAs01',
@@ -115,6 +118,13 @@ function doPost(e) {
 }
 
 function doGet(e) {
+  const params = e && e.parameter ? e.parameter : {};
+
+  // トップページの「議会・市政レポート」自動表示用
+  if (params.route === 'reports') {
+    return handleReportsRequest_(params);
+  }
+
   return HtmlService.createHtmlOutput(
     '<!doctype html>' +
     '<html>' +
@@ -125,9 +135,123 @@ function doGet(e) {
     '<body style="font-family:sans-serif;background:#060d1f;color:#fff;padding:40px 18px;line-height:1.8">' +
     '<h1>前川こうき後援会 申込記録システム</h1>' +
     '<p>このURLは、申込フォームから送信された内容を記録し、Stripe決済ページをご案内するためのものです。</p>' +
+    '<p>また、Googleドライブ内の議会・市政レポート一覧をサイトへ配信します。</p>' +
     '</body>' +
     '</html>'
   );
+}
+
+function handleReportsRequest_(params) {
+  const callback = String(params.callback || '').trim();
+  const payload = getReportsPayload_();
+
+  // GitHub Pagesから安定して読み込むためJSONPで返す
+  if (callback) {
+    const safeCallback = callback.replace(/[^a-zA-Z0-9_$\.]/g, '');
+    return ContentService
+      .createTextOutput(safeCallback + '(' + JSON.stringify(payload) + ');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+
+  return ContentService
+    .createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getReportsPayload_() {
+  try {
+    const folder = DriveApp.getFolderById(REPORTS_FOLDER_ID);
+    const files = folder.getFiles();
+    const reports = [];
+
+    while (files.hasNext()) {
+      const file = files.next();
+      const mime = file.getMimeType();
+      const name = file.getName();
+
+      // 基本はPDFを掲載。必要に応じてGoogleドキュメントもPDF表示リンクとして掲載。
+      const allowed =
+        mime === MimeType.PDF ||
+        mime === MimeType.GOOGLE_DOCS ||
+        mime === MimeType.GOOGLE_SLIDES;
+
+      if (!allowed) continue;
+
+      const id = file.getId();
+      const updated = file.getLastUpdated();
+      const created = file.getDateCreated();
+      const title = makeReportTitle_(name);
+
+      reports.push({
+        id: id,
+        title: title,
+        fileName: name,
+        mimeType: mime,
+        viewUrl: 'https://drive.google.com/file/d/' + id + '/view?usp=sharing',
+        thumbnailUrl: 'https://drive.google.com/thumbnail?id=' + id + '&sz=w900',
+        updated: updated ? updated.toISOString() : '',
+        created: created ? created.toISOString() : '',
+        updatedLabel: updated ? Utilities.formatDate(updated, 'Asia/Tokyo', 'yyyy.MM.dd') : '',
+        dateLabel: makeDateLabelFromName_(name, updated),
+        sortKey: makeSortKeyFromName_(name, updated),
+        description: '議会での質問、市政課題への取組、地域活動などをまとめたレポートです。'
+      });
+    }
+
+    // 最新順。ファイル名に年月日・年月がある場合は発行日として優先し、
+    // ない場合はDriveの更新日時で並べ替える。
+    reports.sort(function(a, b) {
+      return String(b.sortKey || b.updated || b.created || '').localeCompare(String(a.sortKey || a.updated || a.created || ''));
+    });
+
+    return {
+      ok: true,
+      folderId: REPORTS_FOLDER_ID,
+      count: reports.length,
+      reports: reports
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      message: 'Googleドライブの市政レポートフォルダを読み込めませんでした。フォルダ共有設定、Apps Scriptの実行アカウント、Drive権限を確認してください。詳細：' + err.message,
+      reports: []
+    };
+  }
+}
+
+function makeSortKeyFromName_(name, fallbackDate) {
+  const text = String(name || '');
+
+  // 例：2026-07-09 / 2026_07_09 / 2026年7月9日
+  let m = text.match(/(20[0-9]{2})[-_.年]?([0-9]{1,2})[-_.月]?([0-9]{1,2})/);
+  if (m) {
+    return m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2);
+  }
+
+  // 例：2026-07 / 2026_07 / 2026年7月
+  m = text.match(/(20[0-9]{2})[-_.年]?([0-9]{1,2})/);
+  if (m) {
+    return m[1] + '-' + ('0' + m[2]).slice(-2) + '-01';
+  }
+
+  return fallbackDate ? fallbackDate.toISOString() : '';
+}
+
+function makeReportTitle_(name) {
+  return String(name || '')
+    .replace(/\.[^.]+$/, '')
+    .replace(/^[0-9]{4}[-_.年]?[0-9]{1,2}[-_.月]?[0-9]{0,2}[日]?[_\s-]*/g, '')
+    .replace(/_/g, ' ')
+    .trim() || '市政レポート';
+}
+
+function makeDateLabelFromName_(name, fallbackDate) {
+  const text = String(name || '');
+  const m = text.match(/(20[0-9]{2})[-_.年]?([0-9]{1,2})/);
+  if (m) {
+    return m[1] + '.' + ('0' + m[2]).slice(-2);
+  }
+  return fallbackDate ? Utilities.formatDate(fallbackDate, 'Asia/Tokyo', 'yyyy.MM.dd') : '';
 }
 
 function decidePaymentKind_(p) {

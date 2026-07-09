@@ -213,6 +213,30 @@ section{position:relative;padding:110px 28px}
   background:radial-gradient(circle,rgba(255,212,0,.14),transparent 65%);pointer-events:none;
 }
 
+
+/* reports */
+.reports{background:linear-gradient(180deg,var(--bg2),var(--bg))}
+.report-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.report-note{color:var(--muted);font-size:13px;line-height:1.7}
+.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.report-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;transition:.3s;display:flex;flex-direction:column;min-height:100%;
+}
+.report-card:hover{transform:translateY(-6px);border-color:rgba(255,212,0,.45)}
+.report-thumb{aspect-ratio:3/4;background:linear-gradient(135deg,#132a55,#0a1732);position:relative;display:grid;place-items:center;color:var(--muted);font-size:12px;letter-spacing:.12em;overflow:hidden}
+.report-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.report-thumb .fallback-label{position:relative;z-index:1;text-align:center;padding:20px}
+.report-body{padding:22px 24px 26px;display:flex;flex-direction:column;flex:1}
+.report-date{font-family:'Oswald',sans-serif;color:var(--gold);font-size:12px;letter-spacing:.15em;margin-bottom:8px}
+.report-body h3{font-size:17px;font-weight:900;margin-bottom:8px}
+.report-body p{color:var(--muted);font-size:13px;line-height:1.7;flex:1}
+.report-body .btn{margin-top:18px;justify-content:center;padding:12px 22px;font-size:14px}
+.report-status{
+  background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.22);border-radius:14px;
+  padding:34px 22px;text-align:center;color:var(--muted);font-size:14px;grid-column:1/-1;
+}
+
 /* news */
 .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .news-card{
@@ -336,9 +360,9 @@ footer ul a:hover{color:var(--gold)}
 
 /* responsive */
 @media(max-width:900px){
-  .stat-grid,.policy-grid,.support-grid{grid-template-columns:1fr 1fr}
+  .stat-grid,.policy-grid,.support-grid,.report-grid{grid-template-columns:1fr 1fr}
   .profile-grid{grid-template-columns:1fr;gap:40px}
-  .news-grid,.sns-grid{grid-template-columns:1fr}
+  .report-grid,.news-grid,.sns-grid{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr;gap:30px}
 }
 @media(max-width:640px){
@@ -352,7 +376,7 @@ footer ul a:hover{color:var(--gold)}
   .hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
   .hamburger.open span:nth-child(2){opacity:0}
   .hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
-  .stat-grid,.policy-grid,.support-grid{grid-template-columns:1fr}
+  .stat-grid,.policy-grid,.support-grid,.report-grid{grid-template-columns:1fr}
   section{padding:80px 20px}
 }
 /* ---------- hero figure（宣材写真：明るくはっきり表示） ---------- */
@@ -388,6 +412,7 @@ footer ul a:hover{color:var(--gold)}
   </a>
   <button class="hamburger" id="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="navLinks">
+    <li><a href="#reports">市政レポート</a></li>
     <li><a href="#profile">プロフィール</a></li>
     <li><a href="#policy">政策</a></li>
     <li><a href="#news">活動報告</a></li>
@@ -429,6 +454,24 @@ footer ul a:hover{color:var(--gold)}
       <div class="stat"><div class="stat-num"><span data-count="25">0</span><small>歳</small></div><p class="stat-cap">高松市議選 最年少当選</p></div>
       <div class="stat"><div class="stat-num"><span data-count="1">0</span><small>期目</small></div><p class="stat-cap">暮らしに直結する仕事を</p></div>
       <div class="stat"><div class="stat-num">MBA</div><p class="stat-cap">香川大学大学院 経営修士</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======= REPORTS ======= -->
+<section class="reports" id="reports">
+  <div class="wrap">
+    <p class="sec-label en">CITY REPORT</p>
+    <div class="report-head">
+      <div>
+        <h2 class="sec-title reveal">議会・市政レポート</h2>
+        <p class="sec-lead reveal" style="margin-bottom:0">発行ごとの市政レポートをGoogleドライブから自動取得して掲載します。PDFの表紙サムネイルも自動表示します。</p>
+      </div>
+      <p class="report-note reveal">新しいPDFを指定フォルダに入れるだけで、サイト側に反映されます。</p>
+    </div>
+    <div id="reportsGrid" class="report-grid">
+      <div class="report-status">市政レポートを読み込んでいます…</div>
     </div>
   </div>
 </section>
@@ -609,6 +652,7 @@ footer ul a:hover{color:var(--gold)}
     <div>
       <h4 class="en">MENU</h4>
       <ul>
+        <li><a href="#reports">市政レポート</a></li>
         <li><a href="#profile">プロフィール</a></li>
         <li><a href="#policy">政策</a></li>
         <li><a href="#news">活動報告</a></li>
@@ -642,6 +686,70 @@ footer ul a:hover{color:var(--gold)}
   if(url){ lc.href = url; } else { lc.style.display = "none"; }
 })();
 
+
+/* ---------- 議会・市政レポート：Googleドライブから自動取得 ---------- */
+(function(){
+  const grid = document.getElementById("reportsGrid");
+  if(!grid) return;
+  const gasUrl = window.SITE_CONFIG && SITE_CONFIG.APPS_SCRIPT_URL;
+  const statusHtml = msg => '<div class="report-status">' + msg + '</div>';
+  if(!gasUrl){
+    grid.innerHTML = statusHtml('Apps Script URLが未設定です。config.js の APPS_SCRIPT_URL を設定すると、市政レポートが表示されます。');
+    return;
+  }
+  const cb = 'renderReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+  const timer = setTimeout(()=>{
+    grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Googleドライブの共有設定とApps Scriptのデプロイを確認してください。');
+    cleanup();
+  }, 12000);
+  function cleanup(){
+    clearTimeout(timer);
+    try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
+    const old = document.getElementById(cb);
+    if(old) old.remove();
+  }
+  function esc(v){
+    return String(v || '').replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+  }
+  window[cb] = function(data){
+    cleanup();
+    if(!data || !data.ok){
+      grid.innerHTML = statusHtml(esc((data && data.message) || '市政レポートを取得できませんでした。'));
+      return;
+    }
+    const reports = data.reports || [];
+    if(!reports.length){
+      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。Googleドライブの指定フォルダにPDFを追加してください。');
+      return;
+    }
+    grid.innerHTML = reports.map(r=>{
+      const title = esc(r.title);
+      const date = esc(r.dateLabel || r.updatedLabel || '');
+      const pdf = esc(r.viewUrl);
+      const thumb = esc(r.thumbnailUrl);
+      const desc = esc(r.description || 'PDFで市政レポートをご覧いただけます。');
+      return '<article class="report-card reveal">' +
+        '<a class="report-thumb" href="' + pdf + '" target="_blank" rel="noopener">' +
+          '<span class="fallback-label">CITY REPORT<br>PDF</span>' +
+          (thumb ? '<img src="' + thumb + '" alt="' + title + 'の表紙" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : '') +
+        '</a>' +
+        '<div class="report-body">' +
+          (date ? '<p class="report-date en">' + date + '</p>' : '') +
+          '<h3>' + title + '</h3>' +
+          '<p>' + desc + '</p>' +
+          '<a class="btn btn-gold" href="' + pdf + '" target="_blank" rel="noopener">PDFを見る →</a>' +
+        '</div>' +
+      '</article>';
+    }).join('');
+    if(window.io){ document.querySelectorAll('#reportsGrid .reveal').forEach(el=>io.observe(el)); }
+  };
+  const script = document.createElement('script');
+  script.id = cb;
+  script.src = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports&callback=' + encodeURIComponent(cb) + '&t=' + Date.now();
+  script.onerror = function(){ grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。'); cleanup(); };
+  document.head.appendChild(script);
+})();
+
 /* ---------- X（旧Twitter）タイムライン：読み込めたらフォールバックを隠す ---------- */
 (function(){
   const box = document.querySelector(".x-embed");
@@ -662,7 +770,7 @@ hb.addEventListener("click", ()=>{ hb.classList.toggle("open"); links.classList.
 links.querySelectorAll("a").forEach(a=>a.addEventListener("click", ()=>{ hb.classList.remove("open"); links.classList.remove("open"); }));
 
 /* ---------- reveal ---------- */
-const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("on"); io.unobserve(e.target);} }),{threshold:.18});
+window.io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("on"); io.unobserve(e.target);} }),{threshold:.18});
 document.querySelectorAll(".reveal,.stagger").forEach(el=>io.observe(el));
 
 /* ---------- counters ---------- */
