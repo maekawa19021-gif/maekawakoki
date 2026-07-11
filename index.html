@@ -236,6 +236,10 @@ section{position:relative;padding:110px 28px}
   background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.22);border-radius:14px;
   padding:34px 22px;text-align:center;color:var(--muted);font-size:14px;grid-column:1/-1;
 }
+.report-frame-wrap{grid-column:1/-1;width:100%}
+.report-frame{
+  display:block;width:100%;min-height:720px;border:0;background:transparent;
+}
 
 /* news */
 .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -814,19 +818,41 @@ footer ul a:hover{color:var(--gold)}
   // 「現在、ファイルを開くことができません」と表示される場合があるため使わない。
   const cb = 'renderReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
   let loaded = false;
+  let fallbackShown = false;
+
+  // JSONPを制限するPCブラウザ向けの代替表示。
+  // Apps Script側でカードHTMLを作り、iframeとして表示する。
+  function showIframeFallback(){
+    if(loaded || fallbackShown) return;
+    fallbackShown = true;
+    cleanup();
+    const src = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports_iframe&t=' + Date.now();
+    grid.innerHTML = '<div class="report-frame-wrap">' +
+      '<iframe id="reportsFrame" class="report-frame" title="議会・市政レポート一覧" ' +
+      'src="' + esc(src) + '" loading="eager" referrerpolicy="no-referrer-when-downgrade" ' +
+      'scrolling="no"></iframe></div>';
+  }
+
+  window.addEventListener('message', function(e){
+    if(!e.data || e.data.type !== 'maekawaReportsHeight') return;
+    const frame = document.getElementById('reportsFrame');
+    const height = Number(e.data.height);
+    if(frame && Number.isFinite(height) && height > 100){
+      frame.style.height = Math.ceil(height + 8) + 'px';
+    }
+  });
 
   const slowTimer = setTimeout(()=>{
     if(!loaded){
-      grid.innerHTML = statusHtml('市政レポートを読み込み中です。時間がかかる場合は、下のボタンからGoogleドライブでも確認できます。', true);
+      showIframeFallback();
     }
-  }, 12000);
+  }, 8000);
 
   const failTimer = setTimeout(()=>{
     if(!loaded){
-      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps ScriptのURL（/exec）、公開範囲「全員」、Googleドライブの共有設定を確認してください。', true);
-      cleanup();
+      showIframeFallback();
     }
-  }, 60000);
+  }, 15000);
 
   function cleanup(){
     clearTimeout(slowTimer);
@@ -878,9 +904,8 @@ footer ul a:hover{color:var(--gold)}
   script.src = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports&callback=' + encodeURIComponent(cb) + '&t=' + Date.now();
   script.onerror = function(){
     if(!loaded){
-      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps Scriptの公開範囲を「全員」にして、新バージョンで再デプロイしてください。', true);
+      showIframeFallback();
     }
-    cleanup();
   };
   document.head.appendChild(script);
 })();
