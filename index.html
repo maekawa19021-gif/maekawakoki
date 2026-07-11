@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <meta name="theme-color" content="#060d1f">
+<meta name="build-version" content="20260711-x-cache-reload-v2">
 <meta property="og:type" content="website">
 <meta property="og:title" content="前川こうき後援会 公式サイト｜国民民主党 高松市議会議員">
 <meta property="og:description" content="交渉力で、香川の未来を切り拓く。国民民主党 高松市議会議員 前川こうき（前川幸輝）後援会の公式サイト。">
@@ -493,6 +494,18 @@ footer ul a:hover{color:var(--gold)}
   margin-bottom:18px;
   padding:24px 22px;
 }
+.x-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.x-reload-btn{
+  appearance:none;border:1px solid rgba(255,255,255,.3);border-radius:999px;
+  padding:11px 22px;background:rgba(255,255,255,.06);color:var(--txt);
+  font:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:.25s;
+}
+.x-reload-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.x-reload-btn:disabled{opacity:.55;cursor:wait;transform:none}
+.x-status{margin:0!important;color:var(--muted);font-size:12px!important;min-height:1.8em}
+.x-timeline-mount{width:100%;min-height:0}
+.x-timeline-mount iframe{width:100%!important;max-width:100%!important}
+.x-embed.x-loading .x-timeline-mount{min-height:80px}
 @media(max-width:640px){
   .x-embed{min-height:auto;}
   .x-embed .twitter-timeline,
@@ -685,10 +698,13 @@ footer ul a:hover{color:var(--gold)}
     <div class="x-embed reveal">
       <div class="x-fallback" id="xFallback">
         <p>埋め込みが空白になる場合も、Xアプリ・ブラウザで最新投稿をご覧いただけます。<br><span class="x-fallback-note">ブラウザの追跡防止機能などにより、タイムラインが表示されない場合があります。</span></p>
-        <a class="x-follow-btn" href="https://x.com/maekawa190" target="_blank" rel="noopener">𝕏 &nbsp;Xで最新投稿を見る</a>
+        <div class="x-actions">
+          <a class="x-follow-btn" href="https://x.com/maekawa190" target="_blank" rel="noopener">𝕏 &nbsp;Xで最新投稿を見る</a>
+          <button class="x-reload-btn" id="xReloadBtn" type="button">↻ タイムラインを再読み込み</button>
+        </div>
+        <p class="x-status" id="xStatus" aria-live="polite">タイムラインを読み込んでいます…</p>
       </div>
-      <a class="twitter-timeline" data-height="640" data-theme="dark" data-dnt="true" data-chrome="noheader nofooter noborders"
-         href="https://twitter.com/maekawa190?ref_src=twsrc%5Etfw">前川こうき（@maekawa190）の投稿</a>
+      <div class="x-timeline-mount" id="xTimelineMount"></div>
     </div>
   </div>
 </section>
@@ -790,7 +806,6 @@ footer ul a:hover{color:var(--gold)}
   </div>
 </footer>
 
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script src="assets/three.min.js"></script>
 <script>
 /* サイト設定（フォームURL・LINE URL）は config.js で一元管理しています */
@@ -915,16 +930,83 @@ footer ul a:hover{color:var(--gold)}
   document.head.appendChild(jsonp);
 })();
 
-/* ---------- X（旧Twitter）タイムライン：読み込み状態を記録 ---------- */
+/* ---------- X（旧Twitter）：キャッシュを回避して再生成 ---------- */
 (function(){
   const box = document.querySelector(".x-embed");
-  if(!box) return;
-  // Twitterが生成するiframeを検出。直接開くボタンは成否にかかわらず常時表示する。
-  const check = ()=>{ if(box.querySelector("iframe")){ box.classList.add("loaded"); return true; } return false; };
-  const mo = new MutationObserver(()=>{ if(check()) mo.disconnect(); });
-  mo.observe(box, {childList:true, subtree:true});
-  // 予備：一定時間ごとにも確認
-  let n=0; const t=setInterval(()=>{ if(check() || ++n>20){ clearInterval(t); } }, 500);
+  const mount = document.getElementById("xTimelineMount");
+  const reloadBtn = document.getElementById("xReloadBtn");
+  const status = document.getElementById("xStatus");
+  if(!box || !mount || !reloadBtn || !status) return;
+
+  let loading = false;
+  let timer = 0;
+  let observer = null;
+
+  function setStatus(message){ status.textContent = message; }
+  function finish(success){
+    loading = false;
+    reloadBtn.disabled = false;
+    box.classList.remove("x-loading");
+    box.classList.toggle("loaded", success);
+    if(observer){ observer.disconnect(); observer = null; }
+    clearTimeout(timer);
+  }
+  function markLoaded(){
+    finish(true);
+    setStatus("タイムラインを表示しています。空白の場合は再読み込みをお試しください。");
+  }
+  function markFailed(){
+    finish(false);
+    setStatus("埋め込みを表示できませんでした。再読み込みするか、Xで直接ご覧ください。");
+  }
+
+  function loadFreshTimeline(){
+    if(loading) return;
+    loading = true;
+    reloadBtn.disabled = true;
+    box.classList.remove("loaded");
+    box.classList.add("x-loading");
+    setStatus("キャッシュを使わず、タイムラインを読み込んでいます…");
+    clearTimeout(timer);
+    if(observer) observer.disconnect();
+    mount.replaceChildren();
+
+    const timeline = document.createElement("a");
+    timeline.className = "twitter-timeline";
+    timeline.href = "https://twitter.com/maekawa190?ref_src=twsrc%5Etfw";
+    timeline.textContent = "前川こうき（@maekawa190）の投稿";
+    timeline.dataset.height = "640";
+    timeline.dataset.theme = "dark";
+    timeline.dataset.dnt = "true";
+    timeline.dataset.chrome = "noheader nofooter noborders";
+    mount.appendChild(timeline);
+
+    observer = new MutationObserver(function(){
+      if(mount.querySelector("iframe")) markLoaded();
+    });
+    observer.observe(mount, {childList:true, subtree:true});
+
+    document.querySelectorAll('script[data-x-fresh-loader]').forEach(function(el){ el.remove(); });
+    const script = document.createElement("script");
+    script.async = true;
+    script.charset = "utf-8";
+    script.dataset.xFreshLoader = "true";
+    script.src = "https://platform.twitter.com/widgets.js?cache_bust=" + Date.now();
+    script.onload = function(){
+      try{
+        if(window.twttr && twttr.widgets && twttr.widgets.load){ twttr.widgets.load(mount); }
+      }catch(err){}
+    };
+    script.onerror = markFailed;
+    document.head.appendChild(script);
+
+    timer = setTimeout(function(){
+      if(!mount.querySelector("iframe")) markFailed();
+    }, 15000);
+  }
+
+  reloadBtn.addEventListener("click", loadFreshTimeline);
+  loadFreshTimeline();
 })();
 
 /* ---------- nav ---------- */
