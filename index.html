@@ -273,8 +273,8 @@ section{position:relative;padding:110px 28px}
   background:#fff;color:#0a1732;font-weight:800;font-size:14px;text-decoration:none;transition:.25s;
 }
 .x-follow-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(255,255,255,.18)}
-/* タイムライン読み込み成功時はフォールバックを隠す */
-.x-embed.loaded .x-fallback{display:none}
+/* X側が空白になる場合に備え、直接開くボタンは常に表示する */
+.x-embed.loaded .x-fallback{display:flex}
 
 /* marquee */
 .marquee{overflow:hidden;border-block:1px solid var(--line);padding:18px 0;background:rgba(255,255,255,.02)}
@@ -487,11 +487,20 @@ footer ul a:hover{color:var(--gold)}
   color:inherit;
   font-size:inherit;
 }
-.x-embed.loaded .x-fallback{display:none;}
+.x-embed.loaded .x-fallback{
+  display:flex;
+  min-height:auto;
+  margin-bottom:18px;
+  padding:24px 22px;
+}
 @media(max-width:640px){
   .x-embed{min-height:auto;}
   .x-embed .twitter-timeline,
-  .x-embed iframe{display:none!important;}
+  .x-embed iframe{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
   .x-embed.loaded{min-height:auto;}
   .x-embed.loaded .x-fallback{display:flex;}
   .x-fallback{
@@ -672,14 +681,14 @@ footer ul a:hover{color:var(--gold)}
   <div class="wrap">
     <p class="sec-label en">NEWS &amp; ACTIVITY</p>
     <h2 class="sec-title reveal">活動報告</h2>
-    <p class="sec-lead reveal">日々の活動は X（旧Twitter）で発信中。PCではタイムラインを表示し、スマホでは確実に開けるリンクを表示します。</p>
+    <p class="sec-lead reveal">日々の活動は X（旧Twitter）で発信中。PC・スマホともタイムラインを表示し、埋め込みが表示されない場合も直接Xで確認できます。</p>
     <div class="x-embed reveal">
-      <a class="twitter-timeline" data-height="640" data-theme="dark" data-chrome="noheader nofooter transparent"
-         href="https://twitter.com/maekawa190?ref_src=twsrc%5Etfw">前川こうき（@maekawa190）の投稿</a>
       <div class="x-fallback" id="xFallback">
-        <p>スマホではXアプリ・ブラウザで最新投稿をご覧ください。<br><span class="x-fallback-note">タイムライン埋め込みは、端末やブラウザの設定により表示されない場合があります。</span></p>
-        <a class="x-follow-btn" href="https://x.com/maekawa190" target="_blank" rel="noopener">𝕏 &nbsp;@maekawa190 をXで見る</a>
+        <p>埋め込みが空白になる場合も、Xアプリ・ブラウザで最新投稿をご覧いただけます。<br><span class="x-fallback-note">ブラウザの追跡防止機能などにより、タイムラインが表示されない場合があります。</span></p>
+        <a class="x-follow-btn" href="https://x.com/maekawa190" target="_blank" rel="noopener">𝕏 &nbsp;Xで最新投稿を見る</a>
       </div>
+      <a class="twitter-timeline" data-height="640" data-theme="dark" data-dnt="true" data-chrome="noheader nofooter noborders"
+         href="https://twitter.com/maekawa190?ref_src=twsrc%5Etfw">前川こうき（@maekawa190）の投稿</a>
     </div>
   </div>
 </section>
@@ -906,11 +915,11 @@ footer ul a:hover{color:var(--gold)}
   document.head.appendChild(jsonp);
 })();
 
-/* ---------- X（旧Twitter）タイムライン：読み込めたらフォールバックを隠す ---------- */
+/* ---------- X（旧Twitter）タイムライン：読み込み状態を記録 ---------- */
 (function(){
   const box = document.querySelector(".x-embed");
   if(!box) return;
-  // Twitterが生成する iframe が挿入されたら成功とみなす
+  // Twitterが生成するiframeを検出。直接開くボタンは成否にかかわらず常時表示する。
   const check = ()=>{ if(box.querySelector("iframe")){ box.classList.add("loaded"); return true; } return false; };
   const mo = new MutationObserver(()=>{ if(check()) mo.disconnect(); });
   mo.observe(box, {childList:true, subtree:true});
