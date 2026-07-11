@@ -11,7 +11,7 @@
    LINE_URL        : 公式LINE URL。未設定ならLINEカードは非表示です。
    ============================================================ */
 window.SITE_CONFIG = {
-  // ★ここだけ、Apps Scriptをデプロイした後に必ず貼り付けてください。
+  // Apps Scriptウェブアプリの本番URL（必ず /exec で終わるURL）
   APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwchzlQJe4SoLjkMiw0q6u_UF1zYGfH5mAX7GtAyeJJnInvGQHnjFlT_0cWHVe46R3OiA/exec",
 
   FORM_URLS: {

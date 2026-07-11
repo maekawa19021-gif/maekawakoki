@@ -238,7 +238,7 @@ section{position:relative;padding:110px 28px}
 }
 .report-frame-wrap{grid-column:1/-1;width:100%}
 .report-frame{
-  display:block;width:100%;min-height:720px;border:0;background:transparent;
+  display:block;width:100%;height:900px;min-height:720px;border:0;background:transparent;
 }
 
 /* news */
@@ -793,11 +793,11 @@ footer ul a:hover{color:var(--gold)}
 })();
 
 
-/* ---------- 議会・市政レポート：Googleドライブから自動取得 ---------- */
+/* ---------- 議会・市政レポート：JSONP＋HTML代替表示 ---------- */
 (function(){
   const grid = document.getElementById("reportsGrid");
   if(!grid) return;
-  const gasUrl = window.SITE_CONFIG && SITE_CONFIG.APPS_SCRIPT_URL;
+  const gasUrl = String((window.SITE_CONFIG && SITE_CONFIG.APPS_SCRIPT_URL) || '').trim();
   const driveFolderUrl = "https://drive.google.com/drive/folders/1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb?usp=sharing";
   const statusHtml = (msg, withButton=false) =>
     '<div class="report-status">' + msg +
@@ -813,76 +813,32 @@ footer ul a:hover{color:var(--gold)}
     return;
   }
 
-  // PC・スマホとも同じJSONP方式で取得し、サイト内カードとして表示する。
-  // Googleドライブのページを iframe で直接開く方式は、PCブラウザで
-  // 「現在、ファイルを開くことができません」と表示される場合があるため使わない。
-  const cb = 'renderReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-  let loaded = false;
-  let fallbackShown = false;
-
-  // JSONPを制限するPCブラウザ向けの代替表示。
-  // Apps Script側でカードHTMLを作り、iframeとして表示する。
-  function showIframeFallback(){
-    if(loaded || fallbackShown) return;
-    fallbackShown = true;
-    cleanup();
-    const src = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports_iframe&t=' + Date.now();
-    grid.innerHTML = '<div class="report-frame-wrap">' +
-      '<iframe id="reportsFrame" class="report-frame" title="議会・市政レポート一覧" ' +
-      'src="' + esc(src) + '" loading="eager" referrerpolicy="no-referrer-when-downgrade" ' +
-      'scrolling="no"></iframe></div>';
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:[?#].*)?$/.test(gasUrl)){
+    grid.innerHTML = statusHtml('Apps ScriptのウェブアプリURLが正しくありません。末尾が /exec の本番URLを config.js に設定してください。', true);
+    return;
   }
 
-  window.addEventListener('message', function(e){
-    if(!e.data || e.data.type !== 'maekawaReportsHeight') return;
-    const frame = document.getElementById('reportsFrame');
-    const height = Number(e.data.height);
-    if(frame && Number.isFinite(height) && height > 100){
-      frame.style.height = Math.ceil(height + 8) + 'px';
-    }
-  });
-
-  const slowTimer = setTimeout(()=>{
-    if(!loaded){
-      showIframeFallback();
-    }
-  }, 8000);
-
-  const failTimer = setTimeout(()=>{
-    if(!loaded){
-      showIframeFallback();
-    }
-  }, 15000);
-
-  function cleanup(){
-    clearTimeout(slowTimer);
-    clearTimeout(failTimer);
-    try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
-    const old = document.getElementById(cb);
-    if(old) old.remove();
-  }
   function esc(v){
-    return String(v || '').replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+    return String(v == null ? '' : v).replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
   }
-  window[cb] = function(data){
-    loaded = true;
-    cleanup();
+
+  function renderReports(data){
     if(!data || !data.ok){
-      grid.innerHTML = statusHtml(esc((data && data.message) || '市政レポートを取得できませんでした。'), true);
+      showHtmlFallback();
       return;
     }
-    const reports = data.reports || [];
+    const reports = Array.isArray(data.reports) ? data.reports : [];
     if(!reports.length){
-      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。Googleドライブの指定フォルダにPDFを追加してください。', true);
+      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。', true);
       return;
     }
     grid.innerHTML = reports.map(r=>{
-      const title = esc(r.title);
+      const title = esc(r.title || '市政レポート');
       const date = esc(r.dateLabel || r.updatedLabel || '');
-      const pdf = esc(r.viewUrl);
-      const thumb = esc(r.thumbnailUrl);
+      const pdf = esc(r.viewUrl || driveFolderUrl);
+      const thumb = esc(r.thumbnailUrl || '');
       const desc = esc(r.description || 'PDFで市政レポートをご覧いただけます。');
-      return '<article class="report-card reveal">' +
+      return '<article class="report-card reveal on">' +
         '<a class="report-thumb" href="' + pdf + '" target="_blank" rel="noopener">' +
           '<span class="fallback-label">CITY REPORT<br>PDF</span>' +
           (thumb ? '<img src="' + thumb + '" alt="' + title + 'の表紙" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : '') +
@@ -895,19 +851,59 @@ footer ul a:hover{color:var(--gold)}
         '</div>' +
       '</article>';
     }).join('');
-    if(window.io){ document.querySelectorAll('#reportsGrid .reveal').forEach(el=>io.observe(el)); }
-  };
-  const script = document.createElement('script');
-  script.id = cb;
-  script.async = true;
-  script.referrerPolicy = 'no-referrer-when-downgrade';
-  script.src = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports&callback=' + encodeURIComponent(cb) + '&t=' + Date.now();
-  script.onerror = function(){
-    if(!loaded){
-      showIframeFallback();
+  }
+
+  let fallbackShown = false;
+  const embedToken = 'reports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+  function showHtmlFallback(){
+    if(fallbackShown) return;
+    fallbackShown = true;
+    cleanupJsonp();
+    const src = gasUrl + (gasUrl.includes('?') ? '&' : '?') +
+      'route=reports_iframe&embed_token=' + encodeURIComponent(embedToken) + '&t=' + Date.now();
+    grid.innerHTML = '<div class="report-frame-wrap">' +
+      '<iframe id="reportsFrame" class="report-frame" title="議会・市政レポート一覧" ' +
+      'src="' + esc(src) + '" loading="eager" referrerpolicy="no-referrer-when-downgrade" scrolling="auto"></iframe>' +
+      '</div>';
+  }
+
+  window.addEventListener('message', function(e){
+    if(!e.data || e.data.type !== 'maekawaReportsHeight' || e.data.token !== embedToken) return;
+    const frame = document.getElementById('reportsFrame');
+    const height = Number(e.data.height);
+    if(frame && Number.isFinite(height) && height > 100){
+      frame.style.height = Math.ceil(height + 12) + 'px';
     }
+  });
+
+  // 通常はサイト内へ直接カードを描画する。実際の /exec URLで応答確認済み。
+  const cb = 'maekawaReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+  let jsonpDone = false;
+  const jsonp = document.createElement('script');
+  const jsonpTimer = setTimeout(function(){
+    if(!jsonpDone) showHtmlFallback();
+  }, 12000);
+
+  function cleanupJsonp(){
+    clearTimeout(jsonpTimer);
+    try{ delete window[cb]; }catch(err){ window[cb] = undefined; }
+    if(jsonp.parentNode) jsonp.parentNode.removeChild(jsonp);
+  }
+
+  window[cb] = function(data){
+    if(fallbackShown) return;
+    jsonpDone = true;
+    cleanupJsonp();
+    renderReports(data);
   };
-  document.head.appendChild(script);
+  jsonp.onerror = function(){
+    if(!jsonpDone) showHtmlFallback();
+  };
+  jsonp.async = true;
+  jsonp.referrerPolicy = 'no-referrer-when-downgrade';
+  jsonp.src = gasUrl + (gasUrl.includes('?') ? '&' : '?') +
+    'route=reports&callback=' + encodeURIComponent(cb) + '&t=' + Date.now();
+  document.head.appendChild(jsonp);
 })();
 
 /* ---------- X（旧Twitter）タイムライン：読み込めたらフォールバックを隠す ---------- */

@@ -166,6 +166,7 @@ function handleReportsRequest_(params) {
 
 function handleReportsIframe_(params) {
   const refresh = String(params.refresh || '') === '1';
+  const embedToken = String(params.embed_token || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 100);
   const payload = getReportsPayload_(refresh);
   const folderUrl = (payload && payload.folderUrl) || ('https://drive.google.com/drive/folders/' + REPORTS_FOLDER_ID + '?usp=sharing');
   const reports = (payload && payload.reports) || [];
@@ -200,7 +201,7 @@ function handleReportsIframe_(params) {
   const html = '<!doctype html>' +
     '<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<style>' +
-    '*{box-sizing:border-box}body{margin:0;background:transparent;color:#eef3ff;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;line-height:1.8;overflow:hidden}' +
+    '*{box-sizing:border-box}body{margin:0;background:transparent;color:#eef3ff;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;line-height:1.8;overflow:auto}' +
     '.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding:2px}' +
     '.report-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-width:0}' +
     '.report-thumb{aspect-ratio:3/4;background:linear-gradient(135deg,#132a55,#0a1732);position:relative;display:grid;place-items:center;color:#9fb0d0;font-size:12px;letter-spacing:.12em;overflow:hidden;text-decoration:none}' +
@@ -210,7 +211,7 @@ function handleReportsIframe_(params) {
     '.report-status{grid-column:1/-1;background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.3);border-radius:18px;padding:30px;text-align:center;color:#cdd7ee}' +
     '@media(max-width:900px){.report-grid{grid-template-columns:1fr 1fr}}@media(max-width:640px){.report-grid{grid-template-columns:1fr}}' +
     '</style></head><body><div class="report-grid">' + cards + '</div>' +
-    '<script>function h(){try{parent.postMessage({type:"maekawaReportsHeight",height:document.documentElement.scrollHeight||document.body.scrollHeight},"*");}catch(e){}}window.addEventListener("load",function(){h();setTimeout(h,500);setTimeout(h,1500);});window.addEventListener("resize",h);</script>' +
+    '<script>var token=' + JSON.stringify(embedToken) + ';function h(){try{top.postMessage({type:"maekawaReportsHeight",token:token,height:Math.max(document.documentElement.scrollHeight,document.body.scrollHeight)},"*");}catch(e){}}window.addEventListener("load",function(){h();setTimeout(h,500);setTimeout(h,1500);});window.addEventListener("resize",h);if(window.ResizeObserver){new ResizeObserver(h).observe(document.body);}if(document.fonts&&document.fonts.ready){document.fonts.ready.then(h);}</script>' +
     '</body></html>';
 
   return HtmlService.createHtmlOutput(html)
@@ -219,9 +220,9 @@ function handleReportsIframe_(params) {
 
 
 function getReportsPayload_(refresh) {
+  const cacheKey = 'city_reports_v3_' + REPORTS_FOLDER_ID;
   try {
     const cache = CacheService.getScriptCache();
-    const cacheKey = 'city_reports_v2_' + REPORTS_FOLDER_ID;
     if (!refresh) {
       const cached = cache.get(cacheKey);
       if (cached) return JSON.parse(cached);
@@ -280,10 +281,26 @@ function getReportsPayload_(refresh) {
       reports: reports
     };
 
-    // PCで初回読み込みが遅くならないよう、一覧データを短時間キャッシュする。
-    cache.put(cacheKey, JSON.stringify(payload), 600);
+    // 通常の高速表示用キャッシュと、一時障害時に使う最終正常データを保存する。
+    // キャッシュやプロパティ保存に失敗しても、レポート表示自体は継続する。
+    try {
+      cache.put(cacheKey, JSON.stringify(payload), 21600);
+    } catch (cacheError) {}
+    try {
+      saveLastGoodReportsPayload_(payload);
+    } catch (saveError) {}
     return payload;
   } catch (err) {
+    // Driveの一時障害・実行時間超過などの場合は、最後に正常取得した一覧を表示する。
+    try {
+      const lastGood = getLastGoodReportsPayload_();
+      if (lastGood && lastGood.ok && Array.isArray(lastGood.reports)) {
+        lastGood.stale = true;
+        lastGood.fallbackReason = String(err && err.message || err || 'temporary error');
+        return lastGood;
+      }
+    } catch (fallbackError) {}
+
     return {
       ok: false,
       message: 'Googleドライブの市政レポートフォルダを読み込めませんでした。フォルダ共有設定、Apps Scriptの実行アカウント、Drive権限を確認してください。詳細：' + err.message,
@@ -292,6 +309,49 @@ function getReportsPayload_(refresh) {
       reports: []
     };
   }
+}
+
+/**
+ * Script Propertiesは1件あたりの容量に上限があるため、JSONを分割して保存する。
+ * Googleドライブが一時的に応答しない場合でも、最後に正常取得した一覧を返せる。
+ */
+function saveLastGoodReportsPayload_(payload) {
+  const props = PropertiesService.getScriptProperties();
+  const prefix = 'city_reports_last_good_v3_' + REPORTS_FOLDER_ID + '_';
+  const json = JSON.stringify(payload || {});
+  const chunkSize = 7500;
+  const chunks = [];
+
+  for (let i = 0; i < json.length; i += chunkSize) {
+    chunks.push(json.slice(i, i + chunkSize));
+  }
+
+  const oldCount = Number(props.getProperty(prefix + 'count') || 0);
+  const values = {};
+  values[prefix + 'count'] = String(chunks.length);
+  chunks.forEach(function(chunk, index) {
+    values[prefix + index] = chunk;
+  });
+  props.setProperties(values, false);
+
+  for (let i = chunks.length; i < oldCount; i++) {
+    props.deleteProperty(prefix + i);
+  }
+}
+
+function getLastGoodReportsPayload_() {
+  const props = PropertiesService.getScriptProperties();
+  const prefix = 'city_reports_last_good_v3_' + REPORTS_FOLDER_ID + '_';
+  const count = Number(props.getProperty(prefix + 'count') || 0);
+  if (!count || count < 1 || count > 100) return null;
+
+  let json = '';
+  for (let i = 0; i < count; i++) {
+    const chunk = props.getProperty(prefix + i);
+    if (chunk === null) return null;
+    json += chunk;
+  }
+  return JSON.parse(json);
 }
 
 function makeSortKeyFromName_(name, fallbackDate) {
