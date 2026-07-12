@@ -1,5 +1,5 @@
 /* 前川こうき後援会サイト設定
-   完成版v9：X埋め込みをダークテーマに統一し、描画を確認できた場合のみ表示（白画面防止）／市政レポート直下配置 2026-07-12 */
+   完成版v10：Xタイムライン埋め込み削除・公式Xリンクカードのみ表示／市政レポート直下配置 2026-07-12 */
 
 window.SITE_CONFIG = {
   APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwchzlQJe4SoLjkMiw0q6u_UF1zYGfH5mAX7GtAyeJJnInvGQHnjFlT_0cWHVe46R3OiA/exec",
