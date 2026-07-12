@@ -1,5 +1,5 @@
 /* 前川こうき後援会サイト設定
-   完成版v7：市政レポート直下にXを確実に配置／PCのX黒画面対策／スマホ対応 2026-07-12 */
+   完成版v8：X描画完了時のみ表示／白・黒画面防止／市政レポート直下配置 2026-07-12 */
 
 window.SITE_CONFIG = {
   APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwchzlQJe4SoLjkMiw0q6u_UF1zYGfH5mAX7GtAyeJJnInvGQHnjFlT_0cWHVe46R3OiA/exec",
@@ -115,6 +115,65 @@ window.SITE_CONFIG = {
         min-height:640px!important;
         background:#fff!important;
         color-scheme:light!important;
+      }
+
+
+      .x-v8-wrapper{
+        max-width:760px;
+        margin:0 auto;
+      }
+      .x-v8-guide{
+        max-width:760px;
+        margin-bottom:18px;
+        padding:24px 22px;
+      }
+      .x-v8-guide .x-stable-icon{
+        width:54px;
+        height:54px;
+        margin-bottom:12px;
+        font-size:25px;
+      }
+      .x-v8-guide p{
+        margin-bottom:16px;
+      }
+      .x-v8-loading{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        min-height:220px;
+        padding:28px;
+        border:1px solid rgba(255,255,255,.14);
+        border-radius:18px;
+        background:rgba(255,255,255,.045);
+        text-align:center;
+      }
+      .x-v8-loading p{
+        margin:0;
+        color:#9fb0d0;
+        font-size:14px;
+        line-height:1.8;
+      }
+      .x-v8-unavailable{
+        min-height:120px;
+      }
+      .x-v8-mount{
+        display:none;
+        width:100%;
+        min-height:640px;
+        overflow:hidden;
+        border:1px solid rgba(255,255,255,.14);
+        border-radius:18px;
+        background:#060d1f;
+      }
+      .x-v8-mount iframe{
+        display:block!important;
+        width:100%!important;
+        max-width:100%!important;
+        min-height:640px!important;
+        border-radius:18px!important;
+        background:#060d1f!important;
+        color-scheme:dark!important;
       }
 
       @media(max-width:640px){
