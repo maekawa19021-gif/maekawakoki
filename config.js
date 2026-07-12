@@ -1,5 +1,5 @@
 /* 前川こうき後援会サイト設定
-   完成版v6：市政レポートPC・スマホ対応／PCのX黒画面対策／スマホXリンク／市政レポート直下配置 2026-07-12 */
+   完成版v7：市政レポート直下にXを確実に配置／PCのX黒画面対策／スマホ対応 2026-07-12 */
 
 window.SITE_CONFIG = {
   APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwchzlQJe4SoLjkMiw0q6u_UF1zYGfH5mAX7GtAyeJJnInvGQHnjFlT_0cWHVe46R3OiA/exec",
@@ -469,6 +469,17 @@ window.SITE_CONFIG = {
 
 
   function moveXBelowReports() {
+    const reports = document.getElementById("reports");
+    const news = document.getElementById("news");
+
+    if (!reports || !news) return;
+
+    if (reports.nextElementSibling !== news) {
+      reports.insertAdjacentElement("afterend", news);
+    }
+  }
+
+  function apply() {
     addStyles();
     moveXBelowReports();
     installReports();
@@ -476,8 +487,14 @@ window.SITE_CONFIG = {
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => setTimeout(apply, 0), { once: true });
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+        window.setTimeout(apply, 0);
+      },
+      { once: true }
+    );
   } else {
-    setTimeout(apply, 0);
+    window.setTimeout(apply, 0);
   }
 })();
