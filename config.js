@@ -6,7 +6,7 @@ window.SITE_CONFIG = {
 
   // X（旧Twitter）タイムライン埋め込みを試すかどうか。
   // false にすると埋め込みをやめ、公式Xへのリンクカードのみ表示します。
-  SHOW_X_TIMELINE: true,
+  SHOW_X_TIMELINE: false,
 
   FORM_URLS: {
     join: "https://docs.google.com/forms/d/e/1FAIpQLSeNnKNgI4qroVGcVkSkW5tWOzl1apavfZZl_tQ3hisZEm9PGw/viewform",
