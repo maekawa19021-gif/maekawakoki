@@ -4,6 +4,8 @@
 window.SITE_CONFIG = {
   APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwchzlQJe4SoLjkMiw0q6u_UF1zYGfH5mAX7GtAyeJJnInvGQHnjFlT_0cWHVe46R3OiA/exec",
 
+  CONTACT_APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbx4Jrc6xGU84bX_qfpGbiu3CjoLat6zrDAqEr4K6yt206Loqfn-qKYEWvd5mwLqLw/exec",
+
   // X（旧Twitter）タイムライン埋め込みを試すかどうか。
   // false にすると埋め込みをやめ、公式Xへのリンクカードのみ表示します。
   SHOW_X_TIMELINE: false,
