@@ -10,14 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <meta name="theme-color" content="#060d1f">
-<meta name="build-version" content="20260711-x-cache-reload-v2">
+<meta name="build-version" content="20260712-contact-phone-required-v2">
 <meta property="og:type" content="website">
 <meta property="og:title" content="前川こうき後援会 公式サイト｜国民民主党 高松市議会議員">
 <meta property="og:description" content="交渉力で、香川の未来を切り拓く。国民民主党 高松市議会議員 前川こうき（前川幸輝）後援会の公式サイト。">
 <!-- 公開後、og:image は https://～ のフルURLに書き換えると SNSシェア時に画像が確実に表示されます -->
 <meta property="og:image" content="assets/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<script src="config.js"></script>
+<script src="config.js?v=20260712-contact-phone-v2"></script>
 <style>
 :root{
   --bg:#060d1f;
@@ -937,10 +937,10 @@ footer ul a:hover{color:var(--gold)}
             </label>
 
             <label class="contact-field">
-              <span class="contact-label">電話番号<span class="contact-optional">任意</span></span>
+              <span class="contact-label">電話番号<span class="contact-required">必須</span></span>
               <input class="contact-input" type="tel" name="phone"
                      autocomplete="tel" inputmode="tel" maxlength="20"
-                     placeholder="09012345678">
+                     placeholder="09012345678" required>
             </label>
 
             <label class="contact-field">
@@ -1358,8 +1358,13 @@ if(matchMedia("(hover:hover)").matches){
   const status = document.getElementById("contactStatus");
   if(!form || !status) return;
 
+  const CONTACT_ENDPOINT_FALLBACK =
+    "https://script.google.com/macros/s/AKfycbx4Jrc6xGU84bX_qfpGbiu3CjoLat6zrDAqEr4K6yt206Loqfn-qKYEWvd5mwLqLw/exec";
+
   const endpoint = String(
-    (window.SITE_CONFIG && window.SITE_CONFIG.CONTACT_APPS_SCRIPT_URL) || ""
+    (window.SITE_CONFIG &&
+      window.SITE_CONFIG.CONTACT_APPS_SCRIPT_URL) ||
+    CONTACT_ENDPOINT_FALLBACK
   ).trim();
 
   function showStatus(type, message){
