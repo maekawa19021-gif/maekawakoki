@@ -1,5 +1,5 @@
 /* 前川こうき後援会サイト設定
-   市政レポート再取得・X安定表示修正版 2026-07-12 v5 */
+   完成版：市政レポートPC・スマホ対応／XはPC埋め込み・スマホリンク／Xを市政レポート直下へ配置 2026-07-12 */
 
 window.SITE_CONFIG = {
   APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwchzlQJe4SoLjkMiw0q6u_UF1zYGfH5mAX7GtAyeJJnInvGQHnjFlT_0cWHVe46R3OiA/exec",
@@ -48,6 +48,15 @@ window.SITE_CONFIG = {
       .x-stable-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
       .x-stable-link{display:inline-flex;justify-content:center;align-items:center;min-height:48px;padding:11px 24px;border-radius:999px;background:linear-gradient(135deg,#ffd400,#ffaa00);color:#0a1732!important;font-weight:900;text-decoration:none;box-shadow:0 6px 24px rgba(255,212,0,.28)}
       .x-stable-link-secondary{background:rgba(255,255,255,.06);color:#eef3ff!important;border:1px solid rgba(255,255,255,.26);box-shadow:none}
+
+
+      .x-desktop-shell{max-width:760px;margin:0 auto}
+      .x-desktop-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:240px;padding:30px;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.045);text-align:center}
+      .x-desktop-loading p{margin:0;color:#9fb0d0;font-size:14px}
+      .x-desktop-spinner{width:38px;height:38px;margin:0 auto 16px;border:3px solid rgba(255,255,255,.16);border-top-color:#ffd400;border-radius:50%;animation:xDeskSpin .8s linear infinite}
+      @keyframes xDeskSpin{to{transform:rotate(360deg)}}
+      .x-desktop-mount{display:none;width:100%;min-height:640px;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:#000}
+      .x-desktop-mount iframe{display:block!important;width:100%!important;max-width:100%!important;min-height:640px!important;border-radius:18px!important}
 
       @media(max-width:640px){
         .report-v5-state{padding:32px 18px}
@@ -244,30 +253,140 @@ window.SITE_CONFIG = {
     load();
   }
 
+
   function installX() {
     const old = document.querySelector(".x-embed");
-    if (!old || old.dataset.v5 === "true") return;
+    if (!old || old.dataset.finalComplete === "true") return;
 
     const box = document.createElement("div");
     box.className = "x-embed reveal on";
-    box.dataset.v5 = "true";
-    box.innerHTML = `
-      <div class="x-stable-card">
-        <div class="x-stable-icon" aria-hidden="true">𝕏</div>
-        <h3>前川こうき 公式X</h3>
-        <p class="x-stable-handle">@maekawa190</p>
-        <p>日々の活動や最新情報は公式Xで発信しています。下のボタンから最新投稿をご覧いただけます。</p>
-        <div class="x-stable-actions">
-          <a class="x-stable-link" href="${X_URL}" target="_blank" rel="noopener">𝕏 最新投稿を見る</a>
-          <a class="x-stable-link x-stable-link-secondary" href="${X_URL}" target="_blank" rel="noopener noreferrer">ブラウザで公式Xを開く</a>
-        </div>
-      </div>`;
+    box.dataset.finalComplete = "true";
     old.replaceWith(box);
+
     document.querySelectorAll("script[data-x-fresh-loader]").forEach(s => s.remove());
+
+    function linkCard(message) {
+      const wrap = document.createElement("div");
+      wrap.innerHTML = `
+        <div class="x-stable-card">
+          <div class="x-stable-icon" aria-hidden="true">𝕏</div>
+          <h3>前川こうき 公式X</h3>
+          <p class="x-stable-handle">@maekawa190</p>
+          <p>${message}</p>
+          <div class="x-stable-actions">
+            <a class="x-stable-link" href="${X_URL}" target="_blank" rel="noopener">𝕏 最新投稿を見る</a>
+            <a class="x-stable-link x-stable-link-secondary" href="${X_URL}" target="_blank" rel="noopener noreferrer">ブラウザで公式Xを開く</a>
+          </div>
+        </div>`;
+      return wrap.firstElementChild;
+    }
+
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      box.replaceChildren(
+        linkCard("スマートフォンでは表示の安定性を優先し、公式Xへのリンクを表示しています。下のボタンから最新投稿をご覧いただけます。")
+      );
+      return;
+    }
+
+    const shell = document.createElement("div");
+    shell.className = "x-desktop-shell";
+
+    const loading = document.createElement("div");
+    loading.className = "x-desktop-loading";
+    loading.innerHTML = `<div class="x-desktop-spinner" aria-hidden="true"></div><p>Xの最新投稿を読み込んでいます…</p>`;
+
+    const mount = document.createElement("div");
+    mount.className = "x-desktop-mount";
+
+    const timeline = document.createElement("a");
+    timeline.className = "twitter-timeline";
+    timeline.href = "https://twitter.com/maekawa190";
+    timeline.textContent = "前川こうき（@maekawa190）の投稿";
+    timeline.setAttribute("data-height", "640");
+    timeline.setAttribute("data-theme", "dark");
+    timeline.setAttribute("data-dnt", "true");
+    timeline.setAttribute("data-chrome", "noheader nofooter noborders transparent");
+    mount.appendChild(timeline);
+
+    shell.appendChild(loading);
+    shell.appendChild(mount);
+    box.replaceChildren(shell);
+
+    let finished = false;
+
+    function showTimeline() {
+      const iframe = mount.querySelector("iframe");
+      if (!iframe || finished) return;
+      finished = true;
+      loading.remove();
+      mount.style.display = "block";
+    }
+
+    function showFallback() {
+      if (finished) return;
+      finished = true;
+      box.replaceChildren(
+        linkCard("X側またはブラウザ側の制限によりタイムラインを表示できませんでした。公式Xから最新投稿をご覧ください。")
+      );
+    }
+
+    const observer = new MutationObserver(showTimeline);
+    observer.observe(mount, {childList:true, subtree:true});
+
+    function runWidget() {
+      try {
+        if (window.twttr && window.twttr.widgets && window.twttr.widgets.load) {
+          window.twttr.widgets.load(mount);
+        } else {
+          showFallback();
+        }
+      } catch (_) {
+        showFallback();
+      }
+    }
+
+    if (window.twttr && window.twttr.widgets) {
+      runWidget();
+    } else {
+      const existing = document.querySelector('script[src^="https://platform.twitter.com/widgets.js"]');
+      if (existing) {
+        existing.addEventListener("load", runWidget, {once:true});
+        existing.addEventListener("error", showFallback, {once:true});
+      } else {
+        const script = document.createElement("script");
+        script.async = true;
+        script.charset = "utf-8";
+        script.src = "https://platform.twitter.com/widgets.js";
+        script.onload = runWidget;
+        script.onerror = showFallback;
+        document.head.appendChild(script);
+      }
+    }
+
+    window.setTimeout(() => {
+      if (mount.querySelector("iframe")) {
+        showTimeline();
+      } else {
+        observer.disconnect();
+        showFallback();
+      }
+    }, 15000);
+  }
+
+
+
+  function moveXBelowReports() {
+    const reports = document.getElementById("reports");
+    const news = document.getElementById("news");
+    if (!reports || !news) return;
+    if (reports.nextElementSibling !== news) {
+      reports.insertAdjacentElement("afterend", news);
+    }
   }
 
   function apply() {
     addStyles();
+    moveXBelowReports();
     installReports();
     installX();
   }
