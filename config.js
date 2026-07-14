@@ -13,11 +13,11 @@
    ============================================================ */
 window.SITE_CONFIG = {
   // ★ここだけ、Apps Scriptをデプロイした後に必ず貼り付けてください。
-  APPS_SCRIPT_URL: "",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwchzlQJe4SoLjkMiw0q6u_UF1zYGfH5mAX7GtAyeJJnInvGQHnjFlT_0cWHVe46R3OiA/exec,
 
   FORM_URLS: {
     // setupForm() 実行後に発行される「回答者用フォーム」のURLを貼り付けます。
-    council: "",
+    council: "https://docs.google.com/forms/d/e/1FAIpQLScJcWqntGiKKVeN32JmFS12L5zedT4GX8-a41VUy9VpHHSNMw/viewform",
 
     join:   "https://docs.google.com/forms/d/e/1FAIpQLSeNnKNgI4qroVGcVkSkW5tWOzl1apavfZZl_tQ3hisZEm9PGw/viewform",
     donate: "",
