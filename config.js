@@ -12,7 +12,7 @@ window.SITE_CONFIG = {
 
   FORM_URLS: {
     // setupForm() 実行後に発行された「回答者用フォーム」のURLを設定してください。
-    council: "",
+    council: "https://docs.google.com/forms/d/e/1FAIpQLScJcWqntGiKKVeN32JmFS12L5zedT4GX8-a41VUy9VpHHSNMw/viewform",
     join: "https://docs.google.com/forms/d/e/1FAIpQLSeNnKNgI4qroVGcVkSkW5tWOzl1apavfZZl_tQ3hisZEm9PGw/viewform",
     donate: "",
     party: "",
