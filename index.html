@@ -10,13 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <meta name="theme-color" content="#060d1f">
+<meta name="build-version" content="20260714-x-above-reports-latest">
 <meta property="og:type" content="website">
 <meta property="og:title" content="前川こうき後援会 公式サイト｜国民民主党 高松市議会議員">
 <meta property="og:description" content="交渉力で、香川の未来を切り拓く。国民民主党 高松市議会議員 前川こうき（前川幸輝）後援会の公式サイト。">
 <!-- 公開後、og:image は https://～ のフルURLに書き換えると SNSシェア時に画像が確実に表示されます -->
 <meta property="og:image" content="assets/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<script src="config.js"></script>
+<script src="config.js?v=20260712-contact-phone-v2"></script>
 <style>
 :root{
   --bg:#060d1f;
@@ -236,6 +237,10 @@ section{position:relative;padding:110px 28px}
   background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.22);border-radius:14px;
   padding:34px 22px;text-align:center;color:var(--muted);font-size:14px;grid-column:1/-1;
 }
+.report-frame-wrap{grid-column:1/-1;width:100%}
+.report-frame{
+  display:block;width:100%;height:900px;min-height:720px;border:0;background:transparent;
+}
 
 /* news */
 .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -269,8 +274,8 @@ section{position:relative;padding:110px 28px}
   background:#fff;color:#0a1732;font-weight:800;font-size:14px;text-decoration:none;transition:.25s;
 }
 .x-follow-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(255,255,255,.18)}
-/* タイムライン読み込み成功時はフォールバックを隠す */
-.x-embed.loaded .x-fallback{display:none}
+/* X側が空白になる場合に備え、直接開くボタンは常に表示する */
+.x-embed.loaded .x-fallback{display:flex}
 
 /* marquee */
 .marquee{overflow:hidden;border-block:1px solid var(--line);padding:18px 0;background:rgba(255,255,255,.02)}
@@ -291,8 +296,6 @@ section{position:relative;padding:110px 28px}
 }
 .sup-card:hover{border-color:rgba(255,212,0,.55);transform:translateY(-4px)}
 .sup-card.featured{border:1px solid rgba(255,212,0,.6);background:linear-gradient(160deg,rgba(255,212,0,.1),rgba(255,255,255,.03))}
-.sup-card.council-card{grid-column:1/-1;border-color:rgba(77,163,255,.55);background:linear-gradient(135deg,rgba(77,163,255,.14),rgba(255,212,0,.06),rgba(255,255,255,.03))}
-.sup-card.council-card .sup-price{color:#8fc2ff}
 .sup-tag{
   position:absolute;top:20px;right:-38px;transform:rotate(38deg);
   background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a1732;
@@ -379,7 +382,6 @@ footer ul a:hover{color:var(--gold)}
   .hamburger.open span:nth-child(2){opacity:0}
   .hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
   .stat-grid,.policy-grid,.support-grid,.report-grid{grid-template-columns:1fr}
-  .sup-card.council-card{grid-column:auto}
   section{padding:80px 20px}
 }
 /* ---------- hero figure（宣材写真：明るくはっきり表示） ---------- */
@@ -486,11 +488,32 @@ footer ul a:hover{color:var(--gold)}
   color:inherit;
   font-size:inherit;
 }
-.x-embed.loaded .x-fallback{display:none;}
+.x-embed.loaded .x-fallback{
+  display:flex;
+  min-height:auto;
+  margin-bottom:18px;
+  padding:24px 22px;
+}
+.x-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.x-reload-btn{
+  appearance:none;border:1px solid rgba(255,255,255,.3);border-radius:999px;
+  padding:11px 22px;background:rgba(255,255,255,.06);color:var(--txt);
+  font:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:.25s;
+}
+.x-reload-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.x-reload-btn:disabled{opacity:.55;cursor:wait;transform:none}
+.x-status{margin:0!important;color:var(--muted);font-size:12px!important;min-height:1.8em}
+.x-timeline-mount{width:100%;min-height:0}
+.x-timeline-mount iframe{width:100%!important;max-width:100%!important}
+.x-embed.x-loading .x-timeline-mount{min-height:80px}
 @media(max-width:640px){
   .x-embed{min-height:auto;}
   .x-embed .twitter-timeline,
-  .x-embed iframe{display:none!important;}
+  .x-embed iframe{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
   .x-embed.loaded{min-height:auto;}
   .x-embed.loaded .x-fallback{display:flex;}
   .x-fallback{
@@ -502,6 +525,108 @@ footer ul a:hover{color:var(--gold)}
     border-radius:18px;
   }
   .x-fallback p{font-size:14px;}
+}
+
+
+/* ---------- contact ---------- */
+.contact-section{
+  background:
+    radial-gradient(circle at 88% 14%,rgba(77,163,255,.14),transparent 34%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+}
+.contact-layout{
+  display:grid;
+  grid-template-columns:.82fr 1.18fr;
+  gap:30px;
+  align-items:start;
+}
+.contact-info,.contact-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 14px 46px rgba(0,0,0,.18);
+}
+.contact-info{padding:34px 30px}
+.contact-info h3{font-size:22px;margin-bottom:12px}
+.contact-info>p{color:var(--muted);font-size:14px}
+.contact-methods{display:grid;gap:14px;margin-top:24px}
+.contact-method{
+  display:flex;gap:12px;padding:15px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:14px;
+}
+.contact-method-icon{
+  flex:0 0 36px;width:36px;height:36px;
+  display:grid;place-items:center;border-radius:10px;
+  background:rgba(255,212,0,.14);color:var(--gold);
+}
+.contact-method b{display:block;margin-bottom:2px;font-size:14px}
+.contact-method a,.contact-method span{
+  color:var(--muted);font-size:13px;overflow-wrap:anywhere;
+}
+.contact-card{padding:36px 34px}
+.contact-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+}
+.contact-field{display:grid;gap:8px}
+.contact-field.full{grid-column:1/-1}
+.contact-label{font-size:14px;font-weight:700}
+.contact-required{margin-left:6px;color:var(--gold);font-size:11px}
+.contact-optional{margin-left:6px;color:var(--muted);font-size:11px;font-weight:500}
+.contact-input,.contact-select,.contact-textarea{
+  width:100%;color:var(--txt);
+  background:rgba(4,10,25,.66);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;font:inherit;font-size:15px;
+  outline:none;transition:.2s;
+}
+.contact-input,.contact-select{min-height:50px;padding:0 14px}
+.contact-textarea{min-height:180px;padding:14px;resize:vertical}
+.contact-input:focus,.contact-select:focus,.contact-textarea:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(255,212,0,.1);
+}
+.contact-select option{background:#0a1732;color:#eef3ff}
+.contact-consent{
+  display:flex;align-items:flex-start;gap:10px;
+  color:var(--muted);font-size:13px;line-height:1.7;
+}
+.contact-consent input{margin-top:5px;accent-color:var(--gold)}
+.contact-consent a{color:var(--gold);text-decoration:underline}
+.contact-actions{
+  display:flex;align-items:center;gap:16px;
+  flex-wrap:wrap;margin-top:24px;
+}
+.contact-submit{border:0;cursor:pointer}
+.contact-submit:disabled{opacity:.55;cursor:not-allowed}
+.contact-note{color:var(--muted);font-size:12px}
+.contact-status{
+  display:none;margin-top:18px;padding:14px 16px;
+  border-radius:12px;font-size:14px;
+}
+.contact-status.show{display:block}
+.contact-status.success{
+  color:#a8f0c5;background:rgba(40,190,110,.12);
+  border:1px solid rgba(40,190,110,.35);
+}
+.contact-status.error{
+  color:#ffb7b7;background:rgba(255,90,90,.12);
+  border:1px solid rgba(255,90,90,.35);
+}
+.contact-honeypot{
+  position:absolute!important;left:-9999px!important;
+  width:1px!important;height:1px!important;overflow:hidden!important;
+}
+@media(max-width:820px){.contact-layout{grid-template-columns:1fr}}
+@media(max-width:640px){
+  .contact-card,.contact-info{padding:26px 20px}
+  .contact-grid{grid-template-columns:1fr}
+  .contact-field.full{grid-column:auto}
+  .contact-actions{flex-direction:column;align-items:stretch}
+  .contact-submit{width:100%;justify-content:center}
 }
 
 </style>
@@ -516,7 +641,6 @@ footer ul a:hover{color:var(--gold)}
   </a>
   <button class="hamburger" id="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="navLinks">
-    <li><a href="council.html">市議会へのご意見</a></li>
     <li><a href="#news">活動報告</a></li>
     <li><a href="#reports">市政レポート</a></li>
     <li><a href="#profile">プロフィール</a></li>
@@ -570,14 +694,17 @@ footer ul a:hover{color:var(--gold)}
   <div class="wrap">
     <p class="sec-label en">NEWS &amp; ACTIVITY</p>
     <h2 class="sec-title reveal">活動報告</h2>
-    <p class="sec-lead reveal">日々の活動は X（旧Twitter）で発信中。PCではタイムラインを表示し、スマホでは確実に開けるリンクを表示します。</p>
+    <p class="sec-lead reveal">日々の活動は X（旧Twitter）で発信中。PC・スマホともタイムラインを表示し、埋め込みが表示されない場合も直接Xで確認できます。</p>
     <div class="x-embed reveal">
-      <a class="twitter-timeline" data-height="640" data-theme="dark" data-chrome="noheader nofooter transparent"
-         href="https://twitter.com/maekawa190?ref_src=twsrc%5Etfw">前川こうき（@maekawa190）の投稿</a>
       <div class="x-fallback" id="xFallback">
-        <p>スマホではXアプリ・ブラウザで最新投稿をご覧ください。<br><span class="x-fallback-note">タイムライン埋め込みは、端末やブラウザの設定により表示されない場合があります。</span></p>
-        <a class="x-follow-btn" href="https://x.com/maekawa190" target="_blank" rel="noopener">𝕏 &nbsp;@maekawa190 をXで見る</a>
+        <p>埋め込みが空白になる場合も、Xアプリ・ブラウザで最新投稿をご覧いただけます。<br><span class="x-fallback-note">ブラウザの追跡防止機能などにより、タイムラインが表示されない場合があります。</span></p>
+        <div class="x-actions">
+          <a class="x-follow-btn" href="https://x.com/maekawa190" target="_blank" rel="noopener">𝕏 &nbsp;Xで最新投稿を見る</a>
+          <button class="x-reload-btn" id="xReloadBtn" type="button">↻ タイムラインを再読み込み</button>
+        </div>
+        <p class="x-status" id="xStatus" aria-live="polite">タイムラインを読み込んでいます…</p>
       </div>
+      <div class="x-timeline-mount" id="xTimelineMount"></div>
     </div>
   </div>
 </section>
@@ -698,15 +825,8 @@ footer ul a:hover{color:var(--gold)}
   <div class="wrap">
     <p class="sec-label en">SUPPORT</p>
     <h2 class="sec-title reveal">前川こうきを応援する</h2>
-    <p class="sec-lead reveal">市政へのご意見・ご要望と、後援会・寄付・党員サポーターのお申し込みを受け付けています。</p>
+    <p class="sec-lead reveal">あなたに合った方法で、力を貸してください。お申し込みは各フォームから約3分で完了します。</p>
     <div class="support-grid stagger">
-      <div class="sup-card council-card">
-        <div class="sup-icon">🏛️</div>
-        <h3>高松市議会で取り上げてほしいこと</h3>
-        <p class="sup-price en">VOICE TO COUNCIL ／ 後援会入会を兼ねます</p>
-        <p>道路、公共交通、子育て、教育、福祉、防災、地域課題など、市議会で質問・提案してほしいことをお寄せください。送信内容は前川こうき事務所へ通知されます。</p>
-        <a class="btn btn-gold" href="council.html">市政への意見・要望を送る →</a>
-      </div>
       <div class="sup-card">
         <div class="sup-icon">🤝</div>
         <h3>後援会に入会する</h3>
@@ -756,6 +876,119 @@ footer ul a:hover{color:var(--gold)}
   </div>
 </section>
 
+
+<!-- ======= CONTACT ======= -->
+<section id="contact" class="contact-section">
+  <div class="wrap">
+    <p class="sec-label en">CONTACT</p>
+    <h2 class="sec-title reveal">お問い合わせ</h2>
+    <p class="sec-lead reveal">
+      市政へのご意見、ご相談、活動へのご要望などをお寄せください。
+      内容を確認の上、必要に応じてご連絡いたします。
+    </p>
+
+    <div class="contact-layout">
+      <div class="contact-info reveal">
+        <h3>お気軽にご連絡ください</h3>
+        <p>地域の課題や暮らしの中で気になることなど、小さなことでも構いません。</p>
+        <div class="contact-methods">
+          <div class="contact-method">
+            <div class="contact-method-icon">✉</div>
+            <div>
+              <b>メール</b>
+              <a href="mailto:maekawakoki.mton@gmail.com">maekawakoki.mton@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-method-icon">☎</div>
+            <div>
+              <b>電話</b>
+              <a href="tel:09077861112">090-7786-1112</a>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-method-icon">⌂</div>
+            <div>
+              <b>所在地</b>
+              <span>〒769-0101<br>香川県高松市国分寺町新居1163-6</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-card reveal">
+        <form id="contactForm" novalidate>
+          <div class="contact-honeypot" aria-hidden="true">
+            <label>入力しないでください
+              <input type="text" name="website" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
+
+          <div class="contact-grid">
+            <label class="contact-field">
+              <span class="contact-label">お名前<span class="contact-required">必須</span></span>
+              <input class="contact-input" type="text" name="name"
+                     autocomplete="name" maxlength="80" required>
+            </label>
+
+            <label class="contact-field">
+              <span class="contact-label">メールアドレス<span class="contact-required">必須</span></span>
+              <input class="contact-input" type="email" name="email"
+                     autocomplete="email" maxlength="150" required>
+            </label>
+
+            <label class="contact-field">
+              <span class="contact-label">電話番号<span class="contact-required">必須</span></span>
+              <input class="contact-input" type="tel" name="phone"
+                     autocomplete="tel" inputmode="tel" maxlength="20"
+                     placeholder="09012345678" required>
+            </label>
+
+            <label class="contact-field">
+              <span class="contact-label">お問い合わせ種別<span class="contact-required">必須</span></span>
+              <select class="contact-select" name="category" required>
+                <option value="">選択してください</option>
+                <option value="市政への意見・要望">市政への意見・要望</option>
+                <option value="地域の相談">地域の相談</option>
+                <option value="後援会について">後援会について</option>
+                <option value="取材・講演・活動依頼">取材・講演・活動依頼</option>
+                <option value="ホームページについて">ホームページについて</option>
+                <option value="その他">その他</option>
+              </select>
+            </label>
+
+            <label class="contact-field full">
+              <span class="contact-label">お問い合わせ内容<span class="contact-required">必須</span></span>
+              <textarea class="contact-textarea" name="message"
+                        maxlength="3000" required
+                        placeholder="お問い合わせ内容をご入力ください。"></textarea>
+            </label>
+
+            <label class="contact-consent contact-field full">
+              <input type="checkbox" name="consent" value="true" required>
+              <span>
+                <a href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>
+                を確認し、個人情報の取扱いに同意します。
+              </span>
+            </label>
+          </div>
+
+          <div class="contact-actions">
+            <button class="btn btn-gold contact-submit" type="submit">
+              お問い合わせを送信する →
+            </button>
+            <p class="contact-note">
+              送信内容はGoogleスプレッドシートへ記録されます。
+            </p>
+          </div>
+
+          <div class="contact-status" id="contactStatus" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ======= FOOTER ======= -->
 <footer>
   <div class="foot-grid">
@@ -766,12 +999,12 @@ footer ul a:hover{color:var(--gold)}
     <div>
       <h4 class="en">MENU</h4>
       <ul>
-        <li><a href="council.html">市議会へのご意見・ご要望</a></li>
         <li><a href="#news">活動報告</a></li>
         <li><a href="#reports">市政レポート</a></li>
         <li><a href="#profile">プロフィール</a></li>
         <li><a href="#policy">政策</a></li>
         <li><a href="#support">応援する</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
       </ul>
     </div>
     <div>
@@ -790,7 +1023,6 @@ footer ul a:hover{color:var(--gold)}
   </div>
 </footer>
 
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script src="assets/three.min.js"></script>
 <script>
 /* サイト設定（フォームURL・LINE URL）は config.js で一元管理しています */
@@ -802,11 +1034,11 @@ footer ul a:hover{color:var(--gold)}
 })();
 
 
-/* ---------- 議会・市政レポート：Googleドライブから自動取得 ---------- */
+/* ---------- 議会・市政レポート：JSONP＋HTML代替表示 ---------- */
 (function(){
   const grid = document.getElementById("reportsGrid");
   if(!grid) return;
-  const gasUrl = window.SITE_CONFIG && SITE_CONFIG.APPS_SCRIPT_URL;
+  const gasUrl = String((window.SITE_CONFIG && SITE_CONFIG.APPS_SCRIPT_URL) || '').trim();
   const driveFolderUrl = "https://drive.google.com/drive/folders/1nhtLr-Fio5yn04aBJ-9JVLm90AHFnfeb?usp=sharing";
   const statusHtml = (msg, withButton=false) =>
     '<div class="report-status">' + msg +
@@ -822,54 +1054,32 @@ footer ul a:hover{color:var(--gold)}
     return;
   }
 
-  // PC・スマホとも同じJSONP方式で取得し、サイト内カードとして表示する。
-  // Googleドライブのページを iframe で直接開く方式は、PCブラウザで
-  // 「現在、ファイルを開くことができません」と表示される場合があるため使わない。
-  const cb = 'renderReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-  let loaded = false;
-
-  const slowTimer = setTimeout(()=>{
-    if(!loaded){
-      grid.innerHTML = statusHtml('市政レポートを読み込み中です。時間がかかる場合は、下のボタンからGoogleドライブでも確認できます。', true);
-    }
-  }, 12000);
-
-  const failTimer = setTimeout(()=>{
-    if(!loaded){
-      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps ScriptのURL（/exec）、公開範囲「全員」、Googleドライブの共有設定を確認してください。', true);
-      cleanup();
-    }
-  }, 60000);
-
-  function cleanup(){
-    clearTimeout(slowTimer);
-    clearTimeout(failTimer);
-    try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
-    const old = document.getElementById(cb);
-    if(old) old.remove();
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:[?#].*)?$/.test(gasUrl)){
+    grid.innerHTML = statusHtml('Apps ScriptのウェブアプリURLが正しくありません。末尾が /exec の本番URLを config.js に設定してください。', true);
+    return;
   }
+
   function esc(v){
-    return String(v || '').replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+    return String(v == null ? '' : v).replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
   }
-  window[cb] = function(data){
-    loaded = true;
-    cleanup();
+
+  function renderReports(data){
     if(!data || !data.ok){
-      grid.innerHTML = statusHtml(esc((data && data.message) || '市政レポートを取得できませんでした。'), true);
+      showHtmlFallback();
       return;
     }
-    const reports = data.reports || [];
+    const reports = Array.isArray(data.reports) ? data.reports : [];
     if(!reports.length){
-      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。Googleドライブの指定フォルダにPDFを追加してください。', true);
+      grid.innerHTML = statusHtml('現在公開中の市政レポートはありません。', true);
       return;
     }
     grid.innerHTML = reports.map(r=>{
-      const title = esc(r.title);
+      const title = esc(r.title || '市政レポート');
       const date = esc(r.dateLabel || r.updatedLabel || '');
-      const pdf = esc(r.viewUrl);
-      const thumb = esc(r.thumbnailUrl);
+      const pdf = esc(r.viewUrl || driveFolderUrl);
+      const thumb = esc(r.thumbnailUrl || '');
       const desc = esc(r.description || 'PDFで市政レポートをご覧いただけます。');
-      return '<article class="report-card reveal">' +
+      return '<article class="report-card reveal on">' +
         '<a class="report-thumb" href="' + pdf + '" target="_blank" rel="noopener">' +
           '<span class="fallback-label">CITY REPORT<br>PDF</span>' +
           (thumb ? '<img src="' + thumb + '" alt="' + title + 'の表紙" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : '') +
@@ -882,32 +1092,138 @@ footer ul a:hover{color:var(--gold)}
         '</div>' +
       '</article>';
     }).join('');
-    if(window.io){ document.querySelectorAll('#reportsGrid .reveal').forEach(el=>io.observe(el)); }
-  };
-  const script = document.createElement('script');
-  script.id = cb;
-  script.async = true;
-  script.referrerPolicy = 'no-referrer-when-downgrade';
-  script.src = gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'route=reports&callback=' + encodeURIComponent(cb) + '&t=' + Date.now();
-  script.onerror = function(){
-    if(!loaded){
-      grid.innerHTML = statusHtml('市政レポートを読み込めませんでした。Apps Scriptの公開範囲を「全員」にして、新バージョンで再デプロイしてください。', true);
+  }
+
+  let fallbackShown = false;
+  const embedToken = 'reports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+  function showHtmlFallback(){
+    if(fallbackShown) return;
+    fallbackShown = true;
+    cleanupJsonp();
+    const src = gasUrl + (gasUrl.includes('?') ? '&' : '?') +
+      'route=reports_iframe&embed_token=' + encodeURIComponent(embedToken) + '&t=' + Date.now();
+    grid.innerHTML = '<div class="report-frame-wrap">' +
+      '<iframe id="reportsFrame" class="report-frame" title="議会・市政レポート一覧" ' +
+      'src="' + esc(src) + '" loading="eager" referrerpolicy="no-referrer-when-downgrade" scrolling="auto"></iframe>' +
+      '</div>';
+  }
+
+  window.addEventListener('message', function(e){
+    if(!e.data || e.data.type !== 'maekawaReportsHeight' || e.data.token !== embedToken) return;
+    const frame = document.getElementById('reportsFrame');
+    const height = Number(e.data.height);
+    if(frame && Number.isFinite(height) && height > 100){
+      frame.style.height = Math.ceil(height + 12) + 'px';
     }
-    cleanup();
+  });
+
+  // 通常はサイト内へ直接カードを描画する。実際の /exec URLで応答確認済み。
+  const cb = 'maekawaReports_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+  let jsonpDone = false;
+  const jsonp = document.createElement('script');
+  const jsonpTimer = setTimeout(function(){
+    if(!jsonpDone) showHtmlFallback();
+  }, 12000);
+
+  function cleanupJsonp(){
+    clearTimeout(jsonpTimer);
+    try{ delete window[cb]; }catch(err){ window[cb] = undefined; }
+    if(jsonp.parentNode) jsonp.parentNode.removeChild(jsonp);
+  }
+
+  window[cb] = function(data){
+    if(fallbackShown) return;
+    jsonpDone = true;
+    cleanupJsonp();
+    renderReports(data);
   };
-  document.head.appendChild(script);
+  jsonp.onerror = function(){
+    if(!jsonpDone) showHtmlFallback();
+  };
+  jsonp.async = true;
+  jsonp.referrerPolicy = 'no-referrer-when-downgrade';
+  jsonp.src = gasUrl + (gasUrl.includes('?') ? '&' : '?') +
+    'route=reports&callback=' + encodeURIComponent(cb) + '&t=' + Date.now();
+  document.head.appendChild(jsonp);
 })();
 
-/* ---------- X（旧Twitter）タイムライン：読み込めたらフォールバックを隠す ---------- */
+/* ---------- X（旧Twitter）：キャッシュを回避して再生成 ---------- */
 (function(){
   const box = document.querySelector(".x-embed");
-  if(!box) return;
-  // Twitterが生成する iframe が挿入されたら成功とみなす
-  const check = ()=>{ if(box.querySelector("iframe")){ box.classList.add("loaded"); return true; } return false; };
-  const mo = new MutationObserver(()=>{ if(check()) mo.disconnect(); });
-  mo.observe(box, {childList:true, subtree:true});
-  // 予備：一定時間ごとにも確認
-  let n=0; const t=setInterval(()=>{ if(check() || ++n>20){ clearInterval(t); } }, 500);
+  const mount = document.getElementById("xTimelineMount");
+  const reloadBtn = document.getElementById("xReloadBtn");
+  const status = document.getElementById("xStatus");
+  if(!box || !mount || !reloadBtn || !status) return;
+
+  let loading = false;
+  let timer = 0;
+  let observer = null;
+
+  function setStatus(message){ status.textContent = message; }
+  function finish(success){
+    loading = false;
+    reloadBtn.disabled = false;
+    box.classList.remove("x-loading");
+    box.classList.toggle("loaded", success);
+    if(observer){ observer.disconnect(); observer = null; }
+    clearTimeout(timer);
+  }
+  function markLoaded(){
+    finish(true);
+    setStatus("タイムラインを表示しています。空白の場合は再読み込みをお試しください。");
+  }
+  function markFailed(){
+    finish(false);
+    setStatus("埋め込みを表示できませんでした。再読み込みするか、Xで直接ご覧ください。");
+  }
+
+  function loadFreshTimeline(){
+    if(loading) return;
+    loading = true;
+    reloadBtn.disabled = true;
+    box.classList.remove("loaded");
+    box.classList.add("x-loading");
+    setStatus("キャッシュを使わず、タイムラインを読み込んでいます…");
+    clearTimeout(timer);
+    if(observer) observer.disconnect();
+    mount.replaceChildren();
+
+    const timeline = document.createElement("a");
+    timeline.className = "twitter-timeline";
+    timeline.href = "https://twitter.com/maekawa190?ref_src=twsrc%5Etfw";
+    timeline.textContent = "前川こうき（@maekawa190）の投稿";
+    timeline.dataset.height = "640";
+    timeline.dataset.theme = "dark";
+    timeline.dataset.dnt = "true";
+    timeline.dataset.chrome = "noheader nofooter noborders";
+    mount.appendChild(timeline);
+
+    observer = new MutationObserver(function(){
+      if(mount.querySelector("iframe")) markLoaded();
+    });
+    observer.observe(mount, {childList:true, subtree:true});
+
+    document.querySelectorAll('script[data-x-fresh-loader]').forEach(function(el){ el.remove(); });
+    const script = document.createElement("script");
+    script.async = true;
+    script.charset = "utf-8";
+    script.dataset.xFreshLoader = "true";
+    script.src = "https://platform.twitter.com/widgets.js?cache_bust=" + Date.now();
+    script.onload = function(){
+      try{
+        if(window.twttr && twttr.widgets && twttr.widgets.load){ twttr.widgets.load(mount); }
+      }catch(err){}
+    };
+    script.onerror = markFailed;
+    document.head.appendChild(script);
+
+    timer = setTimeout(function(){
+      if(!mount.querySelector("iframe")) markFailed();
+    }, 15000);
+  }
+
+  reloadBtn.addEventListener("click", loadFreshTimeline);
+  loadFreshTimeline();
 })();
 
 /* ---------- nav ---------- */
@@ -1035,5 +1351,82 @@ if(matchMedia("(hover:hover)").matches){
   });
 })();
 </script>
+
+<script>
+/* ---------- お問い合わせフォーム：Apps Script送信 ---------- */
+(function(){
+  const form = document.getElementById("contactForm");
+  const status = document.getElementById("contactStatus");
+  if(!form || !status) return;
+
+  const CONTACT_ENDPOINT_FALLBACK =
+    "https://script.google.com/macros/s/AKfycbx4Jrc6xGU84bX_qfpGbiu3CjoLat6zrDAqEr4K6yt206Loqfn-qKYEWvd5mwLqLw/exec";
+
+  const endpoint = String(
+    (window.SITE_CONFIG &&
+      window.SITE_CONFIG.CONTACT_APPS_SCRIPT_URL) ||
+    CONTACT_ENDPOINT_FALLBACK
+  ).trim();
+
+  function showStatus(type, message){
+    status.className = "contact-status " + type + " show";
+    status.textContent = message;
+  }
+
+  form.addEventListener("submit", async function(event){
+    event.preventDefault();
+
+    if(!form.checkValidity()){
+      form.reportValidity();
+      showStatus("error", "必須項目をご確認ください。");
+      return;
+    }
+
+    if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:[?#].*)?$/.test(endpoint)){
+      showStatus("error", "お問い合わせ送信先が未設定です。");
+      return;
+    }
+
+    const data = new FormData(form);
+
+    if(String(data.get("website") || "").trim()) return;
+
+    data.set("consent", data.get("consent") ? "true" : "false");
+    data.set("pageUrl", location.href);
+    data.set("userAgent", navigator.userAgent);
+
+    const button = form.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+
+    button.disabled = true;
+    button.textContent = "送信しています…";
+    showStatus("success", "お問い合わせを送信しています。");
+
+    try{
+      await fetch(endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        body: data
+      });
+
+      form.reset();
+      showStatus(
+        "success",
+        "お問い合わせを受け付けました。ありがとうございました。"
+      );
+    }catch(error){
+      console.error(error);
+      showStatus(
+        "error",
+        "送信できませんでした。通信環境をご確認の上、再度お試しください。"
+      );
+    }finally{
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
