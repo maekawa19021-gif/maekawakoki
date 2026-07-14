@@ -113,7 +113,9 @@ function addQuestions_(form) {
     .setHelpText('携帯電話・固定電話ともに、ハイフンなしで入力してください。例：09012345678')
     .build();
 
-  const detailValidation = FormApp.createTextValidation()
+  // ParagraphTextItem（段落形式）専用の検証を作成します。
+  // createTextValidation() は1行テキスト用のため、段落形式には使用できません。
+  const detailValidation = FormApp.createParagraphTextValidation()
     .requireTextLengthGreaterThanOrEqualTo(20)
     .setHelpText('状況が分かるよう、20文字以上で入力してください。')
     .build();

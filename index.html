@@ -10,14 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <meta name="theme-color" content="#060d1f">
-<meta name="build-version" content="20260714-x-above-reports-latest">
+<meta name="build-version" content="20260714-council-form-latest">
 <meta property="og:type" content="website">
 <meta property="og:title" content="前川こうき後援会 公式サイト｜国民民主党 高松市議会議員">
 <meta property="og:description" content="交渉力で、香川の未来を切り拓く。国民民主党 高松市議会議員 前川こうき（前川幸輝）後援会の公式サイト。">
 <!-- 公開後、og:image は https://～ のフルURLに書き換えると SNSシェア時に画像が確実に表示されます -->
 <meta property="og:image" content="assets/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<script src="config.js?v=20260712-contact-phone-v2"></script>
+<script src="config.js?v=20260714-council-form"></script>
 <style>
 :root{
   --bg:#060d1f;
@@ -311,6 +311,59 @@ section{position:relative;padding:110px 28px}
   font-size:12px;color:var(--muted);background:rgba(255,212,0,.04);
 }
 .sup-note b{color:var(--gold)}
+
+
+/* ---------- 市議会へのご意見 ---------- */
+.voice-section{
+  background:
+    radial-gradient(circle at 85% 20%,rgba(77,163,255,.16),transparent 36%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+}
+.voice-card{
+  display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+  gap:34px;align-items:center;
+  padding:42px;
+  background:linear-gradient(150deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+  border:1px solid rgba(255,212,0,.38);
+  border-radius:24px;
+  box-shadow:0 22px 60px rgba(0,0,0,.22);
+  overflow:hidden;position:relative;
+}
+.voice-card::after{
+  content:"";position:absolute;right:-90px;bottom:-110px;
+  width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,212,0,.18),transparent 68%);
+  pointer-events:none;
+}
+.voice-kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-bottom:13px;padding:6px 13px;border-radius:999px;
+  color:var(--gold);font-size:12px;font-weight:800;
+  background:rgba(255,212,0,.08);border:1px solid rgba(255,212,0,.28);
+}
+.voice-copy h2{font-size:clamp(25px,3.4vw,40px);font-weight:900;margin-bottom:15px}
+.voice-copy>p{color:var(--muted);font-size:14.5px;max-width:720px}
+.voice-list{list-style:none;margin-top:20px;display:grid;gap:9px}
+.voice-list li{position:relative;padding-left:22px;color:#cdd7ee;font-size:13.5px}
+.voice-list li::before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:900}
+.voice-action{
+  position:relative;z-index:1;
+  padding:28px 24px;border-radius:18px;text-align:center;
+  background:rgba(6,13,31,.5);border:1px solid rgba(255,255,255,.12);
+}
+.voice-action .voice-icon{font-size:38px;line-height:1;margin-bottom:12px}
+.voice-action p{color:#dbe4f7;font-weight:800;margin-bottom:18px}
+.voice-action .btn{width:100%;justify-content:center;padding-inline:20px}
+.voice-action small{display:block;margin-top:13px;color:var(--muted);font-size:11.5px;line-height:1.7}
+@media(max-width:820px){
+  .voice-card{grid-template-columns:1fr;padding:30px 24px}
+  .voice-action{max-width:520px;width:100%;margin:0 auto}
+}
+@media(max-width:640px){
+  .voice-card{padding:25px 18px;border-radius:18px}
+  .voice-copy h2{font-size:27px}
+  .voice-action{padding:23px 18px}
+}
 
 /* sns */
 .sns-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -645,7 +698,7 @@ footer ul a:hover{color:var(--gold)}
     <li><a href="#reports">市政レポート</a></li>
     <li><a href="#profile">プロフィール</a></li>
     <li><a href="#policy">政策</a></li>
-    <li><a href="#sns">SNS</a></li>
+    <li><a href="council.html">市議会へのご意見</a></li>
     <li><a class="btn-support" href="#support">応援する</a></li>
   </ul>
 </header>
@@ -723,6 +776,32 @@ footer ul a:hover{color:var(--gold)}
     </div>
     <div id="reportsGrid" class="report-grid">
       <div class="report-status">市政レポートを読み込んでいます…</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======= VOICE TO COUNCIL ======= -->
+<section id="voice" class="voice-section">
+  <div class="wrap">
+    <p class="sec-label en">VOICE TO COUNCIL</p>
+    <div class="voice-card reveal">
+      <div class="voice-copy">
+        <span class="voice-kicker">高松市議会へのご意見受付</span>
+        <h2>議会で聞いてほしいことを<br>お寄せください</h2>
+        <p>道路、公共交通、子育て、教育、福祉、防災、地域の困りごとなど、市議会で質問・提案してほしい内容を受け付けています。</p>
+        <ul class="voice-list">
+          <li>事実確認、行政への照会、市議会質問、政策提案等の参考にします</li>
+          <li>送信内容は前川こうき事務所へメールで通知されます</li>
+          <li>フォームの送信は、前川こうき後援会への入会申込みを兼ねます</li>
+        </ul>
+      </div>
+      <div class="voice-action">
+        <div class="voice-icon" aria-hidden="true">📝</div>
+        <p>皆さまの声を<br>市政へつなげます</p>
+        <a class="btn btn-gold" href="council.html">意見フォームを開く →</a>
+        <small>Googleフォームをホームページ内に埋め込んでいます。入力は約5分です。</small>
+      </div>
     </div>
   </div>
 </section>
@@ -1001,6 +1080,7 @@ footer ul a:hover{color:var(--gold)}
       <ul>
         <li><a href="#news">活動報告</a></li>
         <li><a href="#reports">市政レポート</a></li>
+        <li><a href="council.html">市議会へのご意見</a></li>
         <li><a href="#profile">プロフィール</a></li>
         <li><a href="#policy">政策</a></li>
         <li><a href="#support">応援する</a></li>

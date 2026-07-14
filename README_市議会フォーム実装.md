@@ -1,70 +1,71 @@
-# 高松市議会へのご意見フォーム 実装版
+# 市議会へのご意見フォーム実装版
 
-## 追加した内容
+この一式は、2026年7月14日時点の最新 `index.html`
+（build-version: `20260714-x-above-reports-latest`）を基に更新しています。
 
-- トップページのメニューに「市議会へのご意見」を追加
-- 「前川こうきを応援する」欄の先頭に、横幅いっぱいの案内カードを追加
-- `council.html` を新規作成し、Googleフォームをサイト内に埋め込み
-- フォームが表示できない場合の「別画面で開く」リンクを追加
-- `privacy.html` に、市政相談・議会質問等への利用目的を追記
-- フォームURLは `config.js` で一元管理
+## 維持している最新機能
 
-## 設定手順
+- 活動報告のXを市政レポートの上側に配置
+- Xタイムライン再読み込み・代替表示
+- 市政レポートのJSONP＋HTML代替表示
+- 最新のお問い合わせフォーム
+- 電話番号必須
+- Google Apps Scriptへの送信機能
 
-### 1. Googleフォームを作成する
+## 今回追加した内容
 
-`takamatsu_city_council_supporters_form.gs` をGoogle Apps Scriptへ貼り付け、`setupForm()` を1回実行してください。
+- トップメニューに「市議会へのご意見」を追加
+- 市政レポート直後に案内セクションを追加
+- `council.html` にGoogleフォームを埋め込み
+- フッターメニューに「市議会へのご意見」を追加
+- プライバシーポリシーに市政相談・議会質問等の利用目的を追加
+- 修正版のGoogleフォーム作成用Apps Scriptを同梱
 
-実行後、次の3つが作成されます。
+## 1. Googleフォームを作成する
 
-- 回答者用Googleフォーム
-- 回答保存用スプレッドシート
-- フォーム送信時に `maekawa19021@gmail.com` へ通知するトリガー
+`takamatsu_city_council_supporters_form.gs` をGoogle Apps Scriptへ貼り付け、
+`setupForm()` を実行してください。
 
-作成完了メール、実行ログ、またはスプレッドシートの「管理情報」シートから、**回答者用フォームURL**を確認します。
+すでに作成済みの場合は、`showFormUrls()` を実行すると、
+回答者用フォームURLを実行ログで再確認できます。
 
-### 2. config.js にフォームURLを設定する
+通知先は次のメールアドレスです。
 
-`config.js` の次の行へ、回答者用フォームURLを貼り付けます。
+`maekawa19021@gmail.com`
 
-```js
+## 2. config.jsへフォームURLを設定する
+
+`config.js` の次の箇所に、回答者用フォームURLを貼り付けます。
+
+```javascript
 FORM_URLS: {
-  council: "ここに回答者用フォームURLを貼り付ける",
+  council: "https://docs.google.com/forms/d/e/フォームID/viewform",
+  join: "..."
+}
 ```
 
-例：
+フォーム編集用URLではなく、回答者用の `/viewform` URLを使用してください。
 
-```js
-council: "https://docs.google.com/forms/d/e/xxxxxxxxxxxxxxxx/viewform",
-```
+## 3. GitHubへアップロードする
 
-`embedded=true` は自動で付与されるため、URLへ手作業で追加する必要はありません。
+次の4ファイルをサイトのルートへアップロードします。
 
-### 3. GitHubへ上書きする
+- `index.html`：上書き
+- `config.js`：上書き
+- `privacy.html`：上書き
+- `council.html`：新規追加
 
-同梱ファイルを、ホームページのリポジトリ直下へ上書き・追加してください。
+`assets`フォルダやその他のページは変更不要です。
 
-特に必要なファイルは次の4つです。
+## 4. 公開後の確認
 
-- `index.html`（上書き）
-- `config.js`（上書き。ただし既存のURL設定を消さないよう注意）
-- `privacy.html`（上書き）
-- `council.html`（新規追加）
+- トップメニューに「市議会へのご意見」がある
+- 市政レポートの下に意見受付の案内がある
+- `council.html`でGoogleフォームが表示される
+- フォーム送信後、`maekawa19021@gmail.com`へ通知される
+- 回答がスプレッドシートに記録される
 
-`takamatsu_city_council_supporters_form.gs` はGitHubで動かすファイルではありません。Google Apps Scriptへ貼り付けるための保管用です。
+## キャッシュについて
 
-## 表示確認
-
-公開後、次を確認してください。
-
-1. トップメニューの「市議会へのご意見」が開く
-2. トップページの青色カードから `council.html` が開く
-3. Googleフォームがページ内に表示される
-4. フォーム送信後、回答がスプレッドシートへ保存される
-5. `maekawa19021@gmail.com` に通知メールが届く
-
-## 注意
-
-- `config.js` の `APPS_SCRIPT_URL` は、既存の寄付・市政レポート用設定です。今回のGoogleフォームURLをここへ入れないでください。
-- 今回のフォームURLは、必ず `FORM_URLS.council` へ設定してください。
-- Googleフォームをまだ作成していない場合、`council.html` には準備中メッセージが表示されます。
+今回のファイルは `config.js?v=20260714-council-form` を読み込みます。
+GitHub Pages反映後も古い表示が残る場合は、ページを再読み込みしてください。
