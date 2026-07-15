@@ -10,14 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <meta name="theme-color" content="#060d1f">
-<meta name="build-version" content="20260714-minutes-search-latest">
+<meta name="build-version" content="20260715-council-questions-and-minutes-latest">
 <meta property="og:type" content="website">
 <meta property="og:title" content="前川こうき後援会 公式サイト｜国民民主党 高松市議会議員">
 <meta property="og:description" content="交渉力で、香川の未来を切り拓く。国民民主党 高松市議会議員 前川こうき（前川幸輝）後援会の公式サイト。">
 <!-- 公開後、og:image は https://～ のフルURLに書き換えると SNSシェア時に画像が確実に表示されます -->
 <meta property="og:image" content="assets/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<script src="config.js?v=20260714-minutes-search"></script>
+<script src="config.js?v=20260715-council-questions-and-minutes"></script>
 <style>
 :root{
   --bg:#060d1f;
@@ -243,6 +243,74 @@ section{position:relative;padding:110px 28px}
 }
 
 /* 高松市議会 会議録検索 */
+
+/* council questions */
+.council-questions{
+  background:
+    radial-gradient(circle at 12% 18%,rgba(255,212,0,.12),transparent 34%),
+    radial-gradient(circle at 88% 82%,rgba(77,163,255,.13),transparent 38%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+}
+.council-question-card{
+  display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);
+  gap:0;overflow:hidden;
+  background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+  border:1px solid rgba(255,212,0,.34);border-radius:26px;
+  box-shadow:0 24px 70px rgba(0,0,0,.24);
+}
+.council-question-photo{
+  position:relative;min-height:430px;overflow:hidden;background:#0a1732;
+}
+.council-question-photo img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%;
+  transition:transform .45s ease;
+}
+.council-question-photo::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 48%,rgba(6,13,31,.38)),
+             linear-gradient(0deg,rgba(6,13,31,.58),transparent 48%);
+  pointer-events:none;
+}
+.council-question-photo:hover img{transform:scale(1.025)}
+.council-question-photo-label{
+  position:absolute;left:24px;right:24px;bottom:22px;z-index:2;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  color:#fff;font-size:13px;font-weight:800;letter-spacing:.04em;
+}
+.council-question-photo-label span:last-child{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a1732;
+  box-shadow:0 8px 24px rgba(255,212,0,.34);font-size:21px;
+}
+.council-question-copy{padding:48px 44px;display:flex;flex-direction:column;justify-content:center}
+.council-question-copy .sec-label{margin-bottom:11px}
+.council-question-copy h2{font-size:clamp(27px,3.4vw,41px);font-weight:900;margin-bottom:17px}
+.council-question-copy>p{color:var(--muted);font-size:14.5px;line-height:1.9}
+.council-question-points{list-style:none;display:grid;gap:10px;margin:23px 0 27px}
+.council-question-points li{position:relative;padding-left:24px;color:#dbe4f7;font-size:13.5px}
+.council-question-points li::before{
+  content:"";position:absolute;left:0;top:.72em;width:9px;height:9px;
+  border-radius:50%;background:var(--gold);box-shadow:0 0 12px rgba(255,212,0,.5);
+}
+.council-question-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.council-question-actions .btn{justify-content:center}
+.council-question-note{display:block;margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.7}
+@media(max-width:900px){
+  .council-question-card{grid-template-columns:1fr}
+  .council-question-photo{min-height:390px}
+  .council-question-photo::after{background:linear-gradient(0deg,rgba(6,13,31,.58),transparent 52%)}
+}
+@media(max-width:640px){
+  .council-question-card{border-radius:19px}
+  .council-question-photo{min-height:280px}
+  .council-question-photo img{object-position:center 40%}
+  .council-question-photo-label{left:18px;right:18px;bottom:16px;font-size:12px}
+  .council-question-photo-label span:last-child{width:40px;height:40px}
+  .council-question-copy{padding:30px 20px 32px}
+  .council-question-copy h2{font-size:28px}
+  .council-question-actions .btn{width:100%}
+}
+
 .minutes-search-section{
   background:
     radial-gradient(circle at 12% 22%,rgba(255,212,0,.12),transparent 34%),
@@ -831,6 +899,41 @@ footer ul a:hover{color:var(--gold)}
   </div>
 </section>
 
+
+
+<!-- ======= COUNCIL QUESTIONS ======= -->
+<section id="council-questions" class="council-questions">
+  <div class="wrap">
+    <div class="council-question-card reveal">
+      <a class="council-question-photo"
+         href="https://smart.discussvision.net/smart/tenant/takamatsu/WebView/rd/result.html?keyword=%E5%89%8D%E5%B7%9D%E5%B9%B8%E8%BC%9D"
+         target="_blank" rel="noopener noreferrer"
+         aria-label="前川幸輝の高松市議会での質問・発言記録を見る">
+        <img src="assets/council-question.jpg" alt="高松市議会の本会議で質問する前川こうき（前川幸輝）" loading="lazy" decoding="async">
+        <div class="council-question-photo-label">
+          <span>高松市議会での質問・発言記録</span>
+          <span aria-hidden="true">↗</span>
+        </div>
+      </a>
+      <div class="council-question-copy">
+        <p class="sec-label en">COUNCIL QUESTIONS</p>
+        <h2>高松市議会での<br>質問・発言を見る</h2>
+        <p>市民の皆さまから寄せられた声や、地域で確認した課題をもとに、高松市議会で質問・提案を行っています。リンク先では、「前川幸輝」で検索された本会議等の記録を一覧で確認できます。</p>
+        <ul class="council-question-points">
+          <li>会議ごとの質問・発言記録を一覧で確認</li>
+          <li>表示された記録から該当する議会映像等へ移動</li>
+          <li>これまで取り上げた市政課題を時系列で確認</li>
+        </ul>
+        <div class="council-question-actions">
+          <a class="btn btn-gold"
+             href="https://smart.discussvision.net/smart/tenant/takamatsu/WebView/rd/result.html?keyword=%E5%89%8D%E5%B7%9D%E5%B9%B8%E8%BC%9D"
+             target="_blank" rel="noopener noreferrer">質問・発言の一覧を見る →</a>
+        </div>
+        <small class="council-question-note">高松市議会の映像配信・記録検索ページを新しいタブで開きます。</small>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ======= TAKAMATSU CITY COUNCIL MINUTES SEARCH ======= -->
 <section id="minutes-search" class="minutes-search-section">
