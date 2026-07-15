@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>寄付 ＋ 党員・サポーター｜前川こうき後援会</title><meta name="description" content="寄付と党員・サポーター登録をまとめて記録し、メールを待たずに決済案内ページへ進みます。"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><meta name="theme-color" content="#060d1f"><script src="config.js"></script><style>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>寄付 ＋ 党員・サポーター｜前川こうき後援会</title><meta name="description" content="寄付と党員・サポーター登録をまとめて申し込み、Stripe決済ページへ進みます。"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><meta name="theme-color" content="#060d1f"><script src="config.js"></script><style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}
 .en{font-family:'Oswald','Zen Kaku Gothic New',sans-serif;letter-spacing:.14em}
@@ -10,33 +10,77 @@ body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sa
 .law{background:rgba(255,212,0,.06);border:1px solid rgba(255,212,0,.35);border-radius:12px;padding:16px 18px;font-size:13.5px;color:#cdd7ee;margin-bottom:26px}.law b{color:#ffd400}
 .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:30px;font-size:13.5px;color:#cdd7ee}.flow span{background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.3);padding:7px 13px;border-radius:999px}.flow em{color:#ffd400;font-style:normal;font-weight:900}
 .form-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.18)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:13px;color:#cdd7ee;font-weight:700}.req{color:#ffd400;margin-left:4px}input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:12px 13px;font:inherit;font-size:14px;outline:none}textarea{min-height:92px;resize:vertical}select option{color:#0a1732}.help{font-size:12.5px;color:#8b9bc0;line-height:1.6}.checks{display:grid;gap:10px;margin-top:8px}.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#cdd7ee}.check input{width:auto;margin-top:6px}.submit-row{margin-top:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.btn{border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 34px;border-radius:999px;font-weight:900;font-size:15px;background:linear-gradient(135deg,#ffd400,#ffaa00);color:#0a1732;box-shadow:0 6px 26px rgba(255,212,0,.35)}.btn:disabled{opacity:.55;cursor:not-allowed}.pending{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:28px 20px;text-align:center;color:#9fb0d0;font-size:14.5px;margin-bottom:20px}.note{margin-top:22px;font-size:13px;color:#8b9bc0}footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 20px;text-align:center;font-size:12.5px;color:#8b9bc0}footer a{color:#9fb0d0}@media(max-width:720px){.form-grid{grid-template-columns:1fr}.form-card{padding:20px}}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:13px;color:#cdd7ee;font-weight:700}.req{color:#ffd400;margin-left:4px}input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:12px 13px;font:inherit;font-size:14px;outline:none}input:disabled,select:disabled{opacity:.62;cursor:not-allowed}textarea{min-height:92px;resize:vertical}select option{color:#0a1732}.help{font-size:12.5px;color:#8b9bc0;line-height:1.6}.opt{display:inline-block;margin-left:7px;padding:1px 8px;border:1px solid rgba(159,176,208,.35);border-radius:999px;color:#9fb0d0;font-size:11px;font-weight:700;line-height:1.5}.choice-box{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;margin-top:4px;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035)}.choice{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border-radius:10px;color:#cdd7ee;font-size:13.5px;line-height:1.55}.choice:hover{background:rgba(255,255,255,.045)}.choice input{width:auto;flex:0 0 auto;margin-top:4px;accent-color:#ffd400}.checks{display:grid;gap:10px;margin-top:8px}.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#cdd7ee}.check input{width:auto;margin-top:6px}.submit-row{margin-top:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.btn{border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 34px;border-radius:999px;font-weight:900;font-size:15px;background:linear-gradient(135deg,#ffd400,#ffaa00);color:#0a1732;box-shadow:0 6px 26px rgba(255,212,0,.35)}.btn:disabled{opacity:.55;cursor:not-allowed}.pending{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:28px 20px;text-align:center;color:#9fb0d0;font-size:14.5px;margin-bottom:20px}.note{margin-top:22px;font-size:13px;color:#8b9bc0}.error-summary{margin-bottom:20px;padding:16px 18px;border:1px solid #ff6b6b;border-radius:12px;background:rgba(255,107,107,.10);color:#ffe8e8}.error-summary[hidden]{display:none}.error-summary strong{display:block;margin-bottom:7px;color:#fff}.error-summary ul{margin:0;padding-left:1.4em;font-size:13.5px}.field.has-error input,.field.has-error select,.field.has-error textarea{border-color:#ff6b6b;background:rgba(255,107,107,.08);box-shadow:0 0 0 2px rgba(255,107,107,.12)}.field-error{margin-top:1px;color:#ff9b9b;font-size:12.5px;font-weight:700;line-height:1.5}.check.has-error{padding:9px 10px;border:1px solid #ff6b6b;border-radius:10px;background:rgba(255,107,107,.08)}.check-error{display:block;margin:-4px 0 2px 30px;color:#ff9b9b;font-size:12.5px;font-weight:700;line-height:1.5}footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 20px;text-align:center;font-size:12.5px;color:#8b9bc0}footer a{color:#9fb0d0}@media(max-width:720px){.form-grid{grid-template-columns:1fr}.choice-box{grid-template-columns:1fr}.form-card{padding:20px}}
 </style></head>
-<body><header class="topbar"><a class="back" href="index.html#support">← トップに戻る</a><div class="brand en">MAEKAWA <b>KOKI</b></div></header><main class="wrap"><p class="label en">FULL SUPPORT</p><h1>寄付 ＋ 党員・サポーター</h1><p class="lead">寄付と党員・サポーター登録をまとめて記録し、メールを待たずに決済案内ページへ進みます。</p><ul class="points"><li>1回の入力で、寄付と党員・サポーター登録を記録します</li><li>申込内容はスプレッドシートに自動記録されます</li><li>フォーム送信後、寄付と会費の決済案内ページへ移動します</li><li>お申し込みには、前川こうき後援会への入会（無料）が含まれます</li></ul><div class="law"><b>ご確認ください：</b>フォーム送信後、メールを待たずに決済案内ページへ移動します。寄付と党員・サポーター会費は決済種別が異なるため、案内ページの2つのボタンからそれぞれStripeで決済します。申込内容はスプレッドシートに自動記録されます。</div><div id="setup-warning" class="pending" style="display:none"></div><form id="direct-form" class="form-card" method="POST"><input type="hidden" name="page" value="full">
-<input type="hidden" name="form_type" value="full">
+<body><!-- build-version: 20260715-full-integrated-latest -->
+<header class="topbar"><a class="back" href="index.html#support">← トップに戻る</a><div class="brand en">MAEKAWA <b>KOKI</b></div></header>
+<main class="wrap">
+<p class="label en">FULL SUPPORT</p><h1>寄付 ＋ 党員・サポーター</h1>
+<p class="lead">寄付と党員・サポーターのお申し込みをまとめて記録し、寄付と会費のStripe決済ページへ進みます。</p>
+<ul class="points"><li>1回の入力で、寄付と党員・サポーター登録を登録します</li><li>フォーム送信後、寄付と会費の2つの決済ボタンが表示されます</li><li>お申し込みには、前川こうき後援会への入会（無料）が含まれます</li></ul>
+<div class="law"><b>ご確認ください：</b>寄付と党員・サポーター会費は決済種別が異なるため、送信後の案内画面に表示される2つのボタンから、それぞれStripeで決済してください。フォーム送信時点では決済完了ではありません。</div>
+<div class="flow"><em>お申し込みの流れ：</em><span>① このページで入力</span><span>② スプレッドシートに記録</span><span>③ 寄付と会費をそれぞれ決済</span></div>
+<div id="setup-warning" class="pending" style="display:none"></div>
+<form id="direct-form" class="form-card" method="POST" novalidate>
+<input type="hidden" name="page" value="full"><input type="hidden" name="form_type" value="full">
+<div id="form-error-summary" class="error-summary" role="alert" aria-live="assertive" tabindex="-1" hidden><strong>入力内容をご確認ください。</strong><ul id="form-error-list"></ul></div>
 <div class="form-grid">
-  <div class="field"><label>寄付方法<span class="req">必須</span></label><select name="donate_kind" required><option value="donate_once">今回のみ（金額自由）</option><option value="donate_monthly500">毎月継続（500円×口数）</option></select></div>
-  <div class="field"><label>党員・サポーター区分<span class="req">必須</span></label><select name="party_kind" required><option value="party_member_yearly">党員 年額4,000円</option><option value="party_supporter_yearly">サポーター 年額2,000円</option></select><p class="help">送信後、まず寄付用Stripe画面へ移動します。党員・サポーター決済は、その後の画面案内またはスプレッドシート記録を見て別途確認してください。</p></div>
-  <div class="field full"><label>国籍・年齢確認<span class="req">必須</span></label><select name="full_confirm" required><option value="寄付条件を満たし、満18歳以上です。党員を選ぶ場合は日本国籍を有しています">寄付条件を満たし、満18歳以上です。党員を選ぶ場合は日本国籍を有しています</option></select></div>
+  <div class="field"><label>寄付方法<span class="req">必須</span></label><select name="donate_kind" required><option value="" selected disabled>選択してください</option><option value="donate_once">今回のみ（金額自由）</option><option value="donate_monthly500">毎月継続（500円×口数）</option></select><p class="help">金額や口数は、移動後のStripe画面で入力・確認します。</p></div>
+  <div class="field"><label>党員・サポーター区分<span class="req">必須</span></label><select name="party_kind" required><option value="" selected disabled>選択してください</option><option value="party_member_yearly">党員 年額4,000円</option><option value="party_supporter_yearly">サポーター 年額2,000円</option></select></div>
+  <div class="field"><label>年齢確認<span class="req">必須</span></label><select name="age_confirm" required><option value="" selected disabled>選択してください</option><option value="満18歳以上です">満18歳以上です</option></select></div>
+  <div class="field"><label>寄付に関する国籍確認<span class="req">必須</span></label><select name="nationality_confirm" required><option value="" selected disabled>選択してください</option><option value="日本国籍を有する個人です">日本国籍を有する個人です</option></select></div>
+  <div class="field full" id="party-nationality-field"><label>党員を選ぶ場合の国籍確認<span class="req" id="party-nationality-required" hidden>必須</span><span class="opt" id="party-nationality-conditional">党員選択時のみ</span></label><select name="party_nationality_confirm" disabled><option value="" selected>先に党員・サポーター区分を選択してください</option><option value="党員として日本国籍を有しています">党員として日本国籍を有しています</option></select><p class="help" id="party-nationality-help">党員を選択した場合のみ、日本国籍の確認が必要です。</p></div>
 </div>
-
-<div class="form-grid">
+<div class="form-grid" style="margin-top:16px">
   <div class="field"><label>氏名<span class="req">必須</span></label><input name="name" autocomplete="name" required></div>
   <div class="field"><label>ふりがな<span class="req">必須</span></label><input name="kana" required></div>
   <div class="field"><label>メールアドレス<span class="req">必須</span></label><input type="email" name="email" autocomplete="email" required></div>
-  <div class="field"><label>電話番号<span class="req">必須</span></label><input name="phone" inputmode="tel" autocomplete="tel" required></div>
+  <div class="field"><label>電話番号<span class="req">必須</span></label><input name="phone" inputmode="numeric" autocomplete="tel" maxlength="11" pattern="[0-9]{10,11}" placeholder="例：09012345678" required><p class="help">ハイフンなしの半角数字10〜11桁で入力してください。</p></div>
   <div class="field full"><label>住所<span class="req">必須</span></label><input name="address" autocomplete="street-address" required></div>
-  <div class="field"><label>生年月日</label><input type="date" name="birthdate"></div>
-  <div class="field"><label>職業</label><input name="occupation"></div>
+  <div class="field"><label>生年月日<span class="req">必須</span></label><input type="date" name="birthdate" required></div>
+  <div class="field"><label>職業<span class="req">必須</span></label><input name="occupation" required></div>
 </div>
-
-<div class="field full" style="margin-top:16px"><label>備考</label><textarea name="memo"></textarea></div>
-<div class="checks"><label class="check"><input type="checkbox" required><span>入力内容に誤りがないことを確認しました。</span></label><label class="check"><input type="checkbox" required><span>申込内容に応じ、後援会への入会を含むことに同意します。</span></label></div><div class="submit-row"><button class="btn" type="submit">入力内容を記録して決済案内へ進む →</button><span class="help">送信後、寄付と会費の決済案内ページへ移動します。</span></div></form><p class="note">決済案内ページに移動しない場合は、通信環境をご確認のうえ再度お試しください。カード情報はStripeが直接取り扱い、後援会サイト・スプレッドシートには保存されません。</p></main><footer>© 前川こうき後援会 ｜ <a href="privacy.html">プライバシーポリシー</a></footer><script>
+<div class="field full" style="margin-top:16px">
+  <label>後援会活動へのご協力<span class="opt">任意・複数選択可</span></label>
+  <p class="help">ご協力いただけるものがあれば選択してください。選択しなくてもお申し込みはできます。</p>
+  <div class="choice-box">
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="ポスター掲示に協力できる"><span>ポスター掲示に協力できる</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="チラシ配布を手伝える"><span>チラシ配布を手伝える</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="街頭活動を手伝える"><span>街頭活動を手伝える</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="イベントの受付・設営を手伝える"><span>イベントの受付・設営を手伝える</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="SNSで情報発信に協力できる"><span>SNSで情報発信に協力できる</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="知人・友人に紹介できる"><span>知人・友人に紹介できる</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="後援会加入者を紹介できる"><span>後援会加入者を紹介できる</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="電話かけを手伝える"><span>電話かけを手伝える</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="事務作業を手伝える"><span>事務作業を手伝える</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="地域の困りごとを情報提供できる"><span>地域の困りごとを情報提供できる</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="ミニ集会・座談会の開催に協力できる"><span>ミニ集会・座談会の開催に協力できる</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="写真・動画撮影に協力できる"><span>写真・動画撮影に協力できる</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="デザイン・広報物作成に協力できる"><span>デザイン・広報物作成に協力できる</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="車両の運転・街宣車運行を手伝える"><span>車両の運転・街宣車運行を手伝える</span></label>
+    <label class="choice"><input type="checkbox" name="support_cooperation" value="その他の形で協力したい"><span>その他の形で協力したい</span></label>
+  </div>
+</div>
+<div class="field full" style="margin-top:16px"><label>あなたの「こうなったらいいな」を教えてください！<span class="opt">任意</span></label><textarea name="memo" placeholder="地域や暮らしについて、こうなったらいいなと思うことをご自由にお書きください。"></textarea></div>
+<div class="checks"><label class="check"><input type="checkbox" name="confirm_correct" value="確認済み" data-label="入力内容の確認" required><span>入力内容に誤りがないことを確認しました。</span></label><label class="check"><input type="checkbox" name="confirm_membership" value="同意する" data-label="後援会入会への同意" required><span>お申し込みに前川こうき後援会への入会を含むことに同意します。</span></label></div>
+<div class="submit-row"><button class="btn" type="submit">入力内容を記録して決済案内へ進む →</button><span class="help">送信後、寄付と会費の2つの決済ボタンが表示されます。</span></div>
+</form>
+<p class="note">決済案内が表示されない場合は、通信環境をご確認のうえ再度お試しください。カード情報はStripeが直接取り扱い、後援会サイト・スプレッドシートには保存されません。</p>
+</main><footer>© 前川こうき後援会 ｜ <a href="privacy.html">プライバシーポリシー</a></footer>
+<script>
 (function(){
   var form=document.getElementById('direct-form');
   var warn=document.getElementById('setup-warning');
+  var errorSummary=document.getElementById('form-error-summary');
+  var errorList=document.getElementById('form-error-list');
+  var partyKind=form.elements.party_kind;
+  var partyNationality=form.elements.party_nationality_confirm;
+  var partyNationalityRequired=document.getElementById('party-nationality-required');
+  var partyNationalityConditional=document.getElementById('party-nationality-conditional');
+  var partyNationalityHelp=document.getElementById('party-nationality-help');
   var cfg=window.SITE_CONFIG||{};
   var url=(cfg.APPS_SCRIPT_URL||'').trim();
+
   if(!url){
     warn.style.display='block';
     warn.innerHTML='管理者設定が未完了です。<br><code>config.js</code> の <b>APPS_SCRIPT_URL</b> にApps Script WebアプリURLを設定してください。';
@@ -44,5 +88,74 @@ body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sa
     return;
   }
   form.action=url;
+
+  var labels={
+    donate_kind:'寄付方法',party_kind:'党員・サポーター区分',age_confirm:'年齢確認',nationality_confirm:'寄付に関する国籍確認',party_nationality_confirm:'党員を選ぶ場合の国籍確認',name:'氏名',kana:'ふりがな',email:'メールアドレス',phone:'電話番号',address:'住所',birthdate:'生年月日',occupation:'職業',confirm_correct:'入力内容の確認',confirm_membership:'後援会入会への同意'
+  };
+
+  function labelOf(el){return el.getAttribute('data-label')||labels[el.name]||'入力項目';}
+  function isAdult18(value){
+    if(!value)return false;
+    var birth=new Date(value+'T00:00:00');
+    if(isNaN(birth.getTime()))return false;
+    var today=new Date();today.setHours(0,0,0,0);
+    var eighteenth=new Date(birth.getTime());eighteenth.setFullYear(eighteenth.getFullYear()+18);
+    return eighteenth<=today;
+  }
+  function errorMessage(el){
+    var label=labelOf(el);var value=typeof el.value==='string'?el.value.trim():el.value;
+    if(el.disabled)return '';
+    if(el.type==='checkbox'&&el.required&&!el.checked)return label+'が必要です。';
+    if(el.required&&!value)return el.tagName==='SELECT'?label+'を選択してください。':label+'を入力してください。';
+    if(el.name==='email'&&value&&el.validity.typeMismatch)return 'メールアドレスを正しい形式で入力してください。';
+    if(el.name==='phone'&&value&&!/^[0-9]{10,11}$/.test(value))return '電話番号はハイフンなしの半角数字10〜11桁で入力してください。';
+    if(el.name==='birthdate'&&value){
+      var selected=new Date(value+'T00:00:00');var today=new Date();today.setHours(0,0,0,0);
+      if(isNaN(selected.getTime()))return '生年月日を正しく入力してください。';
+      if(selected>today)return '生年月日に未来の日付は入力できません。';
+      if(!isAdult18(value))return '満18歳以上の方がお申し込みいただけます。';
+    }
+    if(el.name==='occupation'&&!value)return '職業を入力してください。';
+    if(el.name==='party_nationality_confirm'&&partyKind.value==='party_member_yearly'&&!value)return '党員を選択する場合は、国籍確認を選択してください。';
+    return '';
+  }
+  function messageElement(el){
+    var container=el.closest('.field')||el.closest('.check');if(!container)return null;
+    var cls=container.classList.contains('check')?'check-error':'field-error';
+    var msg=container.parentElement&&container.classList.contains('check')?container.nextElementSibling:container.querySelector('.'+cls);
+    if(container.classList.contains('check')){if(!msg||!msg.classList.contains(cls)){msg=document.createElement('span');msg.className=cls;container.insertAdjacentElement('afterend',msg);}}
+    else if(!msg){msg=document.createElement('p');msg.className=cls;container.appendChild(msg);}return msg;
+  }
+  function showError(el,message){
+    var container=el.closest('.field')||el.closest('.check');if(container)container.classList.add('has-error');el.setAttribute('aria-invalid','true');
+    var msg=messageElement(el);if(msg){var id='error-'+(el.name||Math.random().toString(36).slice(2));msg.id=id;msg.textContent=message;el.setAttribute('aria-describedby',id);}
+  }
+  function clearError(el){
+    var container=el.closest('.field')||el.closest('.check');if(container)container.classList.remove('has-error');el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby');
+    if(container){var msg=container.classList.contains('check')?container.nextElementSibling:container.querySelector('.field-error');if(msg&&(msg.classList.contains('field-error')||msg.classList.contains('check-error')))msg.remove();}
+  }
+  function validate(el){var message=errorMessage(el);if(message){showError(el,message);return message;}clearError(el);return '';}
+  function setPartyNationalityState(){
+    var memberSelected=partyKind.value==='party_member_yearly';var supporterSelected=partyKind.value==='party_supporter_yearly';
+    clearError(partyNationality);partyNationality.required=memberSelected;partyNationality.disabled=!memberSelected;partyNationalityRequired.hidden=!memberSelected;partyNationalityConditional.hidden=memberSelected;
+    if(memberSelected){partyNationality.innerHTML='<option value="" selected disabled>選択してください</option><option value="党員として日本国籍を有しています">党員として日本国籍を有しています</option>';partyNationalityHelp.textContent='党員は日本国籍が必要です。国籍確認を選択してください。';}
+    else if(supporterSelected){partyNationality.innerHTML='<option value="" selected>サポーターは確認不要です</option>';partyNationalityHelp.textContent='サポーターを選択した場合、党員用の国籍確認は不要です。';}
+    else{partyNationality.innerHTML='<option value="" selected>先に党員・サポーター区分を選択してください</option>';partyNationalityHelp.textContent='党員を選択した場合のみ、日本国籍の確認が必要です。';}
+  }
+  partyKind.addEventListener('change',function(){validate(partyKind);setPartyNationalityState();});
+  partyNationality.addEventListener('change',function(){validate(partyNationality);});setPartyNationalityState();
+
+  var validationTargets=Array.prototype.slice.call(form.querySelectorAll('[required], [name="party_nationality_confirm"]'));
+  validationTargets.forEach(function(el){
+    if(el===partyKind||el===partyNationality)return;
+    var eventName=(el.tagName==='SELECT'||el.type==='checkbox'||el.type==='date')?'change':'blur';el.addEventListener(eventName,function(){validate(el);});
+    if(el.type!=='checkbox'&&el.tagName!=='SELECT')el.addEventListener('input',function(){if(el.getAttribute('aria-invalid')==='true')validate(el);});
+  });
+  form.addEventListener('submit',function(event){
+    var errors=[];var fields=Array.prototype.slice.call(form.querySelectorAll('[required]:not([disabled])'));
+    fields.forEach(function(el){var message=validate(el);if(message)errors.push({el:el,message:message});});
+    if(errors.length){event.preventDefault();errorList.innerHTML='';errors.forEach(function(item){var li=document.createElement('li');li.textContent=item.message;errorList.appendChild(li);});errorSummary.hidden=false;errorSummary.focus({preventScroll:true});errorSummary.scrollIntoView({behavior:'smooth',block:'center'});window.setTimeout(function(){errors[0].el.focus({preventScroll:false});},350);return;}
+    errorSummary.hidden=true;errorList.innerHTML='';var button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent='送信しています…';
+  });
 })();
 </script></body></html>
