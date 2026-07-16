@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://maekawa19021-gif.github.io/maekawakoki/sitemap.xml
