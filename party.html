@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>党員・サポーターになる｜前川こうき後援会</title><meta name="description" content="党員・サポーターのお申し込み内容を記録し、メールを待たずにStripe決済ページへ進みます。"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><meta name="theme-color" content="#060d1f"><script src="config.js"></script><style>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>党員・サポーターになる｜前川こうき後援会</title><meta name="description" content="党員・サポーターのお申し込み後、Stripe決済ページへ進みます。"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Oswald:wght@500;600&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><meta name="theme-color" content="#060d1f"><script src="config.js"></script><style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased}
 .en{font-family:'Oswald','Zen Kaku Gothic New',sans-serif;letter-spacing:.14em}
@@ -10,9 +10,9 @@ body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sa
 .law{background:rgba(255,212,0,.06);border:1px solid rgba(255,212,0,.35);border-radius:12px;padding:16px 18px;font-size:13.5px;color:#cdd7ee;margin-bottom:26px}.law b{color:#ffd400}
 .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:30px;font-size:13.5px;color:#cdd7ee}.flow span{background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.3);padding:7px 13px;border-radius:999px}.flow em{color:#ffd400;font-style:normal;font-weight:900}
 .form-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.18)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:13px;color:#cdd7ee;font-weight:700}.req{color:#ffd400;margin-left:4px}input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:12px 13px;font:inherit;font-size:14px;outline:none}input:disabled,select:disabled{opacity:.62;cursor:not-allowed}textarea{min-height:92px;resize:vertical}select option{color:#0a1732}.help{font-size:12.5px;color:#8b9bc0;line-height:1.6}.opt{display:inline-block;margin-left:7px;padding:1px 8px;border:1px solid rgba(159,176,208,.35);border-radius:999px;color:#9fb0d0;font-size:11px;font-weight:700;line-height:1.5}.choice-box{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;margin-top:4px;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035)}.choice{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border-radius:10px;color:#cdd7ee;font-size:13.5px;line-height:1.55}.choice:hover{background:rgba(255,255,255,.045)}.choice input{width:auto;flex:0 0 auto;margin-top:4px;accent-color:#ffd400}.checks{display:grid;gap:10px;margin-top:8px}.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#cdd7ee}.check input{width:auto;margin-top:6px}.submit-row{margin-top:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.btn{border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 34px;border-radius:999px;font-weight:900;font-size:15px;background:linear-gradient(135deg,#ffd400,#ffaa00);color:#0a1732;box-shadow:0 6px 26px rgba(255,212,0,.35)}.btn:disabled{opacity:.55;cursor:not-allowed}.pending{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:28px 20px;text-align:center;color:#9fb0d0;font-size:14.5px;margin-bottom:20px}.note{margin-top:22px;font-size:13px;color:#8b9bc0}.error-summary{margin-bottom:20px;padding:16px 18px;border:1px solid #ff6b6b;border-radius:12px;background:rgba(255,107,107,.10);color:#ffe8e8}.error-summary[hidden]{display:none}.error-summary strong{display:block;margin-bottom:7px;color:#fff}.error-summary ul{margin:0;padding-left:1.4em;font-size:13.5px}.field.has-error input,.field.has-error select,.field.has-error textarea{border-color:#ff6b6b;background:rgba(255,107,107,.08);box-shadow:0 0 0 2px rgba(255,107,107,.12)}.field-error{margin-top:1px;color:#ff9b9b;font-size:12.5px;font-weight:700;line-height:1.5}.check.has-error{padding:9px 10px;border:1px solid #ff6b6b;border-radius:10px;background:rgba(255,107,107,.08)}.check-error{display:block;margin:-4px 0 2px 30px;color:#ff9b9b;font-size:12.5px;font-weight:700;line-height:1.5}footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 20px;text-align:center;font-size:12.5px;color:#8b9bc0}footer a{color:#9fb0d0}@media(max-width:720px){.form-grid{grid-template-columns:1fr}.choice-box{grid-template-columns:1fr}.form-card{padding:20px}}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:13px;color:#cdd7ee;font-weight:700}.req{color:#ffd400;margin-left:4px}input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:12px 13px;font:inherit;font-size:14px;outline:none}input:disabled,select:disabled{opacity:.62;cursor:not-allowed}textarea{min-height:92px;resize:vertical}select option{color:#0a1732}.help{font-size:12.5px;color:#8b9bc0;line-height:1.6}.opt{display:inline-block;margin-left:7px;padding:1px 8px;border:1px solid rgba(159,176,208,.35);border-radius:999px;color:#9fb0d0;font-size:11px;font-weight:700;line-height:1.5}.choice-box{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;margin-top:4px;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035)}.choice{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border-radius:10px;color:#cdd7ee;font-size:13.5px;line-height:1.55}.choice:hover{background:rgba(255,255,255,.045)}.choice input{width:auto;flex:0 0 auto;margin-top:4px;accent-color:#ffd400}.checks{display:grid;gap:10px;margin-top:8px}.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#cdd7ee}.check input{width:auto;margin-top:6px}.submit-row{margin-top:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.btn{border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 34px;border-radius:999px;font-weight:900;font-size:15px;background:linear-gradient(135deg,#ffd400,#ffaa00);color:#0a1732;box-shadow:0 6px 26px rgba(255,212,0,.35)}.btn:disabled{opacity:.55;cursor:not-allowed}.pending{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:28px 20px;text-align:center;color:#9fb0d0;font-size:14.5px;margin-bottom:20px}.note{margin-top:22px;font-size:13px;color:#8b9bc0}.error-summary{margin-bottom:20px;padding:16px 18px;border:1px solid #ff6b6b;border-radius:12px;background:rgba(255,107,107,.10);color:#ffe8e8}.error-summary[hidden]{display:none}.error-summary strong{display:block;margin-bottom:7px;color:#fff}.error-summary ul{margin:0;padding-left:1.4em;font-size:13.5px}.field.has-error input,.field.has-error select,.field.has-error textarea{border-color:#ff6b6b;background:rgba(255,107,107,.08);box-shadow:0 0 0 2px rgba(255,107,107,.12)}.field-error{margin-top:1px;color:#ff9b9b;font-size:12.5px;font-weight:700;line-height:1.5}.check.has-error{padding:9px 10px;border:1px solid #ff6b6b;border-radius:10px;background:rgba(255,107,107,.08)}.check-error{display:block;margin:-4px 0 2px 30px;color:#ff9b9b;font-size:12.5px;font-weight:700;line-height:1.5}.birthdate-inputs{display:grid;grid-template-columns:minmax(100px,1.4fr) auto minmax(72px,1fr) auto minmax(72px,1fr) auto;gap:7px;align-items:center}.birthdate-inputs span{color:#cdd7ee;font-size:13px;font-weight:700}.birthdate-inputs input,.birthdate-inputs select{min-width:0}.field.has-error .birthdate-inputs input,.field.has-error .birthdate-inputs select{border-color:#ff6b6b;background:rgba(255,107,107,.08);box-shadow:0 0 0 2px rgba(255,107,107,.12)}@media(max-width:480px){.birthdate-inputs{grid-template-columns:minmax(90px,1.4fr) auto minmax(62px,1fr) auto minmax(62px,1fr) auto;gap:5px}.birthdate-inputs input,.birthdate-inputs select{padding:11px 9px}}footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 20px;text-align:center;font-size:12.5px;color:#8b9bc0}footer a{color:#9fb0d0}@media(max-width:720px){.form-grid{grid-template-columns:1fr}.choice-box{grid-template-columns:1fr}.form-card{padding:20px}}
 </style></head>
-<body><!-- build-version: 20260715-party-form-latest --><header class="topbar"><a class="back" href="index.html#support">← トップに戻る</a><div class="brand en">MAEKAWA <b>KOKI</b></div></header><main class="wrap"><p class="label en">PARTY / SUPPORTER</p><h1>党員・サポーターになる</h1><p class="lead">党員・サポーターのお申し込み内容を記録し、メールを待たずにStripe決済ページへ進みます。</p><ul class="points"><li>党員 年額4,000円 ／ サポーター 年額2,000円</li><li>申込内容はスプレッドシートに自動記録されます</li><li>フォーム送信後、Stripe決済ページへ進むボタンが表示されます</li><li>お申し込みには、前川こうき後援会への入会（無料）が含まれます</li></ul><div class="law"><b>ご確認ください：</b>フォーム送信後、メールを待たずにStripe決済ページへ進むボタンが表示されます。申込内容はスプレッドシートに自動記録されます。決済が完了したかは、Stripe管理画面またはWebhook連携後のスプレッドシートで確認します。</div><div class="flow"><em>お申し込みの流れ：</em><span>① このページで入力</span><span>② スプレッドシートに記録</span><span>③ Stripe決済ページへ進む</span></div><div id="setup-warning" class="pending" style="display:none"></div><form id="direct-form" class="form-card" method="POST" novalidate><input type="hidden" name="page" value="party">
+<body><!-- build-version: 20260716-party-realtime-birthyear4-latest --><header class="topbar"><a class="back" href="index.html#support">← トップに戻る</a><div class="brand en">MAEKAWA <b>KOKI</b></div></header><main class="wrap"><p class="label en">PARTY / SUPPORTER</p><h1>党員・サポーターになる</h1><p class="lead">党員・サポーターのお申し込み後、Stripe決済ページへ進みます。</p><ul class="points"><li>党員 年額4,000円 ／ サポーター 年額2,000円</li><li>フォーム送信後、Stripe決済ページへ進むボタンが表示されます</li><li>お申し込みには、前川こうき後援会への入会（無料）が含まれます</li></ul><div class="law"><b>ご確認ください：</b>フォーム送信後、Stripe決済ページへ進むボタンが表示されます。決済内容はStripeの安全な画面で確認してください。</div><div class="flow"><em>お申し込みの流れ：</em><span>① このページで入力</span><span>② Stripe決済ページへ進む</span></div><div id="setup-warning" class="pending" style="display:none"></div><form id="direct-form" class="form-card" method="POST" novalidate><input type="hidden" name="page" value="party">
 <input type="hidden" name="form_type" value="party">
 <div id="form-error-summary" class="error-summary" role="alert" aria-live="assertive" tabindex="-1" hidden><strong>入力内容をご確認ください。</strong><ul id="form-error-list"></ul></div>
 <div class="form-grid">
@@ -27,7 +27,7 @@ body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sa
   <div class="field"><label>メールアドレス<span class="req">必須</span></label><input type="email" name="email" autocomplete="email" required></div>
   <div class="field"><label>電話番号<span class="req">必須</span></label><input name="phone" inputmode="numeric" autocomplete="tel" maxlength="11" pattern="[0-9]{10,11}" placeholder="例：09012345678" required><p class="help">ハイフンなしの半角数字10〜11桁で入力してください。</p></div>
   <div class="field full"><label>住所<span class="req">必須</span></label><input name="address" autocomplete="street-address" required></div>
-  <div class="field"><label>生年月日<span class="req">必須</span></label><input type="date" name="birthdate" required></div>
+  <div class="field birthdate-field"><label>生年月日<span class="req">必須</span></label><div class="birthdate-inputs" role="group" aria-label="生年月日"><input type="text" name="birth_year" inputmode="numeric" autocomplete="bday-year" maxlength="4" pattern="[0-9]{4}" placeholder="西暦4桁" aria-label="生年月日の年" required><span>年</span><select name="birth_month" autocomplete="bday-month" aria-label="生年月日の月"><option value="">月</option><option value="01">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span>月</span><select name="birth_day" autocomplete="bday-day" aria-label="生年月日の日"><option value="">日</option><option value="01">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select><span>日</span></div><input type="hidden" name="birthdate"><p class="help">年は西暦4桁で入力し、月・日を選択してください。例：1990年1月1日</p></div>
   <div class="field"><label>職業<span class="req">必須</span></label><input name="occupation" required></div>
 </div>
 
@@ -54,214 +54,195 @@ body{background:#060d1f;color:#eef2fb;font-family:'Zen Kaku Gothic New','Noto Sa
 </div>
 
 <div class="field full" style="margin-top:16px"><label>あなたの「こうなったらいいな」を教えてください！<span class="opt">任意</span></label><textarea name="memo" placeholder="地域や暮らしについて、こうなったらいいなと思うことをご自由にお書きください。"></textarea></div>
-<div class="checks"><label class="check"><input type="checkbox" name="confirm_correct" value="確認済み" data-label="入力内容の確認" required><span>入力内容に誤りがないことを確認しました。</span></label><label class="check"><input type="checkbox" name="confirm_membership" value="同意する" data-label="後援会入会への同意" required><span>申込内容に応じ、後援会への入会を含むことに同意します。</span></label></div><div class="submit-row"><button class="btn" type="submit">入力内容を記録して決済ページを表示 →</button><span class="help">送信後、Stripe決済ページへ進むボタンが表示されます。</span></div></form><p class="note">決済ページへのボタンが表示されない場合は、通信環境をご確認のうえ再度お試しください。カード情報はStripeが直接取り扱い、後援会サイト・スプレッドシートには保存されません。</p></main><footer>© 前川こうき後援会 ｜ <a href="privacy.html">プライバシーポリシー</a></footer><script>
+<div class="checks"><label class="check"><input type="checkbox" name="confirm_correct" value="確認済み" data-label="入力内容の確認" required><span>入力内容に誤りがないことを確認しました。</span></label><label class="check"><input type="checkbox" name="confirm_membership" value="同意する" data-label="後援会入会への同意" required><span>申込内容に応じ、後援会への入会を含むことに同意します。</span></label></div><div class="submit-row"><button class="btn" type="submit" disabled>申し込みを送信して決済ページを表示 →</button><span id="form-status" class="help">送信後、Stripe決済ページへ進むボタンが表示されます。</span></div></form><p class="note">決済ページへのボタンが表示されない場合は、通信環境をご確認のうえ再度お試しください。カード情報はStripeが直接取り扱い、このサイトでは保存されません。</p></main><footer>© 前川こうき後援会 ｜ <a href="privacy.html">プライバシーポリシー</a></footer><script>
 (function(){
   var form=document.getElementById('direct-form');
   var warn=document.getElementById('setup-warning');
   var errorSummary=document.getElementById('form-error-summary');
   var errorList=document.getElementById('form-error-list');
-  var paymentKind=form.elements.payment_kind;
-  var nationality=form.elements.party_nationality_confirm;
-  var nationalityRequired=document.getElementById('party-nationality-required');
-  var nationalityConditional=document.getElementById('party-nationality-conditional');
-  var nationalityHelp=document.getElementById('party-nationality-help');
+  var submitButton=form.querySelector('button[type="submit"]');
+  var formStatus=document.getElementById('form-status');
+  var birthYear=form.elements.birth_year;
+  var birthMonth=form.elements.birth_month;
+  var birthDay=form.elements.birth_day;
+  var birthdateHidden=form.elements.birthdate;
+  var requireAdult=true;
+  var partyKind=form.elements.payment_kind;
+  var partyNationality=form.elements.party_nationality_confirm;
+  var partyNationalityRequired=document.getElementById('party-nationality-required');
+  var partyNationalityConditional=document.getElementById('party-nationality-conditional');
+  var partyNationalityHelp=document.getElementById('party-nationality-help');
   var cfg=window.SITE_CONFIG||{};
   var url=(cfg.APPS_SCRIPT_URL||'').trim();
+  var configReady=Boolean(url);
 
-  if(!url){
+  if(!configReady){
     warn.style.display='block';
     warn.innerHTML='管理者設定が未完了です。<br><code>config.js</code> の <b>APPS_SCRIPT_URL</b> にApps Script WebアプリURLを設定してください。';
-    form.querySelector('button[type="submit"]').disabled=true;
-    return;
-  }
-  form.action=url;
-
-  var labels={
-    payment_kind:'申込区分',
-    age_confirm:'年齢確認',
-    party_nationality_confirm:'党員を選ぶ場合の国籍確認',
-    name:'氏名',
-    kana:'ふりがな',
-    email:'メールアドレス',
-    phone:'電話番号',
-    address:'住所',
-    birthdate:'生年月日',
-    occupation:'職業',
-    confirm_correct:'入力内容の確認',
-    confirm_membership:'後援会入会への同意'
-  };
-
-  function labelOf(el){
-    return el.getAttribute('data-label')||labels[el.name]||'入力項目';
+    submitButton.disabled=true;
+  }else{
+    form.action=url;
   }
 
+  var labels={payment_kind:'申込区分',age_confirm:'年齢確認',party_nationality_confirm:'党員を選ぶ場合の国籍確認',name:'氏名',kana:'ふりがな',email:'メールアドレス',phone:'電話番号',address:'住所',birth_year:'生年月日',occupation:'職業',confirm_correct:'入力内容の確認',confirm_membership:'後援会入会への同意'};
+  function labelOf(el){return el.getAttribute('data-label')||labels[el.name]||'入力項目';}
+  function pad2(value){return String(value).padStart(2,'0');}
+  function getBirthdateValue(){
+    var y=(birthYear.value||'').trim();
+    var m=birthMonth.value;
+    var d=birthDay.value;
+    if(!/^\d{4}$/.test(y)||!m||!d)return '';
+    var year=Number(y),month=Number(m),day=Number(d);
+    var date=new Date(Date.UTC(year,month-1,day));
+    if(date.getUTCFullYear()!==year||date.getUTCMonth()!==month-1||date.getUTCDate()!==day)return '';
+    return y+'-'+pad2(month)+'-'+pad2(day);
+  }
+  function syncBirthdate(){birthdateHidden.value=getBirthdateValue();}
   function isAdult18(value){
-    if(!value) return false;
-    var birth=new Date(value+'T00:00:00');
-    if(isNaN(birth.getTime())) return false;
-    var today=new Date();
-    today.setHours(0,0,0,0);
-    var eighteenth=new Date(birth.getTime());
-    eighteenth.setFullYear(eighteenth.getFullYear()+18);
+    if(!value)return false;
+    var parts=value.split('-').map(Number);
+    var birth=new Date(parts[0],parts[1]-1,parts[2]);
+    var today=new Date();today.setHours(0,0,0,0);
+    var eighteenth=new Date(birth.getFullYear()+18,birth.getMonth(),birth.getDate());
     return eighteenth<=today;
   }
-
+  function birthdateError(){
+    var y=(birthYear.value||'').trim(),m=birthMonth.value,d=birthDay.value;
+    if(!y&&!m&&!d)return '生年月日を入力してください。';
+    if(!/^\d{4}$/.test(y))return '生年月日の年は西暦4桁で入力してください。';
+    var currentYear=new Date().getFullYear();
+    if(Number(y)<1900||Number(y)>currentYear)return '生年月日の年は1900年から'+currentYear+'年までで入力してください。';
+    if(!m)return '生年月日の月を選択してください。';
+    if(!d)return '生年月日の日を選択してください。';
+    var value=getBirthdateValue();
+    if(!value)return '生年月日を正しく入力してください。';
+    var selected=new Date(value+'T00:00:00');
+    var today=new Date();today.setHours(0,0,0,0);
+    if(selected>today)return '生年月日に未来の日付は入力できません。';
+    if(requireAdult&&!isAdult18(value))return '満18歳以上の方がお申し込みいただけます。';
+    return '';
+  }
   function errorMessage(el){
     var label=labelOf(el);
     var value=typeof el.value==='string'?el.value.trim():el.value;
-
-    if(el.disabled) return '';
-    if(el.type==='checkbox'&&el.required&&!el.checked){
-      return label+'が必要です。';
-    }
-    if(el.required&&!value){
-      if(el.tagName==='SELECT') return label+'を選択してください。';
-      return label+'を入力してください。';
-    }
-    if(el.name==='email'&&value&&el.validity.typeMismatch){
-      return 'メールアドレスを正しい形式で入力してください。';
-    }
-    if(el.name==='phone'&&value&&!/^[0-9]{10,11}$/.test(value)){
-      return '電話番号はハイフンなしの半角数字10〜11桁で入力してください。';
-    }
-    if(el.name==='birthdate'&&value){
-      var selected=new Date(value+'T00:00:00');
-      var today=new Date();
-      today.setHours(0,0,0,0);
-      if(isNaN(selected.getTime())) return '生年月日を正しく入力してください。';
-      if(selected>today) return '生年月日に未来の日付は入力できません。';
-      if(!isAdult18(value)) return '満18歳以上の方がお申し込みいただけます。';
-    }
-    if(el.name==='occupation'&&!value){
-      return '職業を入力してください。';
-    }
-    if(el.name==='party_nationality_confirm'&&paymentKind.value==='party_member_yearly'&&!value){
+    if(el.disabled)return '';
+    if(el.name==='birth_year')return birthdateError();
+    if(el.type==='checkbox'&&el.required&&!el.checked)return label+'が必要です。';
+    if(el.required&&!value)return el.tagName==='SELECT'?label+'を選択してください。':label+'を入力してください。';
+    if(el.name==='email'&&value&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))return 'メールアドレスを正しい形式で入力してください。';
+    if(el.name==='phone'&&value&&!/^[0-9]{10,11}$/.test(value))return '電話番号はハイフンなしの半角数字10〜11桁で入力してください。';
+    if(el.name==='occupation'&&!value)return '職業を入力してください。';
+    if(el.name==='party_nationality_confirm'&&partyKind.value==='party_member_yearly'&&!value){
       return '党員を選択する場合は、国籍確認を選択してください。';
     }
     return '';
   }
-
   function messageElement(el){
-    var container=el.closest('.field')||el.closest('.check');
-    if(!container) return null;
+    var container=el.closest('.field')||el.closest('.check');if(!container)return null;
     var cls=container.classList.contains('check')?'check-error':'field-error';
-    var msg=container.parentElement&&container.classList.contains('check')
-      ? container.nextElementSibling
-      : container.querySelector('.'+cls);
+    var msg=container.classList.contains('check')?container.nextElementSibling:container.querySelector('.'+cls);
     if(container.classList.contains('check')){
-      if(!msg||!msg.classList.contains(cls)){
-        msg=document.createElement('span');
-        msg.className=cls;
-        container.insertAdjacentElement('afterend',msg);
-      }
-    }else if(!msg){
-      msg=document.createElement('p');
-      msg.className=cls;
-      container.appendChild(msg);
-    }
+      if(!msg||!msg.classList.contains(cls)){msg=document.createElement('span');msg.className=cls;container.insertAdjacentElement('afterend',msg);}
+    }else if(!msg){msg=document.createElement('p');msg.className=cls;container.appendChild(msg);}
     return msg;
   }
-
   function showError(el,message){
-    var container=el.closest('.field')||el.closest('.check');
-    if(container) container.classList.add('has-error');
+    var container=el.closest('.field')||el.closest('.check');if(container)container.classList.add('has-error');
     el.setAttribute('aria-invalid','true');
-    var msg=messageElement(el);
-    if(msg){
-      var id='error-'+(el.name||Math.random().toString(36).slice(2));
-      msg.id=id;
-      msg.textContent=message;
-      el.setAttribute('aria-describedby',id);
-    }
+    var msg=messageElement(el);if(msg){var id='error-'+(el.name||'field');msg.id=id;msg.textContent=message;el.setAttribute('aria-describedby',id);}
   }
-
   function clearError(el){
-    var container=el.closest('.field')||el.closest('.check');
-    if(container) container.classList.remove('has-error');
-    el.removeAttribute('aria-invalid');
-    el.removeAttribute('aria-describedby');
-    if(container){
-      var msg=container.classList.contains('check')?container.nextElementSibling:container.querySelector('.field-error');
-      if(msg&&(msg.classList.contains('field-error')||msg.classList.contains('check-error'))) msg.remove();
-    }
+    var container=el.closest('.field')||el.closest('.check');if(container)container.classList.remove('has-error');
+    el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby');
+    if(container){var msg=container.classList.contains('check')?container.nextElementSibling:container.querySelector('.field-error');if(msg&&(msg.classList.contains('field-error')||msg.classList.contains('check-error')))msg.remove();}
   }
-
-  function validate(el){
+  function validate(el,show){
     var message=errorMessage(el);
-    if(message){showError(el,message);return message;}
-    clearError(el);
-    return '';
+    if(show){if(message)showError(el,message);else clearError(el);}
+    return message;
+  }
+  function validationFields(){
+    var fields=Array.prototype.slice.call(form.querySelectorAll('[required]:not([disabled])'));
+    return fields.filter(function(el){return el.name!=='birthdate';});
+  }
+  function formIsValid(){
+    syncBirthdate();
+    return validationFields().every(function(el){return !validate(el,false);});
+  }
+  function updateSubmitState(){
+    var valid=configReady&&formIsValid();
+    submitButton.disabled=!valid;
+    if(formStatus)formStatus.textContent=valid?'入力内容を確認し、ボタンを押してください。':'必須項目をすべて正しく入力すると、ボタンを押せるようになります。';
+  }
+  function refreshSummary(){
+    var errors=[];
+    validationFields().forEach(function(el){var message=validate(el,false);if(message&&!errors.some(function(x){return x.message===message;}))errors.push({el:el,message:message});});
+    errorList.innerHTML='';
+    errors.forEach(function(item){var li=document.createElement('li');li.textContent=item.message;errorList.appendChild(li);});
+    errorSummary.hidden=errors.length===0;
+    return errors;
   }
 
-  function setNationalityState(){
-    var memberSelected=paymentKind.value==='party_member_yearly';
-    var supporterSelected=paymentKind.value==='party_supporter_yearly';
-
-    clearError(nationality);
-    nationality.required=memberSelected;
-    nationality.disabled=!memberSelected;
-    nationalityRequired.hidden=!memberSelected;
-    nationalityConditional.hidden=memberSelected;
-
+  function setPartyNationalityState(){
+    var memberSelected=partyKind.value==='party_member_yearly';
+    var supporterSelected=partyKind.value==='party_supporter_yearly';
+    clearError(partyNationality);
+    partyNationality.required=memberSelected;
+    partyNationality.disabled=!memberSelected;
+    partyNationalityRequired.hidden=!memberSelected;
+    partyNationalityConditional.hidden=memberSelected;
     if(memberSelected){
-      nationality.innerHTML='<option value="" selected disabled>選択してください</option><option value="党員として日本国籍を有しています">党員として日本国籍を有しています</option>';
-      nationalityHelp.textContent='党員は日本国籍が必要です。国籍確認を選択してください。';
+      partyNationality.innerHTML='<option value="" selected disabled>選択してください</option><option value="党員として日本国籍を有しています">党員として日本国籍を有しています</option>';
+      partyNationalityHelp.textContent='党員は日本国籍が必要です。国籍確認を選択してください。';
     }else if(supporterSelected){
-      nationality.innerHTML='<option value="" selected>サポーターは確認不要です</option>';
-      nationalityHelp.textContent='サポーターを選択した場合、国籍確認は不要です。';
+      partyNationality.innerHTML='<option value="" selected>サポーターは確認不要です</option>';
+      partyNationalityHelp.textContent='サポーターを選択した場合、国籍確認は不要です。';
     }else{
-      nationality.innerHTML='<option value="" selected>先に申込区分を選択してください</option>';
-      nationalityHelp.textContent='党員を選択した場合のみ、日本国籍の確認が必要です。';
+      partyNationality.innerHTML='<option value="" selected>先に申込区分を選択してください</option>';
+      partyNationalityHelp.textContent='党員を選択した場合のみ、日本国籍の確認が必要です。';
     }
   }
 
-  paymentKind.addEventListener('change',function(){
-    validate(paymentKind);
-    setNationalityState();
+  partyKind.addEventListener('change',function(){
+    validate(partyKind,true);
+    setPartyNationalityState();
+    updateSubmitState();
   });
-  nationality.addEventListener('change',function(){validate(nationality);});
-  setNationalityState();
+  partyNationality.addEventListener('change',function(){validate(partyNationality,true);updateSubmitState();});
+  setPartyNationalityState();
+  birthYear.addEventListener('input',function(){
+    birthYear.value=birthYear.value.replace(/\D/g,'').slice(0,4);
+    syncBirthdate();
+    if(birthYear.value||birthMonth.value||birthDay.value)validate(birthYear,true);
+    updateSubmitState();
+  });
+  birthYear.addEventListener('blur',function(){validate(birthYear,true);updateSubmitState();});
+  [birthMonth,birthDay].forEach(function(el){el.addEventListener('change',function(){syncBirthdate();validate(birthYear,true);updateSubmitState();});});
 
-  var validationTargets=Array.prototype.slice.call(form.querySelectorAll('[required], [name="party_nationality_confirm"]'));
-  validationTargets.forEach(function(el){
-    if(el===paymentKind||el===nationality) return;
-    var eventName=(el.tagName==='SELECT'||el.type==='checkbox'||el.type==='date')?'change':'blur';
-    el.addEventListener(eventName,function(){validate(el);});
-    if(el.type!=='checkbox'&&el.tagName!=='SELECT'){
-      el.addEventListener('input',function(){
-        if(el.getAttribute('aria-invalid')==='true') validate(el);
-      });
+  var targets=Array.prototype.slice.call(form.querySelectorAll('[required]'));
+  targets.forEach(function(el){
+    if(el===birthYear||el===birthMonth||el===birthDay||el===partyKind||el===partyNationality)return;
+    if(el.tagName==='SELECT'||el.type==='checkbox'){
+      el.addEventListener('change',function(){validate(el,true);updateSubmitState();});
+    }else{
+      el.addEventListener('input',function(){validate(el,true);updateSubmitState();});
+      el.addEventListener('blur',function(){validate(el,true);updateSubmitState();});
     }
   });
 
   form.addEventListener('submit',function(event){
-    var errors=[];
-    var fields=Array.prototype.slice.call(form.querySelectorAll('[required]:not([disabled])'));
-    fields.forEach(function(el){
-      var message=validate(el);
-      if(message) errors.push({el:el,message:message});
-    });
-
-    if(errors.length){
+    syncBirthdate();
+    var errors=refreshSummary();
+    if(errors.length||!formIsValid()){
       event.preventDefault();
-      errorList.innerHTML='';
-      errors.forEach(function(item){
-        var li=document.createElement('li');
-        li.textContent=item.message;
-        errorList.appendChild(li);
-      });
-      errorSummary.hidden=false;
-      errorSummary.focus({preventScroll:true});
-      errorSummary.scrollIntoView({behavior:'smooth',block:'center'});
-      window.setTimeout(function(){errors[0].el.focus({preventScroll:false});},350);
+      errors.forEach(function(item){validate(item.el,true);});
+      if(errors.length){errorSummary.focus({preventScroll:true});errorSummary.scrollIntoView({behavior:'smooth',block:'center'});window.setTimeout(function(){errors[0].el.focus();},300);}
+      updateSubmitState();
       return;
     }
-
-    errorSummary.hidden=true;
-    errorList.innerHTML='';
-    var button=form.querySelector('button[type="submit"]');
-    button.disabled=true;
-    button.textContent='送信しています…';
+    errorSummary.hidden=true;errorList.innerHTML='';
+    submitButton.disabled=true;submitButton.textContent='送信しています…';
   });
+  updateSubmitState();
 })();
 </script></body></html>
